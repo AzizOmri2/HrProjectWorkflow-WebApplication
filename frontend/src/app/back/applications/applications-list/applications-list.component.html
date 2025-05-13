@@ -3,21 +3,20 @@
         <div class="box box-warning">
             <div style="background-color:#fff;">
                 <br>
-                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
-                <button [routerLink]="['/back/applications/add-application']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary">
+                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
+                <button [routerLink]="['/back/applications/add-application']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Application">
                     <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Application
                 </button>
                 <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
-                    <button type="button" id="actionBtn" class="btn btn-info">Sort By</button>
+                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a onclick="setActionText(this)">Default</a></li>
+                        <li><a (click)="setActionText('Sort By')">Default</a></li>
                         <li class="divider"></li>
-                        <li><a onclick="setActionText(this)">Status</a></li>
-                        <li><a onclick="setActionText(this)">Applied At</a></li>
+                        <li><a (click)="setActionText('Status')">Status</a></li>
                     </ul>
                 </div>
                 <br><br>
@@ -33,7 +32,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let application of applications">
+                        <tr *ngFor="let application of applications | filter:searchText">
                             <td>{{ application.job_offer.title }}</td>
                             <td>
                                 <span class="label label-default">{{ application.candidate.name }}</span>
@@ -62,4 +61,33 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>
+
+
+<script>
+	function filterTable() {
+        const filter = document.getElementById('searchInput').value.toUpperCase();
+        const rows = document.querySelectorAll('table tr');
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].querySelectorAll('td');
+            let visible = false;
+            for (let j = 0; j < cols.length; j++) {
+                const cell = cols[j];
+                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                    visible = true;
+                    break;
+                }
+            }
+            rows[i].style.display = visible ? '' : 'none';
+        }
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+</script>
         

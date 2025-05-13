@@ -21,6 +21,11 @@ export class ApplicationService {
     return this.http.get<any>(`${this.apiUrl}/applications/by_candidate/${id}`);
   }
 
+  // Get applications by Offer
+  getApplicationsByOfferId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/applications/by_offer/${id}`);
+  }
+
   // Get a single application by ID
   getApplicationById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/applications/${id}`);

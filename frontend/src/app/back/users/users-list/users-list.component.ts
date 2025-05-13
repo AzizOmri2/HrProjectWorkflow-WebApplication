@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FilterPipe } from '../../../filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users-list',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,FilterPipe,FormsModule],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
 export class UsersListComponent implements OnInit{
-
   users:any;
+  actionText: string = 'Sort By';
+  searchText: string = '';
 
   constructor(private userService: UserService, private router : Router){
 
@@ -51,6 +54,10 @@ export class UsersListComponent implements OnInit{
         }
       );
     }
+  }
+
+  setActionText(text: string) {
+    this.actionText = text;
   }
 
 }

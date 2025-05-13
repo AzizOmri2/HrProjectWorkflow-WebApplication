@@ -64,7 +64,7 @@ export class AddApplicationComponent implements OnInit {
           console.error('Error adding application:', error);
           this.typeAlert = 'danger';
           this.showAlert = true;
-          this.error = "The Application's creation was failed."
+          this.error = "You already applied for this job !"
         }
       );
     } else {

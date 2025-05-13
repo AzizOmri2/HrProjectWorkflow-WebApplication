@@ -43,7 +43,9 @@ export class MesApplicationsComponent implements OnInit{
 
 
   withDrawApplication(applicationId: number) {
-    const confirmed = window.confirm("Are you sure you want to withdraw your application ? (This action cannot be undone).");
+    const confirmed = window.confirm(
+      "⚠️ You're about to withdraw your application.\n\nThis action is irreversible. Do you want to continue?"
+    );
     if (!confirmed) {
       return; // User canceled
     }

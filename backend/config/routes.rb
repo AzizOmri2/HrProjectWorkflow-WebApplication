@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   # Applications Full CRUD
   resources :applications
   get 'applications/by_candidate/:id', to: 'applications#by_candidate'
+  get 'applications/by_offer/:id', to: 'applications#by_offer'
   
 
   root 'user#index'

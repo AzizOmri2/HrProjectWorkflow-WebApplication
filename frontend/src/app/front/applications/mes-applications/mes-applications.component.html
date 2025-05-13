@@ -12,6 +12,10 @@
             <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">My Applications</h6>
             <h1 class="display-4">You can Check every Application you Submit</h1>
         </div>
+        <br>
+        <div *ngIf="applications.length === 0" class="alert alert-warning text-center">
+            You have not applied to any job offer yet.
+        </div>
         <div class="team-item" *ngFor="let application of applications">
             <div class="bg-light text-center p-4">
                 <p>You applied for : </p>

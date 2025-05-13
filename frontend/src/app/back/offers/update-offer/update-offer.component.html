@@ -73,6 +73,24 @@
                         <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                     </div>
 
+                    <!-- Status Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': statusCtrl.touched && !statusCtrl.value,
+                            'has-success': statusCtrl.touched && statusCtrl.valid
+                        }">
+                        <label *ngIf="statusCtrl.touched && !statusCtrl.value" class="control-label" for="status">
+                            <i class="fa fa-bell-o"></i>
+                            Status is required
+                        </label>
+                        <select class="form-control" id="status" name="status" [(ngModel)]="offer.status" #statusCtrl="ngModel" required>
+                            <option value="" disabled selected>Select status</option>
+                            <option value="available">Available</option>
+                            <option value="removed">Removed</option>
+                        </select>
+                        <span class="glyphicon glyphicon-check form-control-feedback"></span>
+                    </div>
+
                     <!-- Description Required Field -->
                     <div class="form-group has-feedback" 
                         [ngClass]="{

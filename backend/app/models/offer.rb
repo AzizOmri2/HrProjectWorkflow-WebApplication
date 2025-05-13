@@ -1,5 +1,6 @@
 class Offer < ApplicationRecord
-    has_many :applications
+    has_many :applications, foreign_key: 'job_offer_id', dependent: :destroy
+
     # Role enum definition for Rails 8
     enum :status, { available: 0, removed: 1 }, default: :available
 

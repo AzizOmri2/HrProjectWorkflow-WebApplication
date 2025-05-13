@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OfferService } from '../../../services/offer.service';
 import { CommonModule } from '@angular/common';
+import { ApplicationService } from '../../../services/application.service';
 
 @Component({
   selector: 'app-offer-show',
@@ -21,9 +22,12 @@ export class OfferShowComponent implements OnInit{
     created_by_id: ''
   };
 
+  applications: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private offerService: OfferService,
+    private applicationService: ApplicationService,
     private router: Router
   ) {}
 
@@ -36,6 +40,16 @@ export class OfferShowComponent implements OnInit{
         },
         error: err => {
           console.error('Error fetching offer', err);
+        }
+      });
+
+
+      this.applicationService.getApplicationsByOfferId(this.offerId).subscribe({
+        next: data => {
+          this.applications = data as any[];
+        },
+        error: err => {
+          console.error('Error fetching applications', err);
         }
       });
     }

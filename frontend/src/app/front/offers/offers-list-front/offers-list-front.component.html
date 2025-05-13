@@ -12,6 +12,10 @@
             <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Job Offers</h6>
             <h1 class="display-4">Find The Suitable Job Offer For You</h1>
         </div>
+        <br>
+        <div *ngIf="offers.length === 0" class="alert alert-danger text-center">
+            There is not any job offer yet.
+        </div>
         <div class="team-item" *ngFor="let offer of offers">
             <img class="img-fluid w-100" src="img/team-1.jpg" alt="">
             <div class="bg-light text-center p-4">

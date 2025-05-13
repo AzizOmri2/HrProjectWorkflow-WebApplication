@@ -44,6 +44,41 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Applications Section -->
+                <div style="padding: 20px;">
+                    <h4>Applications for this Offer</h4>
+                    <table class="table table-bordered" *ngIf="applications.length > 0; else noApplications">
+                        <thead>
+                            <tr>
+                                <th>Candidate Name</th>
+                                <th>CV File</th>
+                                <th>Status</th>
+                                <th>Applied At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let app of applications">
+                                <td>{{ app.candidate.name }}</td>
+                                <td>{{ app.cv_file || 'N/A' }}</td>
+                                <td [ngSwitch]="app.status">
+                                    <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
+                                    <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                                    <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                                    <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                                    <span *ngSwitchCase="'Withdrawn'" class="label label-default">Withdrawn</span>
+                                    <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                                </td>
+                                <td>{{ app.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                    <ng-template #noApplications>
+                        <p class="text-muted">No applications for this job offer.</p>
+                    </ng-template>
+                </div>
+
                 <div style="background-color:#fff;" align="center">
                     <br>
                     <button style="width:100px;" class="btn btn-block btn-info btn-sm">

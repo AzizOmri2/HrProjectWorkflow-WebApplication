@@ -2,15 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ApplicationService } from '../../../services/application.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-applications-list',
-  imports: [RouterModule,CommonModule],
+  imports: [RouterModule,CommonModule,FormsModule, FilterPipe],
   templateUrl: './applications-list.component.html',
   styleUrl: './applications-list.component.css'
 })
 export class ApplicationsListComponent implements OnInit{
   applications:any;
+  actionText: string = 'Sort By';
+  searchText: string = '';
+
 
   constructor(private applicationService: ApplicationService, private router : Router){
 
@@ -42,5 +47,9 @@ export class ApplicationsListComponent implements OnInit{
         }
       );
     }
+  }
+
+  setActionText(text: string) {
+    this.actionText = text;
   }
 }

@@ -20,14 +20,23 @@ class ApplicationsController < ApplicationController
 
   # POST /applications
   def create
-    application = Application.new(application_params)
-    if application.save
-      render json: application.as_json(include: {
-        job_offer: { only: [:title] },
-        candidate: { only: [:name] }
-      }), status: :created
+    existing_application = Application.find_by(
+      job_offer_id: application_params[:job_offer_id],
+      candidate_id: application_params[:candidate_id]
+    )
+
+    if existing_application
+      render json: { error: 'You have already applied to this job offer.' }, status: :unprocessable_entity
     else
-      render json: { errors: application.errors.full_messages }, status: :unprocessable_entity
+      application = Application.new(application_params)
+      if application.save
+        render json: application.as_json(include: {
+          job_offer: { only: [:title] },
+          candidate: { only: [:name] }
+        }), status: :created
+      else
+        render json: { errors: application.errors.full_messages }, status: :unprocessable_entity
+      end
     end
   end
 
@@ -52,6 +61,15 @@ class ApplicationsController < ApplicationController
   # GET /applications/by_candidate/:id
   def by_candidate
     applications = Application.includes(:job_offer, :candidate).where(candidate_id: params[:id])
+    render json: applications.as_json(include: {
+      job_offer: { only: [:title] },
+      candidate: { only: [:name] }
+    })
+  end
+
+  # GET /applications/by_offer/:id
+  def by_offer
+    applications = Application.includes(:job_offer, :candidate).where(job_offer_id: params[:id])
     render json: applications.as_json(include: {
       job_offer: { only: [:title] },
       candidate: { only: [:name] }

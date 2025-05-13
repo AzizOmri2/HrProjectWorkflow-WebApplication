@@ -22,7 +22,13 @@
                         <b>This Job is available before : </b>{{ offer.deadline }}
                     </p>                 
                     <p>{{ offer.description }}</p>
-                    <p><b>If you think you're the suitable one for this job offer you should apply NOW !</b></p>
+                    <p *ngIf="!hasApplied"><b>If you think you're the suitable one for this job offer you should apply NOW !</b></p>
+                </div>
+                <!-- Show alert when there is an error -->
+                <div class="box-body" *ngIf="hasApplied">
+                    <div class="alert alert-warning alert-dismissable">
+                        <h4><i class="icon fa fa-ban"></i> You already applied for this Job Offer !</h4>
+                    </div>
                 </div>
            </div>
 
@@ -51,7 +57,7 @@
                     </div>
                     <h5 class="text-white py-3 px-4 m-0">You can apply for this job offer NOW !</h5>
                     <div class="py-3 px-4">
-                        <a class="btn btn-block btn-secondary py-3 px-5" [routerLink]="['/front/applications/add-application', offer.id]">Apply Now</a>
+                        <button class="btn btn-block btn-secondary py-3 px-5" [routerLink]="['/front/applications/add-application', offer.id]" [disabled]="hasApplied">Apply Now</button>
                     </div>
                 </div>
 

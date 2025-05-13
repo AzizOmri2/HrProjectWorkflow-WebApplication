@@ -2,7 +2,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
 
-  has_many :applications, foreign_key: :candidate_id
+  
+  has_many :applications, foreign_key: :candidate_id, dependent: :destroy
   before_create :set_jti
   before_validation :downcase_email
 

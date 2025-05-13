@@ -27,10 +27,10 @@ import { MesApplicationsComponent } from './front/applications/mes-applications/
 import { AddApplicationFrontComponent } from './front/applications/add-application-front/add-application-front.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
+    {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
     {  path: 'login', component: LoginComponent  },
     {  path: 'register', component: RegisterComponent  },
-    { path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
+    {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
@@ -59,7 +59,11 @@ export const routes: Routes = [
             { path: 'applications/add-application/:id', component: AddApplicationFrontComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
         ]
     },
-    {  path: 'frontvisiteur', component: FrontvisiteurComponent  }
+    {  path: 'frontvisiteur', component: FrontvisiteurComponent,
+        children: [
+            { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+        ]
+    }
 ];
 
 

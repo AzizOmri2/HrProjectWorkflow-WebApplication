@@ -2,15 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { OfferService } from '../../../services/offer.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FilterPipe } from '../../../filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-offers-list',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,FilterPipe,FormsModule],
   templateUrl: './offers-list.component.html',
   styleUrl: './offers-list.component.css'
 })
 export class OffersListComponent implements OnInit{
   offers:any;
+  actionText: string = 'Sort By';
+  searchText: string = '';
 
   constructor(private offerService: OfferService, private router : Router){
 
@@ -42,6 +46,10 @@ export class OffersListComponent implements OnInit{
         }
       );
     }
+  }
+
+  setActionText(text: string) {
+    this.actionText = text;
   }
   
 }
