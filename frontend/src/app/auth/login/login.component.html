@@ -5,22 +5,52 @@
         </div>
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
+            <div *ngIf="flashMessage.text" class="alert" [ngClass]="{
+                    'alert-success': flashMessage.type === 'success',
+                    'alert-danger': flashMessage.type === 'error'
+                }">
+                {{ flashMessage.text }}
+            </div>
             <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
-                <div class="form-group has-feedback" [ngClass]="{'has-error': emailCtrl.invalid && emailCtrl.touched}">
-                    <label *ngIf="emailCtrl.invalid && emailCtrl.touched" class="control-label" for="emailCtrl">
+                <div class="form-group has-feedback" 
+                    [ngClass]="{
+                        'has-warning': emailCtrl.touched && !emailCtrl.value,
+                        'has-error': emailCtrl.touched && emailCtrl.invalid && emailCtrl.errors?.['email'],
+                        'has-success': emailCtrl.touched && emailCtrl.valid
+                    }">
+                    <!-- Display warning label when input is touched and not completed -->
+                    <label *ngIf="emailCtrl.touched && !emailCtrl.value" class="control-label" for="emailCtrl">
+                        <i class="fa fa-bell-o"></i>
+                        Email is missing
+                    </label>
+                    
+                    <!-- Display error label when input is invalid and touched and there is an error -->
+                    <label *ngIf="emailCtrl.touched && emailCtrl.invalid && emailCtrl.errors?.['email']" class="control-label text-danger" for="emailCtrl">
                         <i class="fa fa-times-circle-o"></i> 
-                        {{ emailCtrl.errors?.['required'] ? 'Email is required' : 'Invalid email format' }}
+                        Invalid email format
                     </label>
                     <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="email" #emailCtrl="ngModel" required email />
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
               
-                <div class="form-group has-feedback" [ngClass]="{'has-error': passwordCtrl.invalid && passwordCtrl.touched}">
-                    <label *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="control-label" for="passwordCtrl">
-                        <i class="fa fa-times-circle-o"></i> 
-                        {{ passwordCtrl.errors?.['required'] ? 'Password is required' : 'Password must be at least 6 characters' }}
+                <div class="form-group has-feedback" 
+                    [ngClass]="{
+                        'has-warning': passwordCtrl.touched && !passwordCtrl.value,
+                        'has-error': passwordCtrl.touched && passwordCtrl.invalid && passwordCtrl.errors?.['email'],
+                        'has-success': passwordCtrl.touched && passwordCtrl.valid
+                    }">
+                    <!-- Warning: field touched but not filled -->
+                    <label *ngIf="passwordCtrl.touched && !passwordCtrl.value" class="control-label text-warning" for="passwordCtrl">
+                        <i class="fa fa-bell-o"></i>
+                        Password is missing
                     </label>
-                    <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" #passwordCtrl="ngModel" required />
+
+                    <!-- Error: touched and invalid (e.g., too short) -->
+                    <label *ngIf="passwordCtrl.touched && passwordCtrl.invalid && passwordCtrl.value" class="control-label text-danger" for="passwordCtrl">
+                        <i class="fa fa-times-circle-o"></i>
+                        {{ passwordCtrl.errors?.['minlength'] ? 'Password must be at least 6 characters' : 'Password is required' }}
+                    </label>
+                    <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" #passwordCtrl="ngModel" required minlength="6"/>
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
               

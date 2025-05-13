@@ -28,7 +28,7 @@ export class AuthService {
 
   register(name: string, email: string, password: string, role: string, image:string): Observable<HttpResponse<AuthResponse>> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/users`, {
-      user: { name, email, password, password_confirmation: password, role }
+      user: { name, email, password, password_confirmation: password, role, image }
     }, { observe: 'response' }).pipe(
       tap(response => this.setToken(response))
     );

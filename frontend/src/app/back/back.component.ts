@@ -14,6 +14,7 @@ export class BackComponent implements OnInit{
   userName: string = '';
   createdAt: string = '';
   role: string = '';
+  image: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -23,6 +24,7 @@ export class BackComponent implements OnInit{
     const storedName = localStorage.getItem('user_name');
     const storedDate = localStorage.getItem('created_at');
     const storedRole = localStorage.getItem('user_role');
+    const storedImage = localStorage.getItem('user_image');
     if (storedName && storedDate && storedRole) {
       this.userName = storedName;
       const date = new Date(storedDate);
@@ -30,9 +32,13 @@ export class BackComponent implements OnInit{
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
       const year = date.getFullYear();
       this.createdAt = `${day}-${month}-${year}`;
-      this.role = storedRole
+      this.role = storedRole;
+      if(storedImage == 'null' || storedImage == ''){
+        this.image = 'uploads/default.jpg';
+      } else{
+        this.image = storedImage || '';
+      }
     }
-    
   }
 
   logout() {
@@ -43,6 +49,7 @@ export class BackComponent implements OnInit{
         localStorage.removeItem('user_name');
         localStorage.removeItem('created_at');
         localStorage.removeItem('user_role');
+        localStorage.removeItem('user_image');
         this.isLoggedIn = false;
         window.location.href = '/login'; // Redirect to login page after logout
       },

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
+import { FlashMessageService } from '../../flash-message.service';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,12 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   isLoggedIn: boolean = false;
+  flashMessage: { type: string | null, text: string | null } = { type: null, text: null };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,private flashMessageService: FlashMessageService) {}
 
   ngOnInit() {
+    this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null }; // Default values
     // Check if a token is already saved in localStorage to maintain the logged-in state
     const token = localStorage.getItem('user_token');
     if (token) {
@@ -41,6 +44,7 @@ export class LoginComponent {
             localStorage.setItem('user_name', user.name);
             localStorage.setItem('created_at', user.created_at);
             localStorage.setItem('user_role', user.role);
+            localStorage.setItem('user_image', user.image);
             
             this.isLoggedIn = true;
   
@@ -78,9 +82,4 @@ export class LoginComponent {
       alert('⚠️ Please enter both email and password.');
     }
   }
-
-
-  
-
-
 }
