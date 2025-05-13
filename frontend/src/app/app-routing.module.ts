@@ -17,27 +17,46 @@ import { OfferShowComponent } from './back/offers/offer-show/offer-show.componen
 import { AddUserComponent } from './back/users/add-user/add-user.component';
 import { UserShowComponent } from './back/users/user-show/user-show.component';
 import { OffersListFrontComponent } from './front/offers/offers-list-front/offers-list-front.component';
+import { UpdatePasswordLoginComponent } from './auth/update-password-login/update-password-login.component';
+import { OfferDetailsFrontComponent } from './front/offers/offer-details-front/offer-details-front.component';
+import { ApplicationsListComponent } from './back/applications/applications-list/applications-list.component';
+import { AddApplicationComponent } from './back/applications/add-application/add-application.component';
+import { UpdateApplicationComponent } from './back/applications/update-application/update-application.component';
+import { ApplicationShowComponent } from './back/applications/application-show/application-show.component';
+import { MesApplicationsComponent } from './front/applications/mes-applications/mes-applications.component';
+import { AddApplicationFrontComponent } from './front/applications/add-application-front/add-application-front.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
     {  path: 'login', component: LoginComponent  },
     {  path: 'register', component: RegisterComponent  },
+    { path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
             { path: 'users/add-user', component: AddUserComponent, data: { title: 'Add User', breadcrumb: 'Users' } },
             { path: 'users/show/:id', component: UserShowComponent, data: { title: 'User Details', breadcrumb: 'Users' } },
             { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
+            
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
             { path: 'offers/update-offer/:id', component: UpdateOfferComponent, data: { title: 'Update Job Offer', breadcrumb: 'Profile' } },
-            { path: 'offers/show/:id', component: OfferShowComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } }
+            { path: 'offers/show/:id', component: OfferShowComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
+            
+            { path: 'applications', component: ApplicationsListComponent, data: { title: 'Applications List', breadcrumb: 'Profile' } },
+            { path: 'applications/add-application', component: AddApplicationComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
+            { path: 'applications/update-application/:id', component: UpdateApplicationComponent, data: { title: 'Update Application', breadcrumb: 'Profile' } },
+            { path: 'applications/show/:id', component: ApplicationShowComponent, data: { title: 'Application Details', breadcrumb: 'Profile' } }
         ]
     },
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],
         children: [
             { path: 'update-profile', component: UpdateProfileFrontComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
-            { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } }
+            { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+            { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
+
+            { path: 'applications/mes-applications', component: MesApplicationsComponent, data: { title: 'My Applications List', breadcrumb: 'Profile' } },
+            { path: 'applications/add-application/:id', component: AddApplicationFrontComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
         ]
     },
     {  path: 'frontvisiteur', component: FrontvisiteurComponent  }

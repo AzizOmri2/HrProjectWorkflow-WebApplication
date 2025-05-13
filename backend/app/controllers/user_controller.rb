@@ -64,6 +64,17 @@ class UserController < ApplicationController
       end
     end
 
+
+    def update_password
+      user = User.find_by(id: params[:id])
+      if user && user.update(password: params[:password])
+        user.increment!(:nbCnx) if user.nbCnx == 1
+        render json: { message: 'Password updated successfully.' }, status: :ok
+      else
+        render json: { errors: user ? user.errors.full_messages : ['User not found'] }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def user_params

@@ -284,14 +284,14 @@
                 <li><a [routerLink]="['/back/offers']"><i class="fa fa-circle-o"></i> Job Offers List</a></li>
               </ul>
             </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Layout Options</span>
-                <span class="label label-primary pull-right">4</span>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a>
+                <i class="fa fa-calendar"></i> <span>Applications</span>
+                <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
+                <li><a [routerLink]="['/back/applications/add-application']"><i class="fa fa-circle-o"></i> Add Application</a></li>
+                <li><a [routerLink]="['/back/applications']"><i class="fa fa-circle-o"></i> Applications List</a></li>
               </ul>
             </li>
             <li>

@@ -22,8 +22,16 @@ Rails.application.routes.draw do
   # Delete User
   delete 'users/:id/delete', to: 'user#destroy', as: 'delete_user'
 
+  # Password Change
+  put '/users/update_password', to: 'user#update_password'
+
   # Offers Full CRUD
   resources :offers
+
+  # Applications Full CRUD
+  resources :applications
+  get 'applications/by_candidate/:id', to: 'applications#by_candidate'
+  
 
   root 'user#index'
   

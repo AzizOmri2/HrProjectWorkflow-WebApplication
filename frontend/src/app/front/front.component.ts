@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { FlashMessageService } from '../flash-message.service';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-front',
@@ -12,6 +13,9 @@ import { CommonModule } from '@angular/common';
 })
 export class FrontComponent implements OnInit{
 
+  pageTitle = 'Home';
+  breadcrumb = 'Home';
+
   isLoggedIn: boolean = true;
     userName: string = '';
     createdAt: string = '';
@@ -19,7 +23,12 @@ export class FrontComponent implements OnInit{
     image: string = '';
     flashMessage: { type: string | null, text: string | null } = { type: null, text: null };
   
-    constructor(private authService: AuthService, private router: Router, private flashMessageService: FlashMessageService) {}
+    constructor(
+      private authService: AuthService, 
+      private router: Router, 
+      private activatedRoute: ActivatedRoute,
+      private flashMessageService: FlashMessageService
+    ) {}
   
     
   
@@ -42,9 +51,29 @@ export class FrontComponent implements OnInit{
         } else{
           this.image = storedImage || '';
         }
-  
-        const modalMessage = localStorage.getItem('modal_message');
       }
+
+      // 🔥 Update title on initial load
+      this.updatePageTitle(this.activatedRoute);
+
+      // 🔁 Update title on route change
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.updatePageTitle(this.activatedRoute);
+        });
+    }
+
+
+    // Helper to get deepest route and set title/breadcrumb
+    private updatePageTitle(route: ActivatedRoute) {
+      let child = route;
+      while (child.firstChild) {
+        child = child.firstChild;
+      }
+      const data = child.snapshot.data;
+      this.pageTitle = data['title'] || 'Home';
+      this.breadcrumb = data['breadcrumb'] || 'Home';
     }
   
     logout() {

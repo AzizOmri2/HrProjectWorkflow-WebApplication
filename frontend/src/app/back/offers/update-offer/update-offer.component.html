@@ -72,6 +72,20 @@
                         <input type="date" class="form-control" id="deadline" name="deadline" [(ngModel)]="offer.deadline" #deadlineCtrl="ngModel" placeholder="Deadline" required/>
                         <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                     </div>
+
+                    <!-- Description Required Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': descriptionCtrl.touched && !descriptionCtrl.value,
+                            'has-success': descriptionCtrl.touched && descriptionCtrl.valid
+                        }">
+                        <label *ngIf="descriptionCtrl.touched && !descriptionCtrl.value" class="control-label" for="description">
+                            <i class="fa fa-bell-o"></i>
+                            Description is required
+                        </label>
+                        <textarea type="text" class="form-control" id="description" name="description" [(ngModel)]="offer.description" #descriptionCtrl="ngModel" placeholder="Description" required></textarea>
+                        <span class="glyphicon glyphicon-list form-control-feedback"></span>
+                    </div>
                     
                 </div>
 

@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <!-- Show alert when form is submitted successfully -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-check"></i> Application Added Successfully!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <!-- Show alert when there is an error -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-ban"></i> Application Creation Failed!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <form style="margin-top:30px;margin-left:100px;width:1050px;" (ngSubmit)="onSubmit()" #addForm="ngForm">
+                <div class="box-body">
+                    <!-- Job Offer Select Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': jobOfferCtrl.touched && !jobOfferCtrl.value,
+                            'has-success': jobOfferCtrl.touched && jobOfferCtrl.valid
+                        }">
+                        <label *ngIf="jobOfferCtrl.touched && !jobOfferCtrl.value" class="control-label" for="job_offer_id">
+                        <i class="fa fa-bell-o"></i>
+                            Job Offer is required
+                        </label>
+
+                        <select class="form-control" id="job_offer_id" name="job_offer_id"
+                            [(ngModel)]="application.job_offer_id" #jobOfferCtrl="ngModel" required>
+                            <option [ngValue]="null" disabled selected>-- Select a Job Offer --</option>
+                            <option *ngFor="let offer of jobOffers" [value]="offer.id">{{ offer.title }}</option>
+                        </select>
+
+                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+
+                    <!-- Cv File Required Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': cvFileCtrl.touched && !cvFileCtrl.value,
+                            'has-success': cvFileCtrl.touched && cvFileCtrl.valid
+                        }">
+                        <label *ngIf="cvFileCtrl.touched && !cvFileCtrl.value" class="control-label" for="cvFile">
+                            <i class="fa fa-bell-o"></i>
+                            Cv File is required
+                        </label>
+                        <input type="text" class="form-control" id="cvFile" name="cvFile" [(ngModel)]="application.cv_file" #cvFileCtrl="ngModel" placeholder="Cv required" required/>
+                        <span class="glyphicon glyphicon-list form-control-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="box-footer" align="center">
+                    <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid" title="Add Application">Add Application</button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-info" [routerLink]="['/back/applications']" title="Applications List">Applications List</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>

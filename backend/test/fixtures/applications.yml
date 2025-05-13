@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_offer: one
+  candidate: one
+  cv_file: MyString
+  status: MyString
+  applied_at: 2025-05-09 15:53:48
+
+two:
+  job_offer: two
+  candidate: two
+  cv_file: MyString
+  status: MyString
+  applied_at: 2025-05-09 15:53:48

@@ -33,15 +33,14 @@
                             <th>Role</th>
                             <th>Image</th>
                             <th>Active ?</th>
+                            <th>Connections Number</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of users">
                             <td>{{ user.name }}</td>
-                            <td>
-                                {{ user.email }}
-                            </td>
+                            <td>{{ user.email }}</td>
                             <td>{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
                             <td [ngSwitch]="user.role">
                                 <span *ngSwitchCase="'admin'" class="label label-success">ADMIN</span>
@@ -56,9 +55,12 @@
                                 <img style="width:60px;height:55px;" src="/uploads/default.jpg" alt="img-introuvable">
                             </td>
                             <td>
-                                <span class="label" [ngClass]="user.active ? 'label-danger' : 'label-success'">
+                                <span class="label" [ngClass]="user.active ? 'label-success' : 'label-danger'">
                                     {{ user.active ? 'YES' : 'NO' }}
                                 </span>
+                            </td>
+                            <td>
+                                <span class="label label-default">{{ user.nbCnx }}</span>
                             </td>
                             <td>
                                 <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/users/show', user.id]" title="Show User's Details"><i class="fa fa-ellipsis-v"></i></button>

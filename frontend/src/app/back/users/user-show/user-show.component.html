@@ -28,9 +28,15 @@
                         <tr>
                             <th>Active ?</th>
                             <td>
-                                <span class="label" [ngClass]="user.active ? 'label-danger' : 'label-success'">
+                                <span class="label" [ngClass]="user.active ? 'label-success' : 'label-danger'">
                                     {{ user.active ? 'YES' : 'NO' }}
                                 </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Connections Number</th>
+                            <td>
+                                <span class="label label-default">{{ user.nbCnx }}</span>
                             </td>
                         </tr>
                         <tr>

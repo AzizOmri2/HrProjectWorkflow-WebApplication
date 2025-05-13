@@ -1,0 +1,74 @@
+<!-- FrontOffice Dependencies -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/css/style.css" rel="stylesheet">
+
+
+<!-- Detail Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="mb-5">
+                    <div class="section-title position-relative mb-5">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Job Offer Details</h6>
+                        <h1 class="display-4">{{ offer.title }}</h1>
+                    </div>
+                    <p><b>Department : </b>{{ offer.department }}</p> 
+                    <p><b>Skills Required : </b>{{ offer.skills_required }}</p>   
+                    <p><b>Experience Level : </b>{{ offer.experience_level }}</p>  
+                    <p class="d-inline-block position-relative text-secondary text-uppercase pb-2">
+                        <b>This Job is available before : </b>{{ offer.deadline }}
+                    </p>                 
+                    <p>{{ offer.description }}</p>
+                    <p><b>If you think you're the suitable one for this job offer you should apply NOW !</b></p>
+                </div>
+           </div>
+
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <div class="bg-primary mb-5 py-3">
+                    <h3 class="text-white py-3 px-4 m-0">Job Offer Detail</h3>
+                    <div class="d-flex justify-content-between border-bottom px-4">
+                        <h6 class="text-white my-3">Title</h6>
+                        <h6 class="text-white my-3">{{ offer.title }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom px-4">
+                        <h6 class="text-white my-3">Department</h6>
+                        <h6 class="text-white my-3">{{ offer.department }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom px-4">
+                        <h6 class="text-white my-3">Skills</h6>
+                        <h6 class="text-white my-3">{{ offer.skills_required }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom px-4">
+                        <h6 class="text-white my-3">Experience</h6>
+                        <h6 class="text-white my-3">{{ offer.experience_level }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom px-4">
+                        <h6 class="text-white my-3">Deadline</h6>
+                        <h6 class="text-white my-3">{{ offer.deadline }}</h6>
+                    </div>
+                    <h5 class="text-white py-3 px-4 m-0">You can apply for this job offer NOW !</h5>
+                    <div class="py-3 px-4">
+                        <a class="btn btn-block btn-secondary py-3 px-5" [routerLink]="['/front/applications/add-application', offer.id]">Apply Now</a>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h2 class="mb-4">Recent Job Offers</h2>
+                    <a class="d-flex align-items-center text-decoration-none mb-4" *ngFor="let offer of offers">
+                        <div class="pl-3">
+                            <h6>{{ offer.title }}</h6>
+                            <div class="d-flex">
+                                <small class="text-body mr-3"><i class="fa fa-star text-primary mr-2"></i>{{ offer.experience_level }}</small>
+                                <small class="text-body"><i class="fa fa-list text-primary mr-2"></i>{{ offer.skills_required }}</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detail End -->

@@ -2,6 +2,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
 
+  has_many :applications, foreign_key: :candidate_id
   before_create :set_jti
   before_validation :downcase_email
 
@@ -13,6 +14,11 @@ class User < ApplicationRecord
 
   # Role enum definition for Rails 8
   enum :role, { admin: 0, rh: 1, candidate: 2 }, default: :candidate
+
+  # Method to increment the login count
+  def increment_login_count
+    increment!(:nbCnx)
+  end
 
   private
 

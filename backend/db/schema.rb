@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_08_134242) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_09_145348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "applications", force: :cascade do |t|
+    t.bigint "job_offer_id", null: false
+    t.bigint "candidate_id", null: false
+    t.string "cv_file"
+    t.string "status"
+    t.datetime "applied_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_applications_on_candidate_id"
+    t.index ["job_offer_id"], name: "index_applications_on_job_offer_id"
+  end
 
   create_table "offers", force: :cascade do |t|
     t.string "title"
@@ -24,6 +36,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_08_134242) do
     t.bigint "created_by_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
     t.index ["created_by_id"], name: "index_offers_on_created_by_id"
   end
 
@@ -40,10 +53,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_08_134242) do
     t.integer "role", default: 2
     t.string "image"
     t.boolean "active"
+    t.integer "nbCnx", default: 0
     t.index "lower((email)::text)", name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "applications", "offers", column: "job_offer_id"
+  add_foreign_key "applications", "users", column: "candidate_id"
   add_foreign_key "offers", "users", column: "created_by_id"
 end

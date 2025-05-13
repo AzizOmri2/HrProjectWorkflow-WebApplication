@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div style="background-color:#fff;">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Job Offer</th>
+                            <td>{{ application.job_offer.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Candidate</th>
+                            <td>
+                                <span class="label label-default">{{ application.candidate.name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Cv File</th>
+                            <td>{{ application.cv_file }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td [ngSwitch]="application.status">
+                                <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
+                                <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                                <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                                <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                                <span *ngSwitchCase="'Withdrawn'" class="label label-default">Withdrawn</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Applied At</th>
+                            <td>
+                                {{ application.applied_at | date: 'yyyy-MM-dd HH:mm' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="background-color:#fff;" align="center">
+                    <br>
+                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                        <a style="color:#fff;" [routerLink]="['/back/applications']" title="Back To Applications List">Back To List</a>
+                    </button>
+                    <br>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+        

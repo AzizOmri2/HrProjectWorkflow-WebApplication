@@ -3,6 +3,8 @@ class OffersController < ApplicationController
 
   # GET /offers
   def index
+    Offer.expire_old_offers
+    
     @offers = Offer.all
     render json: @offers
   end
@@ -52,7 +54,8 @@ class OffersController < ApplicationController
       :experience_level,
       :deadline,
       :status,
-      :created_by_id
+      :created_by_id,
+      :description
     )
   end
 end

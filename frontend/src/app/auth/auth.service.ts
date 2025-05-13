@@ -44,6 +44,12 @@ export class AuthService {
     return this.http.delete<any>(`${this.apiUrl}/users/sign_out`);
   }
 
+  updatePassword(id: number, password: string) {
+    return this.http.put<any>(`${this.apiUrl}/users/update_password`, {
+      id,password
+    });
+  }
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
@@ -51,24 +57,6 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
-
-  /*getCurrentUser(): User | null {
-    const token = this.getToken();
-    if (token) {
-      try {
-        const decoded: JwtPayload = jwt_decode(token);
-        return {
-          id: decoded.sub,
-          name: '',
-          email: decoded.email
-        };
-      } catch (error) {
-        console.error('Error decoding JWT:', error);
-        return null;
-      }
-    }
-    return null;
-  }*/
 
   private setToken(response: HttpResponse<AuthResponse>): void {
     const token = response.headers.get('Authorization')?.replace('Bearer ', '');

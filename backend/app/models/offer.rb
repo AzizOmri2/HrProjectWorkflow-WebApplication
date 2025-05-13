@@ -1,4 +1,5 @@
 class Offer < ApplicationRecord
+    has_many :applications
     # Role enum definition for Rails 8
     enum :status, { available: 0, removed: 1 }, default: :available
 
@@ -9,5 +10,11 @@ class Offer < ApplicationRecord
     # Include user details when returning offers
     def as_json(options = {})
         super(options).merge(created_by_name: created_by.name)
+    end
+
+    # ✅ Auto-expire offers past deadline
+    def self.expire_old_offers
+        where("deadline < ? AND status = ?", Time.current, 0)
+        .update_all(status: 1)
     end
 end
