@@ -25,6 +25,7 @@ export class RegisterComponent{
   passwordConfirmation = '';
   role = '';
   image = '';
+  active = true;
   error = '';
 
   constructor(private authService: AuthService, private router: Router,private flashMessageService: FlashMessageService) {}
@@ -33,10 +34,10 @@ export class RegisterComponent{
     this.error = '';
     console.log('Submitting:', 
       { user: 
-        { name: this.name, email: this.email, password: this.password, password_confirmation: this.passwordConfirmation, role: this.role, image: this.image  } 
+        { name: this.name, email: this.email, password: this.password, password_confirmation: this.passwordConfirmation, role: this.role, image: this.image, active: this.active  } 
       }
     );
-    this.authService.register(this.name, this.email, this.password, this.role, this.image).subscribe({
+    this.authService.register(this.name, this.email, this.password, this.role, this.image, this.active).subscribe({
       next: (response) => {
         this.flashMessageService.setMessage('success', 'Registration successful! You can now log in.');
         window.location.href = '/login';

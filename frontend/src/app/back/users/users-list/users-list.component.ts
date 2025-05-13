@@ -1,0 +1,40 @@
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../../services/user.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-users-list',
+  imports: [CommonModule],
+  templateUrl: './users-list.component.html',
+  styleUrl: './users-list.component.css'
+})
+export class UsersListComponent implements OnInit{
+
+  users:any;
+
+  constructor(private userService: UserService, private router : Router){
+
+  }
+
+  ngOnInit(){
+    this.UsersList()
+  }
+
+  UsersList(){
+    this.users = this.userService.getAllUsers().subscribe(
+      user => {
+        this.users = user
+        console.log(this.users);
+      }
+    )
+  }
+
+
+  toggleActive(id: number) {
+    this.userService.toggleUserActive(id).subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+
+}

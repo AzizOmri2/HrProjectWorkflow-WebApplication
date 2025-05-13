@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div style="background-color:#fff;">
+                <br>
+                <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                <br><br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Role</th>
+                            <th>Image</th>
+                            <th>Active ?</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td>{{ user.name }}</td>
+                            <td>
+                                {{ user.email }}
+                            </td>
+                            <td>{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                            <td>{{ user.updated_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                            <td [ngSwitch]="user.role">
+                                <span *ngSwitchCase="'admin'" class="label label-success">ADMIN</span>
+                                <span *ngSwitchCase="'rh'" class="label label-danger">HR</span>
+                                <span *ngSwitchCase="'candidate'" class="label label-warning">CANDIDATE</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                            <td *ngIf="user.image && user.image !== ''">
+                                <img style="width:60px;height:55px;" [src]="user.image" alt="img-introuvable">
+                            </td>
+                            <td *ngIf="!user.image || user.image === ''">
+                                <img style="width:60px;height:55px;" src="/uploads/default.jpg" alt="img-introuvable">
+                            </td>
+                            <td>
+                                <span class="label" [ngClass]="user.active ? 'label-danger' : 'label-success'">
+                                    {{ user.active ? 'YES' : 'NO' }}
+                                </span>
+                            </td>
+                            <td>
+                                <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href=""><i class="fa fa-ellipsis-v"></i></a></button>
+                                &nbsp;
+                                <button class="btn btn-block btn-sm" [ngClass]="user.active ? 'btn-danger' : 'btn-success'" [title]="user.active ? 'Ban User' : 'Unban User'" style="margin-top:-50px;margin-left:35px;width:30px;">
+                                    <a style="color:#fff;" (click)="toggleActive(user.id)"><i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i></a>
+                                </button>
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>    
+        </div>
+    </div>
+</div>
+        

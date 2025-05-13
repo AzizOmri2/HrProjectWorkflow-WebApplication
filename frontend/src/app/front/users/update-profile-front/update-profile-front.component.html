@@ -1,0 +1,60 @@
+<h1 class="text-center mb-4"><b>UPDATE YOUR PROFILE :</b></h1>
+<br>
+<div *ngIf="flashMessage.text" class="alert" [ngClass]="{
+    'alert-success': flashMessage.type === 'success',
+    'alert-danger': flashMessage.type === 'error'}">
+  {{ flashMessage.text }}
+  </div>
+<br>
+<form (ngSubmit)="onSubmit()" #updateForm="ngForm">
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="name">Name :</label>
+                <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" required>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" required/>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="password">Password :</label>
+                <input style="padding: 30px 20px;" type="password" class="form-control  bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="passwordConfirmation">Password Confirmation :</label>
+                <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="image">Profile Picture :</label>
+                <input style="padding: 30px 20px;" type="file" class="form-control  bg-light border-0" id="image" (change)="onFileSelected($event)"/>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="form-row" style="margin-left:250px;">
+        <div class="col-sm-6">
+            <button class="btn btn-primary btn-block" type="submit" style="height: 50px;">Update Profile</button>
+        </div>
+    </div>
+</form>

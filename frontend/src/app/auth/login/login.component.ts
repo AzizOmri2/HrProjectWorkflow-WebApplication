@@ -21,9 +21,9 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router,private flashMessageService: FlashMessageService) {}
 
   ngOnInit() {
-    this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null }; // Default values
+    this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null };
     // Check if a token is already saved in localStorage to maintain the logged-in state
-    const token = localStorage.getItem('user_token');
+    const token = localStorage.getItem('auth_token');
     if (token) {
       this.isLoggedIn = true;
     }
@@ -40,28 +40,23 @@ export class LoginComponent {
   
           if (token && user && role) {
             // Store user info in localStorage
-            localStorage.setItem('user_token', token);
+            localStorage.setItem('auth_token', token);
+            localStorage.setItem('user_id', user.id);
             localStorage.setItem('user_name', user.name);
             localStorage.setItem('created_at', user.created_at);
             localStorage.setItem('user_role', user.role);
             localStorage.setItem('user_image', user.image);
             
             this.isLoggedIn = true;
-  
-            // ✅ Detailed success alert
-            alert(
-              `✅ Login Successful !\n\nWelcome, ${user.name} !\nYour account was created on: ${new Date(user.created_at).toLocaleDateString('en-GB')}\n\nYou are : ${user.role === 'admin' ? 'Admin' : user.role === 'rh' ? 'RH' : 'Candidate'}`
-            );
-  
+
+            this.flashMessageService.setMessage('success', `✅ Login Successful!\n\nWelcome, ${user.name}!\nYour account was created on: ${new Date(user.created_at).toLocaleDateString('en-GB')}\n\nYou are an : ${user.role === 'admin' ? 'Admin' : user.role === 'rh' ? 'RH' : 'Candidate'}`);
+              
             // Redirect based on user role
-            if (user.role === 'admin') {
-              window.location.href = '/back'; // Admin
+            if (user.role === 'admin' || user.role === 'rh') {
+              this.router.navigate(['/back']); // Admin ou RH
             } else {
-              window.location.href = '/front'; // RH or Candidate
+              this.router.navigate(['/front']); // RH or Candidate
             }
-          } else {
-            this.errorMessage = 'Failed to retrieve token';
-            alert('❌ Login failed: Missing token or user info from server.');
           }
         },
         (error) => {
@@ -74,12 +69,21 @@ export class LoginComponent {
           } else if (error.message) {
             errorMsg = error.message;
           }
-          this.errorMessage = errorMsg;
-          alert(`❌ Login Failed:\n\n${errorMsg}`);
+          // Specific error handling based on the error message
+          if (errorMsg.includes('password')) {
+            this.flashMessage = { type: 'error', text: '❌ Incorrect password.' };
+          } else if (errorMsg.includes('inactive')) {
+            this.flashMessage = { type: 'error', text: '❌ Your account is inactive. Please contact Administration.' };
+          } else if (errorMsg.includes('not found')) {
+            this.flashMessage = { type: 'error', text: '❌ Email not found.' };
+          } else {
+            this.flashMessage = { type: 'error', text: `❌ Login Failed: ${errorMsg}` };
+          }
         }
       );
     } else {
-      alert('⚠️ Please enter both email and password.');
+      // Case where email or password is missing
+      this.flashMessage = { type: 'warning', text: '⚠️ Please enter both email and password.' };
     }
   }
 }

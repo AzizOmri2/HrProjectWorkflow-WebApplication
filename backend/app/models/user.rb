@@ -2,8 +2,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
 
-  before_save :set_jti
+  before_create :set_jti
   before_validation :downcase_email
+
+  # Validations
+  validates :active, inclusion: { in: [true, false] }
 
   # Validate email
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^@\s]+@[^@\s]+\z/ }  

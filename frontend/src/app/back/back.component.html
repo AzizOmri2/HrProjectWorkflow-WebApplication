@@ -216,7 +216,7 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
+                      <a [routerLink]="['/back/update-profile']" class="btn btn-default btn-flat">Profile</a>
                     </div>
                     <div class="pull-right">
                       <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
@@ -256,10 +256,20 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active treeview">
-              <a href="/back">
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a [routerLink]="['/back']">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
               </a>
+            </li>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a href="#">
+                <i class="fa fa-user"></i>
+                <span>Users</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a [routerLink]="['/back/users']"><i class="fa fa-circle-o"></i> List of users</a></li>
+              </ul>
             </li>
             <li class="treeview">
               <a href="#">
@@ -275,16 +285,6 @@
               <a href="pages/widgets.html">
                 <i class="fa fa-th"></i> <span>Widgets</span> <small class="label pull-right bg-green">new</small>
               </a>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-pie-chart"></i>
-                <span>Charts</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-              </ul>
             </li>
             <li class="treeview">
               <a href="#">
@@ -342,22 +342,26 @@
       <div class="content-wrapper">
         <section class="content-header">
           <h1>
-            Dashboard
+            {{ pageTitle }}
             <small>| Control panel</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="/back"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li class="active">{{ pageTitle }}</li>
           </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
           
-          <div class="row">
-            
-          </div>
-
+            <div class="row">
+                <div style="margin-top:10px;margin-left:10px;width:1280px;" *ngIf="flashMessage.text" class="alert" [ngClass]="{
+                  'alert-success': flashMessage.type === 'success',
+                  'alert-danger': flashMessage.type === 'error'}">
+                {{ flashMessage.text }}
+                </div>
+            </div>
+            <router-outlet></router-outlet>            
         </section>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>

@@ -6,14 +6,14 @@ export class FlashMessageService {
   private messageType: 'success' | 'error' | null = null;
 
   setMessage(type: 'success' | 'error', text: string) {
-    // Store the message in sessionStorage
-    sessionStorage.setItem('flash_message', JSON.stringify({ type, text }));
+    // Store the message in localStorage
+    localStorage.setItem('flash_message', JSON.stringify({ type, text }));
   }
 
   getMessage() {
-    // Retrieve the message from sessionStorage
-    const msg = JSON.parse(sessionStorage.getItem('flash_message') || 'null');
-    sessionStorage.removeItem('flash_message'); // Clear after retrieving
+    // Retrieve the message from localStorage
+    const msg = JSON.parse(localStorage.getItem('flash_message') || 'null');
+    localStorage.removeItem('flash_message'); // Clear after retrieving
     return msg;
   }
 }

@@ -11,7 +11,7 @@ class RegistrationsController < Devise::RegistrationsController
   # Permit user parameters
   def sign_up_params
     Rails.logger.debug "Raw params: #{params.inspect}"
-    permitted = params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :image)
+    permitted = params.require(:user).permit(:name, :email, :password, :password_confirmation, :role, :image, :active)
     Rails.logger.debug "Permitted params: #{permitted.inspect}"
     permitted
   end
