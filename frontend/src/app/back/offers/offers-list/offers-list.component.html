@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-warning">
+            <div style="background-color:#fff;">
+                <br>
+                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                <button [routerLink]="['/back/offers/add-offer']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary">
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Job Offer
+                </button>
+                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
+                    <button type="button" id="actionBtn" class="btn btn-info">Sort By</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="setActionText(this)">Default</a></li>
+                        <li class="divider"></li>
+                        <li><a onclick="setActionText(this)">Title</a></li>
+                        <li><a onclick="setActionText(this)">Department</a></li>
+                        <li><a onclick="setActionText(this)">Skills</a></li>
+                        <li><a onclick="setActionText(this)">Experience</a></li>
+                        <li><a onclick="setActionText(this)">Deadline</a></li>
+                        <li><a onclick="setActionText(this)">Status</a></li>
+                    </ul>
+                </div>
+                <br><br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Department</th>
+                            <th>Skills</th>
+                            <th>Experience</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th>Created By</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let offer of offers">
+                            <td>{{ offer.title }}</td>
+                            <td>{{ offer.department }}</td>
+                            <td>{{ offer.skills_required }}</td>
+                            <td>{{ offer.experience_level }}</td>
+                            <td>{{ offer.deadline }}</td>
+                            <td [ngSwitch]="offer.status">
+                                <span *ngSwitchCase="'available'" class="label label-success">Available</span>
+                                <span *ngSwitchCase="'removed'" class="label label-danger">Removed</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                            <td><span class="label label-default">{{ offer.created_by_name }}</span></td>
+                            <td>
+                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/offers/show', offer.id]" title="Show Offer's Details"><i class="fa fa-ellipsis-v"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/offers/update-offer', offer.id]" title="Update Offer"><i class="fa fa-edit"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteOffer(offer.id)" title="Delete Offer"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>    
+        </div>
+    </div>
+</div>
+        

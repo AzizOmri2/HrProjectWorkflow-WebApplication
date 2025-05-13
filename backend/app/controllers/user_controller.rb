@@ -54,6 +54,16 @@ class UserController < ApplicationController
         end
     end
 
+    def destroy
+      @user = User.find_by(id: params[:id])
+      if @user
+        @user.destroy
+        render json: { message: 'User deleted successfully' }, status: :ok
+      else
+        render json: { error: 'User not found' }, status: :not_found
+      end
+    end
+
     private
 
     def user_params

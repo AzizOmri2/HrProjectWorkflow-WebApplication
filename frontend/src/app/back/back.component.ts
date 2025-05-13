@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FlashMessageService } from '../flash-message.service';
 import { filter } from 'rxjs/operators';
+import { UserService } from '../services/user.service';
 
 
 
@@ -20,7 +20,7 @@ export class BackComponent implements OnInit{
   createdAt: string = '';
   role: string = '';
   image: string = '';
-  flashMessage: { type: string | null, text: string | null } = { type: null, text: null };
+  showAlert = true;
 
   pageTitle = 'Dashboard';
   breadcrumb = 'Dashboard';
@@ -28,13 +28,24 @@ export class BackComponent implements OnInit{
   constructor(
     private authService: AuthService, 
     private router: Router, 
-    private flashMessageService: FlashMessageService, 
-    private activatedRoute: ActivatedRoute) {}
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService
+  ) {}
 
   
 
   ngOnInit(): void {
-    this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null };
+    const alertShown = localStorage.getItem('alert_shown');
+    if (!alertShown) {
+      this.showAlert = true;
+      setTimeout(() => {
+        this.showAlert = false;
+        localStorage.setItem('alert_shown', 'true'); // Mark as shown
+      }, 5000);
+    } else {
+      this.showAlert = false; // Do not show if already marked
+    }
+
     const storedName = localStorage.getItem('user_name');
     const storedDate = localStorage.getItem('created_at');
     const storedRole = localStorage.getItem('user_role');
@@ -52,8 +63,6 @@ export class BackComponent implements OnInit{
       } else{
         this.image = storedImage || '';
       }
-
-      const modalMessage = localStorage.getItem('modal_message');
     }
     
     // 🔥 Update title on initial load
@@ -65,7 +74,6 @@ export class BackComponent implements OnInit{
       .subscribe(() => {
         this.updatePageTitle(this.activatedRoute);
       });
-
   }
 
   // Helper to get deepest route and set title/breadcrumb
@@ -89,7 +97,7 @@ export class BackComponent implements OnInit{
         localStorage.removeItem('created_at');
         localStorage.removeItem('user_role');
         localStorage.removeItem('user_image');
-        localStorage.removeItem('modal_message');
+        localStorage.removeItem('alert_shown');
         this.isLoggedIn = false;
         window.location.href = '/login'; // Redirect to login page after logout
       },
@@ -97,6 +105,27 @@ export class BackComponent implements OnInit{
         console.error('Error during logout', error);
       }
     );
+  }
+
+
+  deleteAccount() {
+    if (confirm('Are you sure you want to delete your account?')) {
+      const idStr = localStorage.getItem('user_id');
+      const id = idStr ? +idStr : null; // Convert to number
+
+      if (id !== null) {
+        this.userService.deleteUser(id).subscribe(
+          () => {
+            this.logout();
+          },
+          error => {
+            console.error('Error deleting User:', error);
+          }
+        );
+      } else {
+        console.error('User ID not found in localStorage.');
+      }
+    }
   }
 
 }

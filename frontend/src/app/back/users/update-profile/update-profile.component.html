@@ -1,36 +1,52 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-primary">
+        <div class="box box-success">
             <form style="margin-top:30px;margin-left:150px;width:1000px;" (ngSubmit)="onSubmit()" #updateForm="ngForm">
                 <div class="box-body">
-                    <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" required/>
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': NameCtrl.touched && !NameCtrl.value,
+                            'has-success': NameCtrl.touched && NameCtrl.valid
+                        }">
+                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
+                            <i class="fa fa-bell-o"></i>
+                            Name is required
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': EmailCtrl.touched && !EmailCtrl.value,
+                            'has-success': EmailCtrl.touched && EmailCtrl.valid
+                        }">
+                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
+                            <i class="fa fa-bell-o"></i>
+                            Email is required
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
             
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required/>
-                    </div>
-            
-                    <div class="form-group">
-                        <label for="password">Password</label>
+                    <div class="form-group has-feedback">
                         <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
             
-                    <div class="form-group">
-                        <label for="passwordConfirmation">Password Confirmation</label>
+                    <div class="form-group has-feedback">
                         <input type="password" class="form-control" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
             
-                    <div class="form-group">
-                        <label for="image">Profile Image</label>
+                    <div class="form-group has-feedback">
                         <input type="file" class="form-control" id="image" (change)="onFileSelected($event)"/>
+                        <span class="glyphicon glyphicon-picture form-control-feedback"></span>
                     </div>
                 </div>
             
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                <div class="box-footer" align="center">
+                    <button type="submit" [disabled]="updateForm.invalid" class="btn btn-primary" title="Update Profile">Update Profile</button>
                 </div>
             </form>
             <br><br>

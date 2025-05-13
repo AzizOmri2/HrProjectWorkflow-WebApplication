@@ -11,21 +11,28 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  // Get all Users
   getAllUsers(){
     return this.http.get(`${this.apiUrl}/users/list`);
   }
 
-
+  // Ban or Unban User (Changing the active field)
   toggleUserActive(id: number) {
     return this.http.patch(`${this.apiUrl}/users/${id}/toggle_active`, {});
   }
 
-
+  // Get a single user by ID
   getUserById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/users/${id}/show`);
   }
 
+  // Update an existing user
   updateUser(id: number, userData: FormData): Observable<any> {
     return this.http.patch(`${this.apiUrl}/users/${id}/update`, userData);
+  }
+
+  // Delete a User by ID
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/users/${id}/delete`);
   }
 }

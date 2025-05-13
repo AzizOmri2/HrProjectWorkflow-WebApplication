@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div style="background-color:#fff;">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td>{{ offer.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Department</th>
+                            <td>{{ offer.department }}</td>
+                        </tr>
+                        <tr>
+                            <th>Skills</th>
+                            <td>{{ offer.skills_required }}</td>
+                        </tr>
+                        <tr>
+                            <th>Experience</th>
+                            <td>{{ offer.experience_level }}</td>
+                        </tr>
+                        <tr>
+                            <th>Deadline</th>
+                            <td>{{ offer.deadline }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td [ngSwitch]="offer.status">
+                                <span *ngSwitchCase="'available'" class="label label-success">Available</span>
+                                <span *ngSwitchCase="'removed'" class="label label-danger">Removed</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Created By</th>
+                            <td>
+                                <span class="label label-default">{{ offer.created_by_name }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="background-color:#fff;" align="center">
+                    <br>
+                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                        <a style="color:#fff;" [routerLink]="['/back/offers']" title="Back To Offers List">Back To List</a>
+                    </button>
+                    <br>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+        

@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <form style="margin-top:30px;margin-left:100px;width:1050px;" (ngSubmit)="onSubmit()" #updateForm="ngForm">
+                <div class="box-body">
+                    <!-- Title Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': titleCtrl.touched && !titleCtrl.value,
+                            'has-success': titleCtrl.touched && titleCtrl.valid
+                        }">
+                        <label *ngIf="titleCtrl.touched && !titleCtrl.value" class="control-label" for="title">
+                            <i class="fa fa-bell-o"></i>
+                            Title is required
+                        </label>
+                        <input type="text" class="form-control" id="title" name="title" [(ngModel)]="offer.title" #titleCtrl="ngModel" required placeholder="Title"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+
+                    <!-- Department Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': departmentCtrl.touched && !departmentCtrl.value,
+                            'has-success': departmentCtrl.touched && departmentCtrl.valid
+                        }">
+                        <label *ngIf="departmentCtrl.touched && !departmentCtrl.value" class="control-label" for="department">
+                            <i class="fa fa-bell-o"></i>
+                            Department is required
+                        </label>
+                        <input type="text" class="form-control" id="department" name="department" [(ngModel)]="offer.department" #departmentCtrl="ngModel" required placeholder="Department"/>
+                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+
+                    <!-- Skills Required Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': skillsCtrl.touched && !skillsCtrl.value,
+                            'has-success': skillsCtrl.touched && skillsCtrl.valid
+                        }">
+                        <label *ngIf="skillsCtrl.touched && !skillsCtrl.value" class="control-label" for="skills_required">
+                            <i class="fa fa-bell-o"></i>
+                            Skills are required
+                        </label>
+                        <input type="text" class="form-control" id="skills_required" name="skills_required" [(ngModel)]="offer.skills_required" #skillsCtrl="ngModel" placeholder="Skills Required" required/>
+                        <span class="glyphicon glyphicon-list form-control-feedback"></span>
+                    </div>
+
+                    <!-- Experience Level Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': experienceLevelCtrl.touched && !experienceLevelCtrl.value,
+                            'has-success': experienceLevelCtrl.touched && experienceLevelCtrl.valid
+                        }">
+                        <label *ngIf="experienceLevelCtrl.touched && !experienceLevelCtrl.value" class="control-label" for="experience_level">
+                            <i class="fa fa-bell-o"></i>
+                            Experience Level is required
+                        </label>
+                        <input type="text" class="form-control" id="experience_level" name="experience_level" [(ngModel)]="offer.experience_level" #experienceLevelCtrl="ngModel" placeholder="Experience Level" required/>
+                        <span class="glyphicon glyphicon-education form-control-feedback"></span>
+                    </div>
+
+                    <!-- Deadline Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': deadlineCtrl.touched && !deadlineCtrl.value,
+                            'has-success': deadlineCtrl.touched && deadlineCtrl.valid
+                        }">
+                        <label *ngIf="deadlineCtrl.touched && !deadlineCtrl.value" class="control-label" for="deadline">
+                            <i class="fa fa-bell-o"></i>
+                            Deadline is required
+                        </label>
+                        <input type="date" class="form-control" id="deadline" name="deadline" [(ngModel)]="offer.deadline" #deadlineCtrl="ngModel" placeholder="Deadline" required/>
+                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                    </div>
+                    
+                </div>
+
+                <div class="box-footer" align="center">
+                    <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid" title="Update Job Offer">Update Job Offer</button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-info" [routerLink]="['/back/offers']" title="Job Offers List">Job Offers List</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>

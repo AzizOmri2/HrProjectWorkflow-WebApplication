@@ -3,7 +3,11 @@
       
       <header class="main-header">
         <!-- Logo -->
-        <a href="/back" class="logo"><b>HR</b>Project Workflow</a>
+        
+        <a href="/back" class="logo">
+          <img style="margin-left:-10px;width:25px;" src="hr_icon.png" alt="err">
+          <b>HR</b>Project Workflow
+        </a>
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -188,7 +192,7 @@
               </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
                   <img [src]="image" class="user-image" alt="User Image"/>
                   <span class="hidden-xs">{{ userName }}</span>
                 </a>
@@ -197,26 +201,24 @@
                   <li class="user-header">
                     <img [src]="image" class="img-circle" alt="User Image" />
                     <p>
-                      {{ userName }} - {{ role | uppercase }}
-                      <small>Member since {{ createdAt }}</small>
+                      {{ userName }} - <b>{{ role | uppercase }}</b>
+                      <small>Member since <b>{{ createdAt }}</b></small>
                     </p>
                   </li>
                   <!-- Menu Body -->
                   <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
+                    <div class="pull-left">
+                      <p>Delete your Account ? 
+                        <a (click)="deleteAccount()">
+                          <b>Here.</b>
+                        </a>
+                      </p>
                     </div>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a [routerLink]="['/back/update-profile']" class="btn btn-default btn-flat">Profile</a>
+                      <a [routerLink]="['/back/update-profile']" class="btn btn-default btn-flat">Update Profile</a>
                     </div>
                     <div class="pull-right">
                       <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
@@ -262,13 +264,24 @@
               </a>
             </li>
             <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <a href="#">
+              <a>
                 <i class="fa fa-user"></i>
                 <span>Users</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a [routerLink]="['/back/users']"><i class="fa fa-circle-o"></i> List of users</a></li>
+                <li><a [routerLink]="['/back/users/add-user']"><i class="fa fa-circle-o"></i> Add User</a></li>
+                <li><a [routerLink]="['/back/users']"><i class="fa fa-circle-o"></i> Users List</a></li>
+              </ul>
+            </li>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a>
+                <i class="fa fa-edit"></i> <span>Job Offers</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a [routerLink]="['/back/offers/add-offer']"><i class="fa fa-circle-o"></i> Add Job Offer</a></li>
+                <li><a [routerLink]="['/back/offers']"><i class="fa fa-circle-o"></i> Job Offers List</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -294,15 +307,6 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-edit"></i> <span>Forms</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -354,11 +358,11 @@
         <!-- Main content -->
         <section class="content">
           
-            <div class="row">
-                <div style="margin-top:10px;margin-left:10px;width:1280px;" *ngIf="flashMessage.text" class="alert" [ngClass]="{
-                  'alert-success': flashMessage.type === 'success',
-                  'alert-danger': flashMessage.type === 'error'}">
-                {{ flashMessage.text }}
+            <div class="box-body" *ngIf="showAlert">
+                <div class="alert alert-success alert-dismissable">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <h4>	<i class="icon fa fa-check"></i> Welcome Back !</h4>
+                  Mr {{ userName }}, you're a{{ role === 'admin' ? 'n ADMIN' : role === 'rh' ? ' HR' : ' CANDIDATE' }} and your account was created on {{ createdAt }}
                 </div>
             </div>
             <router-outlet></router-outlet>            

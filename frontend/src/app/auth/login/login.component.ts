@@ -48,8 +48,6 @@ export class LoginComponent {
             localStorage.setItem('user_image', user.image);
             
             this.isLoggedIn = true;
-
-            this.flashMessageService.setMessage('success', `✅ Login Successful!\n\nWelcome, ${user.name}!\nYour account was created on: ${new Date(user.created_at).toLocaleDateString('en-GB')}\n\nYou are an : ${user.role === 'admin' ? 'Admin' : user.role === 'rh' ? 'RH' : 'Candidate'}`);
               
             // Redirect based on user role
             if (user.role === 'admin' || user.role === 'rh') {

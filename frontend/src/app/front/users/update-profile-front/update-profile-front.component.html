@@ -1,60 +1,78 @@
-<h1 class="text-center mb-4"><b>UPDATE YOUR PROFILE :</b></h1>
-<br>
-<div *ngIf="flashMessage.text" class="alert" [ngClass]="{
-    'alert-success': flashMessage.type === 'success',
-    'alert-danger': flashMessage.type === 'error'}">
-  {{ flashMessage.text }}
-  </div>
-<br>
-<form (ngSubmit)="onSubmit()" #updateForm="ngForm">
-    <div class="form-row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="name">Name :</label>
-                <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" required>
-            </div>
+<!-- FrontOffice Dependencies -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+<div class="row justify-content-center bg-image mx-0 mb-5">
+    <div class="col-lg-6 py-5">
+        <div class="bg-white p-5 my-5">
+            <h1 class="text-center mb-4"><b>UPDATE YOUR PROFILE :</b></h1>
+            <br>
+            <br>
+            <form (ngSubmit)="onSubmit()" #updateForm="ngForm">
+                <div class="form-group has-feedback" [ngClass]="{
+                    'has-warning': NameCtrl.touched && !NameCtrl.value,
+                    'has-success': NameCtrl.touched && NameCtrl.valid
+                }">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="name">Name :</label>
+                            <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name">
+                        </div>
+                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
+                            <i class="fa fa-bell-o"></i>
+                            Name is required
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group has-feedback" [ngClass]="{
+                    'has-warning': EmailCtrl.touched && !EmailCtrl.value,
+                    'has-success': EmailCtrl.touched && EmailCtrl.valid
+                }">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="email">Email :</label>
+                            <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
+                        </div>
+                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
+                            <i class="fa fa-bell-o"></i>
+                            Email is required
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="password">Password :</label>
+                            <input style="padding: 30px 20px;" type="password" class="form-control  bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="passwordConfirmation">Password Confirmation :</label>
+                            <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="image">Profile Picture :</label>
+                            <input style="padding: 30px 20px;" type="file" class="form-control  bg-light border-0" id="image" (change)="onFileSelected($event)"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4" style="margin-top:40px;margin-left:240px;">
+                        <button class="btn btn-primary btn-block" type="submit" style="height: 50px;" [disabled]="updateForm.invalid" title="Update Profile">Update Profile</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <br>
-    <div class="form-row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="email">Email :</label>
-                <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" required/>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="form-row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="password">Password :</label>
-                <input style="padding: 30px 20px;" type="password" class="form-control  bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="form-row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="passwordConfirmation">Password Confirmation :</label>
-                <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="form-row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="image">Profile Picture :</label>
-                <input style="padding: 30px 20px;" type="file" class="form-control  bg-light border-0" id="image" (change)="onFileSelected($event)"/>
-            </div>
-        </div>
-    </div>
-    <br><br>
-    <div class="form-row" style="margin-left:250px;">
-        <div class="col-sm-6">
-            <button class="btn btn-primary btn-block" type="submit" style="height: 50px;">Update Profile</button>
-        </div>
-    </div>
-</form>
+</div>

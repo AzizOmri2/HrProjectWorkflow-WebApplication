@@ -81,26 +81,6 @@
                     <input type="password" class="form-control" placeholder="Retype password" name="passwordConfirmation" [(ngModel)]="passwordConfirmation" #passwordConfirmationCtrl="ngModel" required />
                     <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
                 </div>
-                <div class="form-group has-feedback"
-                    [ngClass]="{
-                        'has-warning': roleCtrl.touched && roleCtrl.invalid && roleCtrl.errors?.['required'],
-                        'has-success': roleCtrl.touched && roleCtrl.valid
-                    }">
-                    
-                <!-- Warning: Touched but not selected -->
-                <label *ngIf="roleCtrl.touched && !role" class="control-label text-warning" for="roleCtrl">
-                    <i class="fa fa-bell-o"></i>
-                    Please select a role
-                </label>
-
-                <select class="form-control" name="role" [(ngModel)]="role" #roleCtrl="ngModel" required>
-                    <option value="" disabled>Select a role</option>
-                    <option value="rh">HR</option>
-                    <option value="candidate">Candidate</option>
-                </select>
-
-                <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
-                </div>
                 <div class="row">
                     <div class="col-xs-8" style="margin-top:8px;">    
                         <p>Already have an account ? <a href="/login" class="text-center">Sign In</a></p>                

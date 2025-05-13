@@ -1,9 +1,28 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-success">
+        <div class="box box-warning">
             <div style="background-color:#fff;">
                 <br>
-                <input style="margin-left:30px;width:950px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                <button [routerLink]="['/back/users/add-user']" style="margin-left:1070px;margin-top:-34px;width:100px;" class="btn btn-block btn-primary">
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add User
+                </button>
+                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
+                    <button type="button" id="actionBtn" class="btn btn-info">Sort By</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="setActionText(this)">Default</a></li>
+                        <li class="divider"></li>
+                        <li><a onclick="setActionText(this)">Name</a></li>
+                        <li><a onclick="setActionText(this)">Email</a></li>
+                        <li><a onclick="setActionText(this)">Create At</a></li>
+                        <li><a onclick="setActionText(this)">Role</a></li>
+                        <li><a onclick="setActionText(this)">Active</a></li>
+                    </ul>
+                </div>
                 <br><br>
                 <table class="table">
                     <thead>
@@ -11,7 +30,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Created At</th>
-                            <th>Updated At</th>
                             <th>Role</th>
                             <th>Image</th>
                             <th>Active ?</th>
@@ -25,7 +43,6 @@
                                 {{ user.email }}
                             </td>
                             <td>{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                            <td>{{ user.updated_at | date: 'yyyy-MM-dd HH:mm' }}</td>
                             <td [ngSwitch]="user.role">
                                 <span *ngSwitchCase="'admin'" class="label label-success">ADMIN</span>
                                 <span *ngSwitchCase="'rh'" class="label label-danger">HR</span>
@@ -44,12 +61,13 @@
                                 </span>
                             </td>
                             <td>
-                                <button style="width:30px;" class="btn btn-block btn-info btn-sm"><a style="color:#fff;" href=""><i class="fa fa-ellipsis-v"></i></a></button>
+                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/users/show', user.id]" title="Show User's Details"><i class="fa fa-ellipsis-v"></i></button>
                                 &nbsp;
-                                <button class="btn btn-block btn-sm" [ngClass]="user.active ? 'btn-danger' : 'btn-success'" [title]="user.active ? 'Ban User' : 'Unban User'" style="margin-top:-50px;margin-left:35px;width:30px;">
-                                    <a style="color:#fff;" (click)="toggleActive(user.id)"><i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i></a>
+                                <button class="btn btn-block btn-sm" [ngClass]="user.active ? 'btn-primary' : 'btn-warning'" [title]="user.active ? 'Ban User' : 'Unban User'" style="margin-top:-50px;margin-left:35px;width:30px;" (click)="toggleActive(user.id)">
+                                    <i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i>
                                 </button>
                                 &nbsp;
+                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteUser(user.id)" title="Delete User"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -59,3 +77,9 @@
     </div>
 </div>
         
+<script>
+    function setActionText(element) {
+        const actionBtn = document.getElementById("actionBtn");
+        actionBtn.textContent = element.textContent;
+    }
+</script>

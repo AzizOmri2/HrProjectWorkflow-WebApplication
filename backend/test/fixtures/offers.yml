@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  department: MyString
+  skills_required: MyText
+  experience_level: MyString
+  deadline: 2025-05-08
+  status: MyString
+  created_by: 1
+
+two:
+  title: MyString
+  department: MyString
+  skills_required: MyText
+  experience_level: MyString
+  deadline: 2025-05-08
+  status: MyString
+  created_by: 1

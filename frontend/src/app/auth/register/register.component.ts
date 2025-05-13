@@ -23,7 +23,7 @@ export class RegisterComponent{
   email = '';
   password = '';
   passwordConfirmation = '';
-  role = '';
+  role = 'candidate';
   image = '';
   active = true;
   error = '';

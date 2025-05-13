@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div style="background-color:#fff;">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ user.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created At</th>
+                            <td>{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Role</th>
+                            <td [ngSwitch]="user.role">
+                                <span *ngSwitchCase="'admin'" class="label label-success">ADMIN</span>
+                                <span *ngSwitchCase="'rh'" class="label label-danger">HR</span>
+                                <span *ngSwitchCase="'candidate'" class="label label-warning">CANDIDATE</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Active ?</th>
+                            <td>
+                                <span class="label" [ngClass]="user.active ? 'label-danger' : 'label-success'">
+                                    {{ user.active ? 'YES' : 'NO' }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                                <img style="width:250px;" [src]="user.image && user.image.trim() !== '' ? user.image : 'uploads/default.jpg'" alt="error-upload">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="background-color:#fff;" align="center">
+                    <br>
+                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                        <a style="color:#fff;" [routerLink]="['/back/users']" title="Back To Users List">Back To List</a>
+                    </button>
+                    <br>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+        
