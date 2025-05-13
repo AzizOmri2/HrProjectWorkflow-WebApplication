@@ -1,0 +1,41 @@
+<div class="login-body">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/login"><b>HR</b>Project Workflow</a>
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                <div class="form-group has-feedback" [ngClass]="{'has-error': emailCtrl.invalid && emailCtrl.touched}">
+                    <label *ngIf="emailCtrl.invalid && emailCtrl.touched" class="control-label" for="emailCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        {{ emailCtrl.errors?.['required'] ? 'Email is required' : 'Invalid email format' }}
+                    </label>
+                    <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="email" #emailCtrl="ngModel" required email />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+              
+                <div class="form-group has-feedback" [ngClass]="{'has-error': passwordCtrl.invalid && passwordCtrl.touched}">
+                    <label *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="control-label" for="passwordCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        {{ passwordCtrl.errors?.['required'] ? 'Password is required' : 'Password must be at least 6 characters' }}
+                    </label>
+                    <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" #passwordCtrl="ngModel" required />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+              
+                <div class="row">
+                    <div class="col-xs-8" style="margin-top:8px;">    
+                        <a href="#">Forgot Password ?</a>                 
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" [disabled]="loginForm.invalid">Sign In</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <p>You don't have an account ? <a href="/register">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+

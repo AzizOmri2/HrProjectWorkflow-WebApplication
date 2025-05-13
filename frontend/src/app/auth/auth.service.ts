@@ -1,0 +1,83 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface AuthResponse {
+  user: User;
+  message: string;
+}
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+  private apiUrl = 'http://localhost:3000';
+  private tokenKey = 'auth_token';
+
+  constructor(private http: HttpClient) {}
+
+  register(name: string, email: string, password: string, role: string, image:string): Observable<HttpResponse<AuthResponse>> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/users`, {
+      user: { name, email, password, password_confirmation: password, role }
+    }, { observe: 'response' }).pipe(
+      tap(response => this.setToken(response))
+    );
+  }
+
+  login(email: string, password: string): Observable<any> {
+    const body = { user: { email, password } };
+    return this.http.post<any>(`${this.apiUrl}/users/sign_in`, body);
+  }
+
+  logout(): Observable<any> {
+    // Your API endpoint for logging out if needed (optional)
+    return this.http.delete<any>(`${this.apiUrl}/users/sign_out`);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  /*getCurrentUser(): User | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        const decoded: JwtPayload = jwt_decode(token);
+        return {
+          id: decoded.sub,
+          name: '',
+          email: decoded.email
+        };
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+        return null;
+      }
+    }
+    return null;
+  }*/
+
+  private setToken(response: HttpResponse<AuthResponse>): void {
+    const token = response.headers.get('Authorization')?.replace('Bearer ', '');
+    if (token) {
+      localStorage.setItem(this.tokenKey, token);
+    }
+  }
+
+  private removeToken(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
+}

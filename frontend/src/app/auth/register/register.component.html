@@ -1,0 +1,67 @@
+<div class="register-body">
+    <div class="register-box">
+        <div class="register-logo">
+            <a href="/register"><b>HR</b>Project Workflow</a>
+        </div>
+
+        <div class="register-box-body">
+            <p class="login-box-msg">Sign up for a new membership</p>
+            <form #registerForm="ngForm" (ngSubmit)="register()">
+                <div class="form-group has-feedback" [ngClass]="{'has-error': nameCtrl.invalid && nameCtrl.touched}">
+                    <label *ngIf="nameCtrl.invalid && nameCtrl.touched" class="control-label" for="nameCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        Full name is required
+                    </label>
+                    <input type="text" class="form-control" placeholder="Full name" name="name" [(ngModel)]="name" #nameCtrl="ngModel" required/>
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" [ngClass]="{'has-error': emailCtrl.invalid && emailCtrl.touched}">
+                    <label *ngIf="emailCtrl.invalid && emailCtrl.touched" class="control-label" for="emailCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        {{ emailCtrl.errors?.['required'] ? 'Email is required' : 'Invalid email format' }}
+                    </label>
+                    <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="email" #emailCtrl="ngModel" required email />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" [ngClass]="{'has-error': passwordCtrl.invalid && passwordCtrl.touched}">
+                    <label *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="control-label" for="passwordCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        {{ passwordCtrl.errors?.['required'] ? 'Password is required' : 'Password must be at least 6 characters' }}
+                    </label>
+                    <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" #passwordCtrl="ngModel" required minlength="6" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" [ngClass]="{'has-error': passwordConfirmationCtrl.invalid && passwordConfirmationCtrl.touched}">
+                    <label *ngIf="passwordConfirmationCtrl.invalid && passwordConfirmationCtrl.touched" class="control-label" for="passwordConfirmationCtrl">
+                        <i class="fa fa-times-circle-o"></i> 
+                        {{ passwordConfirmationCtrl.errors?.['required'] ? 'Password confirmation is required' : 'Passwords do not match' }}
+                    </label>
+                    <input type="password" class="form-control" placeholder="Retype password" name="passwordConfirmation" [(ngModel)]="passwordConfirmation" #passwordConfirmationCtrl="ngModel" required />
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" [ngClass]="{'has-error': roleCtrl.invalid && roleCtrl.touched}">
+                    <label *ngIf="roleCtrl.invalid && roleCtrl.touched" class="control-label" for="roleCtrl">
+                      <i class="fa fa-times-circle-o"></i>
+                      {{ roleCtrl.errors?.['required'] ? 'Role is required' : '' }}
+                    </label>
+                    <select class="form-control" name="role" [(ngModel)]="role" #roleCtrl="ngModel" required>
+                      <option value="" disabled selected>Select a role</option>
+                      <option value="rh">HR</option>
+                      <option value="candidate">Candidate</option>
+                    </select>
+                    <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8" style="margin-top:8px;">    
+                        <p>Already have an account ? <a href="/login" class="text-center">Sign In</a></p>                
+                    </div>
+                    <div class="col-xs-4">
+                      <button type="submit" class="btn btn-primary btn-block btn-flat" [disabled]="registerForm.invalid">Sign Up</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+  
