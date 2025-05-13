@@ -41,5 +41,11 @@ export class UserShowComponent implements OnInit{
     }
   }
 
+  toggleActive(id: number) {
+    this.userService.toggleUserActive(id).subscribe(() => {
+      this.ngOnInit();
+    });
+  }
+
 
 }

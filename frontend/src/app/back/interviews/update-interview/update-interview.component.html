@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <!-- Show alert when form is submitted successfully -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-check"></i> Interview Updated Successfully!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <!-- Show alert when there is an error -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-ban"></i> Interview Update Failed!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <form style="margin-top:30px;margin-left:100px;width:1050px;" (ngSubmit)="onSubmit()" #updateForm="ngForm">
+                <div class="box-body">
+                    <!-- Application Select Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': applicationIdCtrl.touched && !applicationIdCtrl.value,
+                            'has-success': applicationIdCtrl.touched && applicationIdCtrl.valid
+                        }">
+                        <label *ngIf="applicationIdCtrl.touched && !applicationIdCtrl.value" class="control-label" for="application_id">
+                        <i class="fa fa-bell-o"></i>
+                            Application is required
+                        </label>
+
+                        <select class="form-control" id="application_id" name="application_id"
+                            [(ngModel)]="interview.application_id" #applicationIdCtrl="ngModel" required>
+                            <option [ngValue]="null" disabled selected>-- Select an Application --</option>
+                            <option *ngFor="let app of applications" [value]="app.id">{{ app.job_offer.title }} - {{ app.candidate.name }}</option>
+                        </select>
+
+                        <span class="glyphicon glyphicon-file form-control-feedback"></span>
+                    </div>
+
+                    <!-- Date Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': interview_dateCtrl.touched && !interview_dateCtrl.value,
+                            'has-success': interview_dateCtrl.touched && interview_dateCtrl.valid
+                        }">
+                        <label *ngIf="interview_dateCtrl.touched && !interview_dateCtrl.value" class="control-label" for="interview_date">
+                            <i class="fa fa-bell-o"></i>
+                            Date is required
+                        </label>
+                        <input type="datetime-local" class="form-control" id="interview_date" name="interview_date" [(ngModel)]="interview.interview_date" #interview_dateCtrl="ngModel" required placeholder="Date"/>
+                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                    </div>
+
+                    <!-- Interviewer Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': interviewerCtrl.touched && !interviewerCtrl.value,
+                            'has-success': interviewerCtrl.touched && interviewerCtrl.valid
+                        }">
+                        <label *ngIf="interviewerCtrl.touched && !interviewerCtrl.value" class="control-label" for="interviewer_id">
+                        <i class="fa fa-bell-o"></i>
+                            Interviewer is required
+                        </label>
+
+                        <select class="form-control" id="interviewer_id" name="interviewer_id"
+                            [(ngModel)]="interview.interviewer_id" #interviewerCtrl="ngModel" required>
+                            <option [ngValue]="null" disabled selected>-- Select an Interviewer --</option>
+                            <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+                        </select>
+
+                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+                    
+
+                    <!-- Link Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': linkCtrl.touched && !linkCtrl.value,
+                            'has-success': linkCtrl.touched && linkCtrl.valid
+                        }">
+                        <label *ngIf="linkCtrl.touched && !linkCtrl.value" class="control-label" for="link">
+                            <i class="fa fa-bell-o"></i>
+                            Link is required
+                        </label>
+                        <input type="text" class="form-control" id="link" name="link" [(ngModel)]="interview.link" #linkCtrl="ngModel" required placeholder="Link"/>
+                        <span class="glyphicon glyphicon-link form-control-feedback"></span>
+                    </div>
+
+                    <!-- Status Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': statusCtrl.touched && !statusCtrl.value,
+                            'has-success': statusCtrl.touched && statusCtrl.valid
+                        }">
+                        <label *ngIf="statusCtrl.touched && !statusCtrl.value" class="control-label" for="status">
+                            <i class="fa fa-bell-o"></i>
+                            Status is required
+                        </label>
+                        <select class="form-control" id="status" name="status" [(ngModel)]="interview.status" #statusCtrl="ngModel" required>
+                            <option value="" disabled selected>Select status</option>
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Finished">Finished</option>
+                            <option value="Canceled">Canceled</option>
+                        </select>
+                        <span class="glyphicon glyphicon-check form-control-feedback"></span>
+                    </div>
+
+                    <!-- Result Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': resultCtrl.touched && !resultCtrl.value,
+                            'has-success': resultCtrl.touched && resultCtrl.valid
+                        }">
+                        <label *ngIf="resultCtrl.touched && !resultCtrl.value" class="control-label" for="result">
+                            <i class="fa fa-bell-o"></i>
+                            Result is required
+                        </label>
+                        <input type="text" class="form-control" id="result" name="result" [(ngModel)]="interview.result" #resultCtrl="ngModel" required placeholder="Result"/>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                    </div>
+
+                    <!-- Duration Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': durationCtrl.touched && !durationCtrl.value,
+                            'has-success': durationCtrl.touched && durationCtrl.valid
+                        }">
+                        <label *ngIf="durationCtrl.touched && !durationCtrl.value" class="control-label" for="duration">
+                            <i class="fa fa-bell-o"></i>
+                            Duration is required
+                        </label>
+                        <input type="text" class="form-control" id="duration" name="duration" [(ngModel)]="interview.duration" #durationCtrl="ngModel" required placeholder="Duration"/>
+                        <span class="glyphicon glyphicon-time form-control-feedback"></span>
+                    </div>
+
+                    <!-- Notes Field -->
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" id="notes" name="notes" [(ngModel)]="interview.notes" #notesCtrl="ngModel" placeholder="Notes"/>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="box-footer" align="center">
+                    <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid" title="Update Interview">Update Interview</button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-info" [routerLink]="['/back/interviews']" title="Interviews List">Interviews List</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>

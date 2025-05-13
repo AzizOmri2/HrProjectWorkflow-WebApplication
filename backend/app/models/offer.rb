@@ -15,7 +15,7 @@ class Offer < ApplicationRecord
 
     # ✅ Auto-expire offers past deadline
     def self.expire_old_offers
-        where("deadline < ? AND status = ?", Time.current, 0)
-        .update_all(status: 1)
+        where("deadline < ? AND status = ?", Time.current, 0)  # 0 corresponds to :available
+          .update_all(status: 1)  # 1 corresponds to :removed
     end
 end

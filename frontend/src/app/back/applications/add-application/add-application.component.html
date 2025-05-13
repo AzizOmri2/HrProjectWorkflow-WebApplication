@@ -40,17 +40,9 @@
                     </div>
 
                     <!-- Cv File Required Field -->
-                    <div class="form-group has-feedback" 
-                        [ngClass]="{
-                            'has-warning': cvFileCtrl.touched && !cvFileCtrl.value,
-                            'has-success': cvFileCtrl.touched && cvFileCtrl.valid
-                        }">
-                        <label *ngIf="cvFileCtrl.touched && !cvFileCtrl.value" class="control-label" for="cvFile">
-                            <i class="fa fa-bell-o"></i>
-                            Cv File is required
-                        </label>
-                        <input type="text" class="form-control" id="cvFile" name="cvFile" [(ngModel)]="application.cv_file" #cvFileCtrl="ngModel" placeholder="Cv required" required/>
-                        <span class="glyphicon glyphicon-list form-control-feedback"></span>
+                    <div class="form-group has-feedback">
+                        <input type="file" class="form-control" id="cv_file" name="cv_file" (change)="onFileChange($event)" required placeholder="CV File">
+                        <span class="glyphicon glyphicon-file form-control-feedback"></span>
                     </div>
                 </div>
 

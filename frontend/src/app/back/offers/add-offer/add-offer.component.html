@@ -71,7 +71,13 @@
                             <i class="fa fa-bell-o"></i>
                             Experience Level is required
                         </label>
-                        <input type="text" class="form-control" id="experience_level" name="experience_level" [(ngModel)]="offer.experience_level" #experienceLevelCtrl="ngModel" placeholder="Experience Level" required/>
+                        <select class="form-control" id="experience_level" name="experience_level" [(ngModel)]="offer.experience_level" #experienceLevelCtrl="ngModel" required>
+                            <option [ngValue]="null" disabled selected>-- Select the Experience Level --</option>
+                            <option [value]="'Entry-level'">Entry-level</option>
+                            <option [value]="'Junior'">Junior</option>
+                            <option [value]="'Mid-level'">Mid-level</option>
+                            <option [value]="'Senior'">Senior</option>
+                        </select>
                         <span class="glyphicon glyphicon-education form-control-feedback"></span>
                     </div>
 

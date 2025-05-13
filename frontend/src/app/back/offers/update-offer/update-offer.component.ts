@@ -21,6 +21,9 @@ export class UpdateOfferComponent implements OnInit{
     status: '',
     created_by_id: ''
   };
+  showAlert = false;
+  typeAlert = '';
+  error='';
 
   constructor(
     private route: ActivatedRoute,
@@ -43,14 +46,19 @@ export class UpdateOfferComponent implements OnInit{
   }
 
   onSubmit() {
+    this.showAlert = false;
     this.offerService.updateOffer(this.offerId, this.offer).subscribe({
       next: res => {
-        alert('Job Offer updated successfully!');
-        this.router.navigate(['/back/offers']); // adjust route if needed
+        console.log('Offer updated successfully:', res);
+        this.typeAlert = 'success';
+        this.showAlert = true;
+        this.error = "The Job Offer was successfully updated."
       },
       error: err => {
         console.error('Error updating offer', err);
-        alert('Failed to update offer.');
+        this.typeAlert = 'danger';
+        this.showAlert = true;
+        this.error = "The Job Offer's update was failed."
       }
     });
   }

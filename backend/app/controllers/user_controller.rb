@@ -6,6 +6,11 @@ class UserController < ApplicationController
         render json: @users  # Respond with users in JSON format
     end
 
+    def hr_users
+      hr_users = User.where(role: 1)
+      render json: hr_users
+    end
+
     def show
         user = User.find_by(id: params[:id])
         if user

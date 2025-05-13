@@ -11,6 +11,22 @@
         <div class="bg-white p-5 my-5">
             <h1 class="text-center mb-4"><b>UPDATE YOUR PROFILE :</b></h1>
             <br>
+            <!-- Show alert when form is submitted successfully -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-check"></i> Your Profile is Updated Successfully!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <!-- Show alert when there is an error -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-ban"></i> Your Profile's Update is Failed!</h4>
+                    {{ error }}
+                </div>
+            </div>
             <br>
             <form (ngSubmit)="onSubmit()" #updateForm="ngForm">
                 <div class="form-group has-feedback" [ngClass]="{

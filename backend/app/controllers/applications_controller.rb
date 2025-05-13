@@ -20,6 +20,9 @@ class ApplicationsController < ApplicationController
 
   # POST /applications
   def create
+    # Debugging to check what parameters are received
+    Rails.logger.debug("Received Parameters: #{params.inspect}")
+
     existing_application = Application.find_by(
       job_offer_id: application_params[:job_offer_id],
       candidate_id: application_params[:candidate_id]
@@ -28,7 +31,25 @@ class ApplicationsController < ApplicationController
     if existing_application
       render json: { error: 'You have already applied to this job offer.' }, status: :unprocessable_entity
     else
-      application = Application.new(application_params)
+      application = Application.new(application_params.except(:cv_file))
+
+      # Handle file upload
+      if params[:application][:cv_file].present?
+        uploaded_cv = params[:application][:cv_file]
+
+        # Rename the file to "cv{id}_2025.pdf"
+        new_filename = "Cv_#{application.candidate.name}_#{application.candidate_id}.pdf"
+
+        # Save the file to the frontend/public/cv_resources directory
+        cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)
+        File.open(cv_upload_path, 'wb') do |file|
+          file.write(uploaded_cv.read)
+        end
+
+        # Save relative path in DB
+        application.cv_file = "cv_resources/#{new_filename}"
+      end
+
       if application.save
         render json: application.as_json(include: {
           job_offer: { only: [:title] },
@@ -42,7 +63,27 @@ class ApplicationsController < ApplicationController
 
   # PUT/PATCH /applications/:id
   def update
-    if @application.update(application_params)
+    # Update attributes except cv_file
+    if @application.update(application_params.except(:cv_file))
+      
+      # Handle file upload if a new CV is provided
+      if params[:application][:cv_file].present?
+        uploaded_cv = params[:application][:cv_file]
+  
+        # Build new filename using candidate info
+        candidate = @application.candidate
+        new_filename = "Cv_#{candidate.name}_#{candidate.id}.pdf"
+  
+        # Save the file to the frontend/public/cv_resources directory
+        cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)
+        File.open(cv_upload_path, 'wb') do |file|
+          file.write(uploaded_cv.read)
+        end
+  
+        # Update the cv_file path in DB
+        @application.update(cv_file: "cv_resources/#{new_filename}")
+      end
+  
       render json: @application.as_json(include: {
         job_offer: { only: [:title] },
         candidate: { only: [:name] }
@@ -54,8 +95,19 @@ class ApplicationsController < ApplicationController
 
   # DELETE /applications/:id
   def destroy
-    @application.destroy
-    render json: { message: 'Application deleted successfully' }, status: :ok
+    # Store CV file path before destroying
+    cv_file_path = Rails.root.join('..', 'frontend', 'public', @application.cv_file) if @application.cv_file.present?
+
+    if @application.destroy
+      # Delete the CV file if it exists
+      if cv_file_path && File.exist?(cv_file_path)
+        File.delete(cv_file_path)
+      end
+
+      render json: { message: 'Application and associated CV deleted successfully' }, status: :ok
+    else
+      render json: { error: 'Failed to delete application' }, status: :unprocessable_entity
+    end
   end
 
   # GET /applications/by_candidate/:id
@@ -74,6 +126,24 @@ class ApplicationsController < ApplicationController
       job_offer: { only: [:title] },
       candidate: { only: [:name] }
     })
+  end
+
+  # GET /applications/:id/download_pdf
+  def download_pdf
+    # Assuming the CV filename is saved in the `cv_file` attribute
+    application = Application.find(params[:id])
+
+    if application && application.cv_file.present?
+      cv_file_path = Rails.root.join('..', 'frontend', 'public', application.cv_file)
+
+      if File.exist?(cv_file_path)
+        send_file cv_file_path, filename: File.basename(cv_file_path), type: 'application/pdf', disposition: 'attachment'
+      else
+        render json: { error: 'File not found' }, status: :not_found
+      end
+    else
+      render json: { error: 'Application or file not found' }, status: :not_found
+    end
   end
 
   private

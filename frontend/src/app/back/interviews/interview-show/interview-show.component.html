@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <!-- Show alert when form is submitted successfully -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-check"></i> Interview Accepted Successfully!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <!-- Show alert when there is an error -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-ban"></i> Interview's Accept Failed!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <div style="background-color:#fff;">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Application</th>
+                            <td>
+                                <span class="label label-primary">
+                                    {{ interview.application.job_offer.title }} - {{ interview.application.candidate.name }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date & Time</th>
+                            <td>{{ interview.interview_date | date: 'yyyy-MM-dd HH:mm' : 'UTC' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Interviewer</th>
+                            <td>
+                                <span class="label label-default">{{ interview.interviewer.name }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Link</th>
+                            <td>
+                                <a href="{{ interview.link }}" class="btn btn-primary btn-sm" title="Open The Interview's Reunion">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td [ngSwitch]="interview.status">
+                                <span *ngSwitchCase="'Finished'" class="label label-success">Finished</span>
+                                <span *ngSwitchCase="'Scheduled'" class="label label-warning">Scheduled</span>
+                                <span *ngSwitchCase="'Canceled'" class="label label-danger">Canceled</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Result</th>
+                            <td [ngSwitch]="interview.result">
+                                <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                                <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                                <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td>{{ interview.duration }} min</td>
+                        </tr>
+                        <tr>
+                            <th>Notes</th>
+                            <td>{{ interview.notes }}</td>
+                        </tr>
+                        <tr>
+                            <th>Decision</th>
+                            <td>
+                                <a style="width:30px;" class="btn btn-block btn-success btn-sm" (click)="onValidateInterviewAccept(interview.id)" title="Accept Interview"><i class="fa fa-check"></i></a>
+                                &nbsp;
+                                <a style="margin-left:40px;margin-top:-50px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="onValidateInterviewReject(interview.id)" title="Reject Interview"><i class="fa fa-ban"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="background-color:#fff;" align="center">
+                    <br>
+                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
+                        <a style="color:#fff;" [routerLink]="['/back/interviews']" title="Back To Interviews List">Back To List</a>
+                    </button>
+                    <br>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
+        

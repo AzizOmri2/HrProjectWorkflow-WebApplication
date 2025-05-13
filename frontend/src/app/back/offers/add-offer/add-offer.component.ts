@@ -48,7 +48,7 @@ export class AddOfferComponent implements OnInit{
           console.log('Offer added successfully:', response);
           this.typeAlert = 'success';
           this.showAlert = true;
-          this.error = "The Job Offer was successfully added created."
+          this.error = "The Job Offer was successfully added."
         },
         error => {
           console.error('Error adding offer:', error);

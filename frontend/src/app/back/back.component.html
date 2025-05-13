@@ -265,7 +265,7 @@
             </li>
             <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <a>
-                <i class="fa fa-user"></i>
+                <i class="fa fa-users"></i>
                 <span>Users</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -276,7 +276,7 @@
             </li>
             <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <a>
-                <i class="fa fa-edit"></i> <span>Job Offers</span>
+                <i class="fa fa-bullhorn"></i> <span>Job Offers</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -286,7 +286,7 @@
             </li>
             <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <a>
-                <i class="fa fa-calendar"></i> <span>Applications</span>
+                <i class="fa fa-paper-plane"></i> <span>Applications</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -294,50 +294,22 @@
                 <li><a [routerLink]="['/back/applications']"><i class="fa fa-circle-o"></i> Applications List</a></li>
               </ul>
             </li>
-            <li>
-              <a href="pages/widgets.html">
-                <i class="fa fa-th"></i> <span>Widgets</span> <small class="label pull-right bg-green">new</small>
-              </a>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-laptop"></i>
-                <span>UI Elements</span>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a>
+                <i class="fa fa-comments"></i>
+                <span>Interviews</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
+                <li><a [routerLink]="['/back/interviews/add-interview']"><i class="fa fa-circle-o"></i> Add Interview</a></li>
+                <li><a [routerLink]="['/back/interviews']"><i class="fa fa-circle-o"></i> Interviews List</a></li>
               </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-table"></i> <span>Tables</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="pages/calendar.html">
-                <i class="fa fa-calendar"></i> <span>Calendar</span>
-                <small class="label pull-right bg-red">3</small>
-              </a>
             </li>
             <li>
               <a href="pages/mailbox/mailbox.html">
                 <i class="fa fa-envelope"></i> <span>Mailbox</span>
                 <small class="label pull-right bg-yellow">12</small>
               </a>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-folder"></i> <span>Examples</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-              </ul>
             </li>
           </ul>
         </section>

@@ -16,7 +16,12 @@
                         </tr>
                         <tr>
                             <th>Cv File</th>
-                            <td>{{ application.cv_file }}</td>
+                            <td>
+                                <button class="btn btn-block btn-primary btn-sm" style="width:30px;" title="Download CV" (click)="downloadCv(application.id,application.candidate.name)">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </td>
+                            
                         </tr>
                         <tr>
                             <th>Status</th>

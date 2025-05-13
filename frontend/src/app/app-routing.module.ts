@@ -25,6 +25,10 @@ import { UpdateApplicationComponent } from './back/applications/update-applicati
 import { ApplicationShowComponent } from './back/applications/application-show/application-show.component';
 import { MesApplicationsComponent } from './front/applications/mes-applications/mes-applications.component';
 import { AddApplicationFrontComponent } from './front/applications/add-application-front/add-application-front.component';
+import { InterviewsListComponent } from './back/interviews/interviews-list/interviews-list.component';
+import { AddInterviewComponent } from './back/interviews/add-interview/add-interview.component';
+import { UpdateInterviewComponent } from './back/interviews/update-interview/update-interview.component';
+import { InterviewShowComponent } from './back/interviews/interview-show/interview-show.component';
 
 export const routes: Routes = [
     {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
@@ -46,7 +50,12 @@ export const routes: Routes = [
             { path: 'applications', component: ApplicationsListComponent, data: { title: 'Applications List', breadcrumb: 'Profile' } },
             { path: 'applications/add-application', component: AddApplicationComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
             { path: 'applications/update-application/:id', component: UpdateApplicationComponent, data: { title: 'Update Application', breadcrumb: 'Profile' } },
-            { path: 'applications/show/:id', component: ApplicationShowComponent, data: { title: 'Application Details', breadcrumb: 'Profile' } }
+            { path: 'applications/show/:id', component: ApplicationShowComponent, data: { title: 'Application Details', breadcrumb: 'Profile' } },
+
+            { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
+            { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
+            { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
+            { path: 'interviews/show/:id', component: InterviewShowComponent, data: { title: 'Interview Details', breadcrumb: 'Profile' } }
         ]
     },
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],

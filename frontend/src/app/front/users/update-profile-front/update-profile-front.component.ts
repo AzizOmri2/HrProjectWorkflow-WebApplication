@@ -3,7 +3,6 @@ import { UserService } from '../../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FlashMessageService } from '../../../flash-message.service';
 
 @Component({
   selector: 'app-update-profile-front',
@@ -22,13 +21,14 @@ export class UpdateProfileFrontComponent implements OnInit{
     };
   selectedFile: File | null = null;
   userId: number = Number(localStorage.getItem("user_id") || 0);
-  flashMessage: { type: string | null, text: string | null } = { type: null, text: null };
+  showAlert = false;
+  typeAlert = '';
+  error='';
     
   
     constructor(
       private userService: UserService, 
-      private route: ActivatedRoute,
-      private flashMessageService: FlashMessageService
+      private route: ActivatedRoute
     ) {}
   
     // OnInit lifecycle hook to fetch user data by ID
@@ -36,9 +36,6 @@ export class UpdateProfileFrontComponent implements OnInit{
       if (this.userId) {
         this.getUserDetails(this.userId);
       }
-
-      // Display any flash message if present
-      this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null };
     }
   
     // Method to fetch user data from the backend
@@ -97,15 +94,17 @@ export class UpdateProfileFrontComponent implements OnInit{
           localStorage.setItem('user_image', updatedUser.image);
           localStorage.setItem('user_name', updatedUser.name);
   
-          // Set success flash message
-          this.flashMessageService.setMessage('success', 'Profile updated successfully.');
+          this.typeAlert = 'success';
+          this.showAlert = true;
+          this.error = "Your Profile's Data was Successfully Updated."
           // Reload to reflect changes and show message
           window.location.reload();
         },
         error: (err) => {
           console.error('Error updating user:', err);
-          // Set error message without reload
-          this.flashMessageService.setMessage('error', 'Profile update failed.');
+          this.typeAlert = 'danger';
+          this.showAlert = true;
+          this.error = "Your Profile's Update was Failed."
         }
       });
     }

@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <br><br>
-                <table class="table">
+                <table class="table" *ngIf="applications.length > 0; else noApplications">
                     <thead>
                         <tr>
                             <th>Job Offer</th>
@@ -37,7 +37,11 @@
                             <td>
                                 <span class="label label-default">{{ application.candidate.name }}</span>
                             </td>
-                            <td>{{ application.cv_file }}</td>
+                            <td>
+                                <button class="btn btn-block btn-primary btn-sm" style="width:30px;" title="Download CV" (click)="downloadCv(application.id,application.candidate.name)">
+                                    <i class="fa fa-download"></i>
+                                </button>
+                            </td>
                             <td [ngSwitch]="application.status">
                                 <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
                                 <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
@@ -57,37 +61,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <ng-template #noApplications>
+                    <p style="margin-left:20px;" class="text-muted">No applications for any job offer.</p>
+                    <br>
+                </ng-template>
             </div>    
         </div>
     </div>
 </div>
-
-
-<script>
-    function setActionText(element) {
-        const actionBtn = document.getElementById("actionBtn");
-        actionBtn.textContent = element.textContent;
-    }
-</script>
-
-
-<script>
-	function filterTable() {
-        const filter = document.getElementById('searchInput').value.toUpperCase();
-        const rows = document.querySelectorAll('table tr');
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i].querySelectorAll('td');
-            let visible = false;
-            for (let j = 0; j < cols.length; j++) {
-                const cell = cols[j];
-                if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
-                    visible = true;
-                    break;
-                }
-            }
-            rows[i].style.display = visible ? '' : 'none';
-        }
-    }
-    document.getElementById('searchInput').addEventListener('keyup', filterTable);
-</script>
-        

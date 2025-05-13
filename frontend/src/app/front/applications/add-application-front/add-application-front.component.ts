@@ -18,6 +18,7 @@ export class AddApplicationFrontComponent implements OnInit{
     status: '',
     applied_at: ''
   };
+  selectedFile: File | null = null;
   showAlert = false;
   typeAlert = '';
   error='';
@@ -28,6 +29,16 @@ export class AddApplicationFrontComponent implements OnInit{
     private router:Router
   ) {}
 
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      this.selectedFile = file;
+    } else {
+      this.selectedFile = null;
+      alert('Please select a valid PDF file.');
+    }
+  }
 
   ngOnInit(): void {
     // Retrive the job offer ID from URL
@@ -51,10 +62,22 @@ export class AddApplicationFrontComponent implements OnInit{
   onSubmit() {
     this.showAlert = false;
     // Ensure application is valid before submission
-    if (this.application.job_offer_id && this.application.candidate_id && this.application.cv_file && 
+    if (this.application.job_offer_id && this.application.candidate_id && this.selectedFile && 
         this.application.status && this.application.applied_at) {
       
-      this.applicationService.createApplication(this.application).subscribe(
+
+      const formData = new FormData();
+      formData.append('application[job_offer_id]', this.application.job_offer_id);
+      formData.append('application[candidate_id]', this.application.candidate_id);
+      formData.append('application[status]', this.application.status);
+      formData.append('application[applied_at]', this.application.applied_at);
+      
+      // Append the file to FormData
+      if (this.selectedFile) {
+        formData.append('application[cv_file]', this.selectedFile, this.selectedFile.name);
+      }
+      
+      this.applicationService.createApplication(formData).subscribe(
         response => {
           console.log('Application added successfully:', response);
           this.typeAlert = 'success';
@@ -65,7 +88,7 @@ export class AddApplicationFrontComponent implements OnInit{
           console.error('Error adding application:', error);
           this.typeAlert = 'danger';
           this.showAlert = true;
-          this.error = "You already applied for this job !"
+          this.error = error.error?.error || "There was an error with your application. Please try again.";
         }
       );
     } else {
@@ -74,5 +97,9 @@ export class AddApplicationFrontComponent implements OnInit{
       this.error = "Please fill all required fields."
     }
   }
+
+
+  
+  
 
 }

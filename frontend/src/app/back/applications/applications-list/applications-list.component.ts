@@ -49,6 +49,27 @@ export class ApplicationsListComponent implements OnInit{
     }
   }
 
+
+  // Method to download the CV as PDF
+  downloadCv(id:number,candidate_name:string) {
+    this.applicationService.downloadPdf(id).subscribe(
+      (response) => {
+        // Create a link element to trigger the download
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+
+        // Replace spaces with underscores and sanitize the filename if needed
+        const safeName = candidate_name.trim().replace(/\s+/g, '_');
+        link.download = `cv_${safeName}_${id}_HRProjectWorkFlow_2025.pdf`; // Default download name
+        link.click();
+      },
+      (error) => {
+        console.error('Error downloading the file', error);
+      }
+    );
+  }
+
   setActionText(text: string) {
     this.actionText = text;
   }

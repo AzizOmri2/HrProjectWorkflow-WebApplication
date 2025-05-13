@@ -18,7 +18,13 @@
                         </tr>
                         <tr>
                             <th>Experience</th>
-                            <td>{{ offer.experience_level }}</td>
+                            <td [ngSwitch]="offer.experience_level">
+                                <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
+                                <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
+                                <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
+                                <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
                         </tr>
                         <tr>
                             <th>Deadline</th>
@@ -52,15 +58,16 @@
                         <thead>
                             <tr>
                                 <th>Candidate Name</th>
-                                <th>CV File</th>
                                 <th>Status</th>
                                 <th>Applied At</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let app of applications">
-                                <td>{{ app.candidate.name }}</td>
-                                <td>{{ app.cv_file || 'N/A' }}</td>
+                                <td>
+                                    <span class="label label-default">{{ app.candidate.name }}</span>
+                                </td>
                                 <td [ngSwitch]="app.status">
                                     <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
                                     <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
@@ -70,6 +77,9 @@
                                     <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                                 </td>
                                 <td>{{ app.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                                <td>
+                                    <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/applications/show', app.id]" title="Show Application's Details"><i class="fa fa-ellipsis-v"></i></button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

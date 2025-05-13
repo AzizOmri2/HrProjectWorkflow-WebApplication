@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  application: one
+  interview_date: 2025-05-12 17:37:36
+  interviewer: one
+  link: MyString
+  status: MyString
+  result: MyString
+  duration: 1
+  notes: MyString
+
+two:
+  application: two
+  interview_date: 2025-05-12 17:37:36
+  interviewer: two
+  link: MyString
+  status: MyString
+  result: MyString
+  duration: 1
+  notes: MyString

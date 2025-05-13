@@ -11,6 +11,7 @@ class OffersController < ApplicationController
 
   # GET /offers/:id
   def show
+    Offer.expire_old_offers
     render json: @offer
   end
 

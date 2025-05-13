@@ -33,16 +33,23 @@ export class ApplicationService {
 
   // Create a new application
   createApplication(application: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/applications`, { application });
+    return this.http.post<any>(`${this.apiUrl}/applications`, application );
   }
 
   // Update an existing application
   updateApplication(id: number, application: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/applications/${id}`, { application });
+    return this.http.patch<any>(`${this.apiUrl}/applications/${id}`, application );
   }
 
   // Delete an application by ID
   deleteApplication(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/applications/${id}`);
+  }
+
+  // Download PDF by ID Application
+  downloadPdf(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/applications/${id}/download_pdf`, {
+      responseType: 'blob',
+    });
   }
 }

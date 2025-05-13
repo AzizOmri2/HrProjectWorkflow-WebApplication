@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # Get All Users
   get 'users/list', to: 'user#index'
 
+  # Get All HR
+  get 'users/list/hr', to: 'user#hr_users'
+
   # Toggle active status (Ban or Unban)
   patch 'users/:id/toggle_active', to: 'user#toggle_active', as: 'toggle_user_active'
 
@@ -32,6 +35,13 @@ Rails.application.routes.draw do
   resources :applications
   get 'applications/by_candidate/:id', to: 'applications#by_candidate'
   get 'applications/by_offer/:id', to: 'applications#by_offer'
+  get 'applications/:id/download_pdf', to: 'applications#download_pdf', as: 'download_pdf'
+
+
+  # Interviews Full CRUD
+  resources :interviews
+  put 'interviews/:id/accept', to: 'interviews#validate_interview_accept'
+  put 'interviews/:id/reject', to: 'interviews#validate_interview_reject'
   
 
   root 'user#index'

@@ -23,7 +23,7 @@
                     </ul>
                 </div>
                 <br><br>
-                <table class="table">
+                <table class="table" *ngIf="offers.length > 0; else noOffers">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -41,7 +41,13 @@
                             <td>{{ offer.title }}</td>
                             <td>{{ offer.department }}</td>
                             <td>{{ offer.skills_required }}</td>
-                            <td>{{ offer.experience_level }}</td>
+                            <td [ngSwitch]="offer.experience_level">
+                                <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
+                                <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
+                                <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
+                                <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
                             <td>{{ offer.deadline }}</td>
                             <td [ngSwitch]="offer.status">
                                 <span *ngSwitchCase="'available'" class="label label-success">Available</span>
@@ -59,6 +65,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <ng-template #noOffers>
+                    <p style="margin-left:20px;" class="text-muted">No job offers to apply.</p>
+                    <br>
+                </ng-template>
             </div>    
         </div>
     </div>
