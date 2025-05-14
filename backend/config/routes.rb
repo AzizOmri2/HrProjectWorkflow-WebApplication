@@ -48,6 +48,11 @@ Rails.application.routes.draw do
   get 'users/:user_id/notifications/unread', to: 'notifications#unread'
   patch 'users/:user_id/notifications/mark-all-read' , to: 'notifications#mark_all_read'
   delete 'users/:user_id/notifications/:id', to: 'notifications#destroy'
+
+
+  # Interview_Feedbacks
+  resources :interview_feedbacks
+  get 'interview_feedbacks/:interview_id/interview_feedback', to: 'interview_feedbacks#get_feedbacks_by_interview_id'
   
 
   root 'user#index'

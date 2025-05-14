@@ -1,22 +1,6 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
-            <!-- Show alert when form is submitted successfully -->
-            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-check"></i> Interview Accepted Successfully!</h4>
-                    {{ error }}
-                </div>
-            </div>
-            <!-- Show alert when there is an error -->
-            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-ban"></i> Interview's Accept Failed!</h4>
-                    {{ error }}
-                </div>
-            </div>
             <div style="background-color:#fff;">
                 <table class="table">
                     <tbody>
@@ -75,22 +59,26 @@
                         <tr>
                             <th>Final Decision</th>
                             <td>
-                                <a style="width:30px;" class="btn btn-block btn-success btn-sm" (click)="onValidateInterviewAccept(interview.id)" title="Accept Interview"><i class="fa fa-check"></i></a>
+                                <button style="width:30px;" class="btn btn-block btn-success btn-sm" [disabled]="interview.status=='Finished' && interview.result=='Accepted'" (click)="onValidateInterviewAccept(interview.id)" title="Accept Interview"><i class="fa fa-check"></i></button>
                                 &nbsp;
-                                <a style="margin-left:40px;margin-top:-50px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="onValidateInterviewReject(interview.id)" title="Reject Interview"><i class="fa fa-ban"></i></a>
+                                <button style="margin-left:40px;margin-top:-50px;width:30px;" class="btn btn-block btn-danger btn-sm" [disabled]="interview.status=='Finished' && interview.result=='Rejected'" (click)="onValidateInterviewReject(interview.id)" title="Reject Interview"><i class="fa fa-ban"></i></button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <!-- Hr/Admin Add Comments or Notes Section -->
-                <div style="padding: 40px;">
+                <div style="padding: 25px;">
                     <h4>
-                        <i class="fa fa-info"></i> Hrs and Admins can collaborate to facilitate the Final Decision.
+                        <i class="fa fa-info"></i> HR and Admins can collaborate to facilitate the final decision.
                     </h4>
-                    <form style="margin-top:30px;margin-left:100px;width:850px;" #addForm="ngForm">
-                        <textarea type="text" class="form-control" id="notes" name="notes" [(ngModel)]="interview.notes" #notesCtrl="ngModel" placeholder="Notes"></textarea>
-                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                    <form style="margin-top:30px;margin-left:100px;width:950px;" (ngSubmit)="submitFeedback()" #addForm="ngForm">
+                        <div class="form-group">
+                            <textarea class="form-control" id="feedback" [(ngModel)]="feedback" name="feedback" rows="3" placeholder="Feedback" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" id="rating" [(ngModel)]="rating" name="rating" min="1" max="5" required>
+                        </div>
                         <div class="box-footer">
                             <button type="submit" class="btn btn-primary" title="Add Comment">Add Comment</button>
                         </div>
@@ -100,28 +88,33 @@
                 <!-- Comments Section -->
                 <div style="padding: 20px;">
                     <h4>Notes or Comments for this Interview</h4>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" *ngIf="interviewfeedbacks.length > 0; else noInterviewFeedbacks">
                         <thead>
                             <tr>
                                 <th>Hr/Admin's Name</th>
+                                <th>Rating</th>
                                 <th>Comment Text</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr *ngFor="let feedback of interviewfeedbacks">
                                 <td>
-                                    <span class="label label-default"></span>
+                                    <span class="label label-default">{{ feedback.username }}</span>
                                 </td>
+                                <td>{{ feedback.rating }} <i class="fa fa-star"></i></td>
+                                <td>{{ feedback.feedback }} </td>
                                 <td>
-
+                                    <button class="btn btn-danger btn-sm" (click)="deleteFeedback(feedback.id)" title="Delete your comment" [disabled]="feedback.user_id!=userId">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
         
-                    <ng-template #noApplications>
-                        <p class="text-muted">No applications for this job offer.</p>
+                    <ng-template #noInterviewFeedbacks>
+                        <p class="text-muted">No Feedbacks for this interview yet.</p>
                     </ng-template>
                 </div>
 

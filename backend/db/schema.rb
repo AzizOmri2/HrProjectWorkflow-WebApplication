@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_14_121108) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_14_153846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_121108) do
     t.datetime "updated_at", null: false
     t.index ["candidate_id"], name: "index_applications_on_candidate_id"
     t.index ["job_offer_id"], name: "index_applications_on_job_offer_id"
+  end
+
+  create_table "interview_feedbacks", force: :cascade do |t|
+    t.bigint "interview_id", null: false
+    t.bigint "user_id", null: false
+    t.text "feedback"
+    t.integer "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["interview_id"], name: "index_interview_feedbacks_on_interview_id"
+    t.index ["user_id"], name: "index_interview_feedbacks_on_user_id"
   end
 
   create_table "interviews", force: :cascade do |t|
@@ -86,6 +97,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_121108) do
 
   add_foreign_key "applications", "offers", column: "job_offer_id"
   add_foreign_key "applications", "users", column: "candidate_id"
+  add_foreign_key "interview_feedbacks", "interviews"
+  add_foreign_key "interview_feedbacks", "users"
   add_foreign_key "interviews", "applications"
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "notifications", "users"

@@ -30,7 +30,6 @@
                             <th>Status</th>
                             <th>Result</th>
                             <th>Duration</th>
-                            <th>Notes</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -63,7 +62,6 @@
                                 <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                             </td>
                             <td>{{ interview.duration }} min</td>
-                            <td>{{ interview.notes }}</td>
                             <td>
                                 <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/interviews/show', interview.id]" title="Show Interview's Details"><i class="fa fa-ellipsis-v"></i></button>
                                 &nbsp;
