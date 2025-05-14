@@ -42,6 +42,12 @@ Rails.application.routes.draw do
   resources :interviews
   put 'interviews/:id/accept', to: 'interviews#validate_interview_accept'
   put 'interviews/:id/reject', to: 'interviews#validate_interview_reject'
+
+  # Notifications
+  get 'users/:user_id/notifications', to: 'notifications#index'
+  get 'users/:user_id/notifications/unread', to: 'notifications#unread'
+  patch 'users/:user_id/notifications/mark-all-read' , to: 'notifications#mark_all_read'
+  delete 'users/:user_id/notifications/:id', to: 'notifications#destroy'
   
 
   root 'user#index'

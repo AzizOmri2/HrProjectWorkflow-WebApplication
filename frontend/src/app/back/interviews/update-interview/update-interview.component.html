@@ -117,7 +117,12 @@
                             <i class="fa fa-bell-o"></i>
                             Result is required
                         </label>
-                        <input type="text" class="form-control" id="result" name="result" [(ngModel)]="interview.result" #resultCtrl="ngModel" required placeholder="Result"/>
+                        <select class="form-control" id="result" name="result" [(ngModel)]="interview.result" #resultCtrl="ngModel" required>
+                            <option value="" disabled selected>Select result</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
                         <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                     </div>
 
@@ -137,7 +142,7 @@
 
                     <!-- Notes Field -->
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" id="notes" name="notes" [(ngModel)]="interview.notes" #notesCtrl="ngModel" placeholder="Notes"/>
+                        <textarea type="text" class="form-control" id="notes" name="notes" [(ngModel)]="interview.notes" #notesCtrl="ngModel" placeholder="Notes"></textarea>
                         <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                     </div>
                 </div>

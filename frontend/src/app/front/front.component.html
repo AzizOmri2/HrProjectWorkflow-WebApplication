@@ -58,13 +58,46 @@
                     <a routerLink="/front/update-profile" routerLinkActive="active" class="nav-item nav-link">Account Management</a>
                 </div>
                 <div class="navbar-nav">
-                    <div style="margin-right:5px;" class="nav-item nav-link">
-                        <img style="width:25px;height:25px;" [src]="image" class="img-circle" alt="User Image" />
-                        <h5 style="margin-left:30px;margin-top:-15px;">
-                            <a style="color:black;">
-                                <b>{{ userName }}</b>
-                            </a>
-                        </h5>
+                    <!-- Notification Bell -->
+                    <div class="nav-item nav-link position-relative mr-3" style="cursor: pointer;" (click)="openNotifications()">
+                        <i class="fas fa-bell fa-lg text-primary"></i>
+                        <span *ngIf="notificationCount > 0" class="badge badge-danger position-absolute" style="top: 20px; right: 3px; font-size: 8px;">
+                            {{ notificationCount }}
+                        </span>
+                    </div>
+                    <!-- Notification Modal -->
+                    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
+                                    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div *ngIf="notifications.length > 0; else noNotifications">
+                                        <ul class="list-group">
+                                            <li *ngFor="let notif of notifications" class="list-group-item d-flex align-items-start justify-content-between">
+                                                <span>{{ notif.message }}</span>
+                                                <a (click)="deleteNotification(notif.id)" class="text-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <ng-template #noNotifications>
+                                        <p>No notifications available.</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Profile -->
+                    <div class="d-flex align-items-center nav-item nav-link">
+                        <img [src]="image" class="rounded-circle mr-2" width="33" height="33" alt="User" />
+                        <span><strong>{{ userName }}</strong></span>
                     </div>
                 </div>
                 <a style="margin-top:5px;margin-right:50px;" (click)="logout()" class="btn btn-primary py-2 px-4 d-none d-lg-block">Sign Out</a>

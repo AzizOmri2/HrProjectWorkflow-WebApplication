@@ -41,6 +41,17 @@ class InterviewsController < ApplicationController
   def create
     @interview = Interview.new(interview_params)
     if @interview.save
+      # Update the application's status to "Interviewed"
+      @interview.application.update(status: "Interviewed")
+
+      # Send notification to candidate
+      Notification.create!(
+        user: @interview.application.candidate,
+        title: "New Interview Scheduled",
+        message: "You have a new interview scheduled for the job '#{@interview.application.job_offer.title}' on #{@interview.interview_date}.",
+        read: false
+      )
+
       render json: @interview, status: :created
     else
       render json: @interview.errors, status: :unprocessable_entity
@@ -49,7 +60,20 @@ class InterviewsController < ApplicationController
 
   # PATCH/PUT /interviews/:id
   def update
+    # Store the old date before the update
+    old_date = @interview.interview_date
+    
     if @interview.update(interview_params)
+      # Notify only if interview date changed
+      if @interview.interview_date != old_date
+        Notification.create!(
+          user: @interview.application.candidate,
+          title: "Interview Rescheduled",
+          message: "Your interview for the job '#{@interview.application.job_offer.title}' has been rescheduled to #{@interview.interview_date}.",
+          read: false
+        )
+      end
+
       render json: @interview
     else
       render json: @interview.errors, status: :unprocessable_entity
@@ -58,7 +82,18 @@ class InterviewsController < ApplicationController
 
   # DELETE /interviews/:id
   def destroy
+    candidate = @interview.application.candidate
+    job_title = @interview.application.job_offer.title
+
     @interview.destroy
+
+    Notification.create!(
+      user: candidate,
+      title: "Interview Cancelled",
+      message: "Your interview for the job '#{job_title}' has been cancelled.",
+      read: false
+    )
+
     head :no_content
   end
 
@@ -67,10 +102,18 @@ class InterviewsController < ApplicationController
   def validate_interview_accept
     @interview = Interview.find(params[:id])
     application = @interview.application
+    candidate = application.candidate
 
     ActiveRecord::Base.transaction do
       @interview.update!(status: "Finished", result: "Accepted")
       application.update!(status: "Accepted")
+
+      Notification.create!(
+        user: candidate,
+        title: "Interview Accepted",
+        message: "Congratulations! Your interview for the job '#{application.job_offer.title}' has been accepted.",
+        read: false
+      )
     end
 
     render json: {
@@ -89,10 +132,18 @@ class InterviewsController < ApplicationController
   def validate_interview_reject
     @interview = Interview.find(params[:id])
     application = @interview.application
+    candidate = application.candidate
 
     ActiveRecord::Base.transaction do
       @interview.update!(status: "Finished", result: "Rejected")
       application.update!(status: "Rejected")
+
+      Notification.create!(
+        user: candidate,
+        title: "Interview Rejected",
+        message: "Unfortunately, your interview for the job '#{application.job_offer.title}' has been rejected.",
+        read: false
+      )
     end
 
     render json: {

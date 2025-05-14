@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
-import { FlashMessageService } from '../flash-message.service';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
+import { NotificationService } from '../services/notification.service';
+
+declare var window: any;
 
 @Component({
   selector: 'app-front',
@@ -16,36 +18,104 @@ export class FrontComponent implements OnInit{
   pageTitle = 'Home';
   breadcrumb = 'Home';
 
+  userId: number = 0;
   isLoggedIn: boolean = true;
-    userName: string = '';
-    createdAt: string = '';
-    role: string = '';
-    image: string = '';
-    flashMessage: { type: string | null, text: string | null } = { type: null, text: null };
+  userName: string = '';
+  createdAt: string = '';
+  role: string = '';
+  image: string = '';
   
-    constructor(
-      private authService: AuthService, 
-      private router: Router, 
-      private activatedRoute: ActivatedRoute,
-      private flashMessageService: FlashMessageService
-    ) {}
+  constructor(
+    private renderer: Renderer2,
+    private el: ElementRef,
+    private authService: AuthService, 
+    private notificationService: NotificationService,
+    private router: Router, 
+    private activatedRoute: ActivatedRoute
+  ) {}
+
+
+    notifications:any;
+    notificationCount: number = 0;
+
+
+    openNotifications() {
+      // Using Renderer2 to add 'show' class to modal (similar to Bootstrap 'modal' behavior)
+      const modal = this.el.nativeElement.querySelector('#notificationModal');
+      this.renderer.addClass(modal, 'show');
+      this.renderer.setStyle(modal, 'display', 'block');
+      this.renderer.setStyle(modal, 'overflow', 'auto');
+
+      const idStr = localStorage.getItem('user_id');
+      this.userId = idStr ? +idStr : 0;
+
+      if (this.userId !== 0) {
+        this.notificationService.markAllAsReadForUser(this.userId).subscribe({
+          next: () => {
+            // Refresh notifications after marking as read
+            this.notificationService.getAllNotificationsForUserId(this.userId).subscribe({
+              next: (notifications) => {
+                this.notifications = notifications;
+                this.notificationCount = 0;
+              }
+            });
+          },
+          error: (err) => {
+            console.error('Failed to mark notifications as read:', err);
+          }
+        });
+      }
+    }
+
+    closeModal() {
+      const modal = this.el.nativeElement.querySelector('#notificationModal');
+      this.renderer.removeClass(modal, 'show');
+      this.renderer.setStyle(modal, 'display', 'none');
+      this.renderer.setStyle(modal, 'overflow', 'hidden');
+    }
   
     
   
     ngOnInit(): void {
-      this.flashMessage = this.flashMessageService.getMessage() || { type: null, text: null };
+      const storedId = localStorage.getItem('user_id');
       const storedName = localStorage.getItem('user_name');
       const storedDate = localStorage.getItem('created_at');
       const storedRole = localStorage.getItem('user_role');
       const storedImage = localStorage.getItem('user_image');
-      if (storedName && storedDate && storedRole) {
+      if (storedName && storedDate && storedRole && storedId) {
         this.userName = storedName;
+        
+        //ID
+        const idStr = localStorage.getItem('user_id');
+        const id = idStr ? +idStr : null; // Convert to number
+        if (id !== null) {
+          // Notifications
+          this.notificationService.getUnreadNotificationsForUserId(id).subscribe({
+            next: (notifications) => {
+              this.notifications = notifications;
+              this.notificationCount = notifications.length;
+            },
+            error: (err) => {
+              console.error('Error fetching unread notifications:', err);
+              this.notifications = [];
+              this.notificationCount = 0;
+            }
+          });
+        }
+
+        //Date
         const date = new Date(storedDate);
         const day = ('0' + date.getDate()).slice(-2);
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const year = date.getFullYear();
+
+        //Created At
         this.createdAt = `${day}-${month}-${year}`;
+
+        //Role
         this.role = storedRole;
+
+        //Image
         if(storedImage == 'null' || storedImage == ''){
           this.image = 'uploads/default.jpg';
         } else{
@@ -62,6 +132,8 @@ export class FrontComponent implements OnInit{
         .subscribe(() => {
           this.updatePageTitle(this.activatedRoute);
         });
+
+      
     }
 
 
@@ -75,6 +147,26 @@ export class FrontComponent implements OnInit{
       this.pageTitle = data['title'] || 'Home';
       this.breadcrumb = data['breadcrumb'] || 'Home';
     }
+
+
+  // Method to handle deletion of a notification
+  deleteNotification(notificationId: number): void {
+    if (this.userId === 0) {
+      console.error('User ID not available. Cannot delete notification.');
+      return;
+    }
+
+    // Call the delete API in your service
+    this.notificationService.deleteNotification(notificationId, this.userId).subscribe(
+      () => {
+        // Remove the deleted notification from the list
+        this.notifications = this.notifications.filter((notif: any) => notif.id !== notificationId);
+      },
+      (error) => {
+        console.error('Error deleting notification:', error);
+      }
+    );
+  }
   
     logout() {
       this.authService.logout().subscribe(
@@ -86,7 +178,6 @@ export class FrontComponent implements OnInit{
           localStorage.removeItem('created_at');
           localStorage.removeItem('user_role');
           localStorage.removeItem('user_image');
-          localStorage.removeItem('modal_message');
           this.isLoggedIn = false;
           window.location.href = '/login'; // Redirect to login page after logout
         },

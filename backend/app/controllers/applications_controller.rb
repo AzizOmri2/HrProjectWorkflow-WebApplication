@@ -37,8 +37,9 @@ class ApplicationsController < ApplicationController
       if params[:application][:cv_file].present?
         uploaded_cv = params[:application][:cv_file]
 
-        # Rename the file to "cv{id}_2025.pdf"
-        new_filename = "Cv_#{application.candidate.name}_#{application.candidate_id}.pdf"
+        # Rename the file to "Cv_JohnDoe_5_20250514113500.pdf"
+        timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+        new_filename = "Cv_#{application.candidate.name}_#{application.candidate_id}_#{timestamp}.pdf"
 
         # Save the file to the frontend/public/cv_resources directory
         cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)
@@ -72,7 +73,8 @@ class ApplicationsController < ApplicationController
   
         # Build new filename using candidate info
         candidate = @application.candidate
-        new_filename = "Cv_#{candidate.name}_#{candidate.id}.pdf"
+        timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+        new_filename = "Cv_#{candidate.name}_#{candidate.id}_#{timestamp}.pdf"
   
         # Save the file to the frontend/public/cv_resources directory
         cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)

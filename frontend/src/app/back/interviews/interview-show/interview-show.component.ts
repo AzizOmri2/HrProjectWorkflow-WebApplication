@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InterviewService } from '../../../services/interview.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-interview-show',
-  imports: [RouterModule,CommonModule],
+  imports: [RouterModule,CommonModule,FormsModule],
   templateUrl: './interview-show.component.html',
   styleUrl: './interview-show.component.css'
 })

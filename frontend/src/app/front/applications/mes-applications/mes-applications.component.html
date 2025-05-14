@@ -22,7 +22,7 @@
                 <h5 class="mb-3">{{ application.job_offer.title }}</h5> 
                 <p class="mb-2" [ngSwitch]="application.status">
                     <b>Status : </b>
-                    <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
+                    <span *ngSwitchCase="'Interviewed'" class="label label-info">Interviewed</span>
                     <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
                     <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
                     <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>

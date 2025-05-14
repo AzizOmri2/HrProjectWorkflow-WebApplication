@@ -1,6 +1,7 @@
 class Application < ApplicationRecord
   belongs_to :job_offer, class_name: 'Offer'
   belongs_to :candidate, class_name: 'User'
+  has_one :interview, dependent: :destroy
 
   validate :cv_file_must_be_pdf
 

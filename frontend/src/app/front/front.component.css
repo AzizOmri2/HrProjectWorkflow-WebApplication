@@ -1,0 +1,9 @@
+.modal {
+  display: none; /* Initially hidden */
+}
+
+.modal.show {
+  display: block; /* When 'show' class is added, the modal is displayed */
+  opacity: 1;
+  transition: opacity 0.15s linear;
+}

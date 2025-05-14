@@ -73,7 +73,7 @@
                             <td>{{ interview.notes }}</td>
                         </tr>
                         <tr>
-                            <th>Decision</th>
+                            <th>Final Decision</th>
                             <td>
                                 <a style="width:30px;" class="btn btn-block btn-success btn-sm" (click)="onValidateInterviewAccept(interview.id)" title="Accept Interview"><i class="fa fa-check"></i></a>
                                 &nbsp;
@@ -82,6 +82,50 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Hr/Admin Add Comments or Notes Section -->
+                <div style="padding: 40px;">
+                    <h4>
+                        <i class="fa fa-info"></i> Hrs and Admins can collaborate to facilitate the Final Decision.
+                    </h4>
+                    <form style="margin-top:30px;margin-left:100px;width:850px;" #addForm="ngForm">
+                        <textarea type="text" class="form-control" id="notes" name="notes" [(ngModel)]="interview.notes" #notesCtrl="ngModel" placeholder="Notes"></textarea>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary" title="Add Comment">Add Comment</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Comments Section -->
+                <div style="padding: 20px;">
+                    <h4>Notes or Comments for this Interview</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Hr/Admin's Name</th>
+                                <th>Comment Text</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="label label-default"></span>
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+        
+                    <ng-template #noApplications>
+                        <p class="text-muted">No applications for this job offer.</p>
+                    </ng-template>
+                </div>
+
+
                 <div style="background-color:#fff;" align="center">
                     <br>
                     <button style="width:100px;" class="btn btn-block btn-info btn-sm">

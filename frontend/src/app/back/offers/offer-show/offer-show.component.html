@@ -69,7 +69,7 @@
                                     <span class="label label-default">{{ app.candidate.name }}</span>
                                 </td>
                                 <td [ngSwitch]="app.status">
-                                    <span *ngSwitchCase="'Shortlisted'" class="label label-info">Shortlisted</span>
+                                    <span *ngSwitchCase="'Interviewed'" class="label label-info">Interviewed</span>
                                     <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
                                     <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
                                     <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>

@@ -56,7 +56,12 @@
                                 <span *ngSwitchCase="'Canceled'" class="label label-danger">Canceled</span>
                                 <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                             </td>
-                            <td>{{ interview.result }}</td>
+                            <td [ngSwitch]="interview.result">
+                                <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                                <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                                <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                            </td>
                             <td>{{ interview.duration }} min</td>
                             <td>{{ interview.notes }}</td>
                             <td>
