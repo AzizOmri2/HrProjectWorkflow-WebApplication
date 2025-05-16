@@ -1,5 +1,5 @@
 class ApplicationsController < ApplicationController
-  before_action :set_application, only: [:show, :update, :destroy]
+  before_action :set_application, only: [:show, :update, :destroy, :withdraw]
 
   # GET /applications
   def index
@@ -52,6 +52,11 @@ class ApplicationsController < ApplicationController
       end
 
       if application.save
+        # Notify HR
+        offer_title = application.job_offer.title rescue "a job offer"
+        candidate_name = application.candidate.name rescue "a candidate"
+        notify_hr(application, "New Application Received", "#{candidate_name} has applied for '#{offer_title}'.")
+
         render json: application.as_json(include: {
           job_offer: { only: [:title] },
           candidate: { only: [:name] }
@@ -112,6 +117,16 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  # PUT /applications/:id/withdraw
+  def withdraw
+    if @application.update(status: 'Withdrawn')
+      notify_hr(@application, "Application Withdrawn", "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'.")
+      render json: @application, status: :ok
+    else
+      render json: { errors: @application.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   # GET /applications/by_candidate/:id
   def by_candidate
     applications = Application.includes(:job_offer, :candidate).where(candidate_id: params[:id])
@@ -154,6 +169,20 @@ class ApplicationsController < ApplicationController
     @application = Application.includes(:job_offer, :candidate).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Application not found' }, status: :not_found
+  end
+
+  def notify_hr(application, title, message)
+    # Fetch all users with HR role
+    hr_users = User.where(role: 1)
+    
+    hr_users.each do |hr|
+      Notification.create!(
+        user: hr,
+        title: title,
+        message: message,
+        read: false
+      )
+    end
   end
 
   def application_params

@@ -108,8 +108,8 @@ export class InterviewShowComponent implements OnInit{
       this.interviewFeedbackService.createInterviewFeedbacks(feedbackData).subscribe(
         (response) => {
           console.log('Feedback submitted successfully', response);
-          // Optionally, reset the form and reload the page
-          this.ngOnInit();
+          // Optionally, reset the form and append the new feedback to the list
+          this.interviewfeedbacks.push(response);
           this.feedback = '';
           this.rating = 0;
         },

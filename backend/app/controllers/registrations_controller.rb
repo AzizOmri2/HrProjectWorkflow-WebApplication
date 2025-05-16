@@ -21,9 +21,24 @@ class RegistrationsController < Devise::RegistrationsController
   def respond_with(resource, _opts = {})
     Rails.logger.debug "User errors: #{resource.errors.full_messages}"
     if resource.persisted?
+      notify_admins_of_new_user(resource)
       render json: { message: 'Signed up successfully.', user: resource }, status: :ok
     else
       render json: { message: 'Sign up failed.', errors: resource.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+
+  def notify_admins_of_new_user(new_user)
+    admins = User.where(role: 0) # Adjust this if your role value is different
+
+    admins.each do |admin|
+      Notification.create!(
+        user: admin,
+        title: 'New User Registered',
+        message: "A new user named #{new_user.name} (#{new_user.email}) has just registered.",
+        read: false
+      )
     end
   end
 

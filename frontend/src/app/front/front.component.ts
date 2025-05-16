@@ -77,12 +77,11 @@ export class FrontComponent implements OnInit{
     
   
     ngOnInit(): void {
-      const storedId = localStorage.getItem('user_id');
       const storedName = localStorage.getItem('user_name');
       const storedDate = localStorage.getItem('created_at');
       const storedRole = localStorage.getItem('user_role');
       const storedImage = localStorage.getItem('user_image');
-      if (storedName && storedDate && storedRole && storedId) {
+      if (storedName && storedDate && storedRole) {
         this.userName = storedName;
         
         //ID

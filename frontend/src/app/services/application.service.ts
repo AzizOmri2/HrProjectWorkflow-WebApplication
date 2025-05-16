@@ -46,6 +46,11 @@ export class ApplicationService {
     return this.http.delete<void>(`${this.apiUrl}/applications/${id}`);
   }
 
+  // Withdraw Application
+  withdrawApplication(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/applications/${id}/withdraw`, { status: 'Withdrawn' });
+  }
+
   // Download PDF by ID Application
   downloadPdf(id: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/applications/${id}/download_pdf`, {

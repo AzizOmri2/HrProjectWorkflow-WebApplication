@@ -49,7 +49,7 @@ export class MesApplicationsComponent implements OnInit{
     if (!confirmed) {
       return; // User canceled
     }
-    this.applicationService.updateApplication(applicationId, { status: 'Withdrawn' }).subscribe(
+    this.applicationService.withdrawApplication(applicationId).subscribe(
       response => {
         console.log('Application withdrawn:', response);
         // Refresh the list after update

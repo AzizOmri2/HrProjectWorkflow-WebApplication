@@ -27,8 +27,12 @@ class UserController < ApplicationController
         if params[:user][:image].present?
           uploaded_image = params[:user][:image] # Get the uploaded file
       
+          timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+          extension = File.extname(uploaded_image.original_filename)
+          new_image_name = "Image_#{@user.name}_#{@user.id}_#{timestamp}#{extension}"
+
           # Define the path relative to the Angular frontend's public/uploads directory
-          frontend_upload_path = Rails.root.join('..', 'frontend', 'public', 'uploads', uploaded_image.original_filename)
+          frontend_upload_path = Rails.root.join('..', 'frontend', 'public', 'uploads', new_image_name)
       
           # Save the uploaded file to the frontend/public/uploads directory
           File.open(frontend_upload_path, 'wb') do |file|
@@ -36,7 +40,7 @@ class UserController < ApplicationController
           end
       
           # Store the relative path to the image in the database (e.g., "uploads/filename.png")
-          @user.image = "uploads/#{uploaded_image.original_filename}"
+          @user.image = "uploads/#{new_image_name}"
         end
       
         # Update the user record with the new or existing image path
@@ -61,8 +65,23 @@ class UserController < ApplicationController
 
     def destroy
       @user = User.find_by(id: params[:id])
+      # Store Image file path before destroying
+      image_file_path = Rails.root.join('..', 'frontend', 'public', @user.image) if @user.image.present?
+
       if @user
+        # Save user info before deletion for the notification
+        deleted_user_name = @user.name
+        deleted_user_email = @user.email
+
         @user.destroy
+        # Delete the Image file if it exists
+        if image_file_path && File.exist?(image_file_path)
+          File.delete(image_file_path)
+        end
+
+        # Notify all admins about the deleted user account
+        notify_admins_of_deletion(deleted_user_name, deleted_user_email)
+
         render json: { message: 'User deleted successfully' }, status: :ok
       else
         render json: { error: 'User not found' }, status: :not_found
@@ -81,6 +100,18 @@ class UserController < ApplicationController
     end
 
     private
+
+    def notify_admins_of_deletion(name, email)
+      admin_users = User.where(role: 0)  # Adjust role value according to your app's conventions
+      admin_users.each do |admin|
+        Notification.create!(
+          user: admin,
+          title: 'User Account Deleted',
+          message: "User #{name} (#{email}) has deleted their account.",
+          read: false
+        )
+      end
+    end
 
     def user_params
         params.require(:user).permit(:name, :email, :password, :password_confirmation)

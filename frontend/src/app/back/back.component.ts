@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/ro
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
+import { NotificationService } from '../services/notification.service';
 
 
 
@@ -24,13 +25,19 @@ export class BackComponent implements OnInit{
 
   pageTitle = 'Dashboard';
   breadcrumb = 'Dashboard';
+  notifications: any;
+  unreadCount = 0;
+  userId: number = 0;
+  
 
   constructor(
     private authService: AuthService, 
     private router: Router, 
     private activatedRoute: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private notificationService: NotificationService
   ) {}
+
 
   
 
@@ -51,17 +58,46 @@ export class BackComponent implements OnInit{
     const storedRole = localStorage.getItem('user_role');
     const storedImage = localStorage.getItem('user_image');
     if (storedName && storedDate && storedRole) {
+      // Get THE Username
       this.userName = storedName;
+
+      // Get THE Creation Date (Member since ...)
       const date = new Date(storedDate);
       const day = ('0' + date.getDate()).slice(-2);
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
       const year = date.getFullYear();
       this.createdAt = `${day}-${month}-${year}`;
-      this.role = storedRole;
+
+      // Get THE Role
+      if(storedRole === 'rh'){
+        this.role = 'HR'
+      }else{
+        this.role = storedRole;
+      }
+      
+      // Get THE Image
       if(storedImage == 'null' || storedImage == '' || storedImage == 'defined'){
         this.image = 'uploads/default.jpg';
       } else{
         this.image = storedImage || '';
+      }
+
+      // Get THE ID
+      const idStr = localStorage.getItem('user_id');
+      this.userId = idStr ? +idStr : 0; // Convert to number
+      if (this.userId !== null) {
+        // Notifications
+        this.notificationService.getUnreadNotificationsForUserId(this.userId).subscribe({
+          next: (notifications) => {
+            this.notifications = notifications;
+            this.unreadCount = notifications.length;
+          },
+          error: (err) => {
+            console.error('Error fetching unread notifications:', err);
+            this.notifications = [];
+            this.unreadCount = 0;
+          }
+        });
       }
     }
     
@@ -85,6 +121,46 @@ export class BackComponent implements OnInit{
     const data = child.snapshot.data;
     this.pageTitle = data['title'] || 'Dashboard';
     this.breadcrumb = data['breadcrumb'] || 'Dashboard';
+  }
+
+
+  markAllAsRead(){
+    if (this.userId !== 0) {
+      this.notificationService.markAllAsReadForUser(this.userId).subscribe({
+        next: () => {
+          // Refresh notifications after marking as read
+          this.notificationService.getAllNotificationsForUserId(this.userId).subscribe({
+            next: (notifications) => {
+              this.notifications = notifications;
+              this.unreadCount = 0;
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Failed to mark notifications as read:', err);
+        }
+      });
+    }
+  }
+
+
+  // Method to handle deletion of a notification
+  deleteNotification(notificationId: number): void {
+    if (this.userId === 0) {
+      console.error('User ID not available. Cannot delete notification.');
+      return;
+    }
+
+    // Call the delete API in your service
+    this.notificationService.deleteNotification(notificationId, this.userId).subscribe(
+      () => {
+        // Remove the deleted notification from the list
+        this.notifications = this.notifications.filter((notif: any) => notif.id !== notificationId);
+      },
+      (error) => {
+        console.error('Error deleting notification:', error);
+      }
+    );
   }
 
   logout() {

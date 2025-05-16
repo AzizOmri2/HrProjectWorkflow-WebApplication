@@ -79,46 +79,31 @@
                 </ul>
               </li>
               <!-- Notifications: style can be found in dropdown.less -->
-              <li class="dropdown notifications-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
+              <li class="dropdown notifications-menu" *ngIf="notifications">
+                  <a class="dropdown-toggle" data-toggle="dropdown" (click)="markAllAsRead()">
+                      <i class="fa fa-bell-o"></i>
+                      <span class="label label-warning" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li class="header">You have {{ notifications.length }} notifications</li>
                       <li>
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
+                          <!-- inner menu: contains the actual data -->
+                          <ul class="menu">
+                              <li *ngFor="let notif of notifications">
+                                  <a>
+                                      <div style="white-space: normal; position: relative; padding-right: 30px;">
+                                          <h6>{{ notif.message }}</h6>
+                                          <small><i class="fa fa-clock-o"> <b> {{ notif.created_at | date:'short' }}</b></i></small>
+                                          <a (click)="deleteNotification(notif.id)" title="Delete Notification"
+                                              style="position: absolute; right: 10px; color: red; cursor: pointer;">
+                                              <i class="fa fa-trash"></i>
+                                          </a>
+                                      </div>
+                                  </a>
+                              </li>
+                          </ul>
                       </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the page and may cause design problems
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-users text-red"></i> 5 new members joined
-                        </a>
-                      </li>
-
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i class="fa fa-user text-red"></i> You changed your username
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
+                  </ul>
               </li>
               <!-- Tasks: style can be found in dropdown.less -->
               <li class="dropdown tasks-menu">
@@ -323,12 +308,11 @@
 
         <!-- Main content -->
         <section class="content">
-          
             <div class="box-body" *ngIf="showAlert">
                 <div class="alert alert-success alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   <h4>	<i class="icon fa fa-check"></i> Welcome Back !</h4>
-                  Mr {{ userName }}, you're a{{ role === 'admin' ? 'n ADMIN' : role === 'rh' ? ' HR' : ' CANDIDATE' }} and your account was created on {{ createdAt }}
+                  Mr {{ userName }}, you're a{{ role === 'admin' ? 'n ADMIN' : ' HR' }} and your account was created on {{ createdAt }}
                 </div>
             </div>
             <router-outlet></router-outlet>            
