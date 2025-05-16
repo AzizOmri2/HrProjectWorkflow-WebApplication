@@ -79,6 +79,7 @@
                                     <div *ngIf="notifications.length > 0; else noNotifications">
                                         <ul class="list-group">
                                             <li *ngFor="let notif of notifications" class="list-group-item d-flex align-items-start justify-content-between">
+                                                <h6>{{ notif.title }}</h6>
                                                 <span>{{ notif.message }}</span>
                                                 <a (click)="deleteNotification(notif.id)" class="text-danger">
                                                     <i class="fa fa-trash"></i>

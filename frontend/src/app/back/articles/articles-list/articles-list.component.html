@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-warning">
+            <div style="background-color:#fff;">
+                <br>
+                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
+                <button [routerLink]="['/back/articles/add-article']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Article">
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Article
+                </button>
+                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
+                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a (click)="setActionText('Sort By')">Default</a></li>
+                        <li class="divider"></li>
+                        <li><a (click)="setActionText('Title')">Title</a></li>
+                        <li><a (click)="setActionText('Content')">Content</a></li>
+                        <li><a (click)="setActionText('Author')">Author</a></li>
+                        <li><a (click)="setActionText('NB Likes')">NB Likes</a></li>
+                    </ul>
+                </div>
+                <br><br>
+                <table class="table" *ngIf="articles.length > 0; else noArticles">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Author</th>
+                            <th>NB Likes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let article of articles | filter:searchText">
+                            <td>{{ article.title }}</td>
+                            <td>{{ article.content }}</td>
+                            <td>
+                                <span class="label label-default">{{ article.author.name }}</span>
+                            </td>
+                            <td>
+                                <span class="label label-danger">{{ article.nb_likes }} &nbsp;<i class="fa fa-heart"></i></span>
+                            </td>
+                            <td>
+                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/articles/show', article.id]" title="Show Article's Details"><i class="fa fa-ellipsis-v"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/articles/update-article', article.id]" title="Update Article"><i class="fa fa-edit"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteArticle(article.id)" title="Delete Article"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #noArticles>
+                    <p style="margin-left:20px;" class="text-muted">No articles to show.</p>
+                    <br>
+                </ng-template>
+            </div>    
+        </div>
+    </div>
+</div>
+        

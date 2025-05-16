@@ -58,7 +58,7 @@ export class InterviewShowComponent implements OnInit{
 
       this.interviewFeedbackService.getInterviewFeedbacksByIdInterview(this.interviewId).subscribe({
         next: data => {
-          this.interviewfeedbacks = data as any[];
+          this.interviewfeedbacks = data;
         },
         error: err => {
           console.error('Error fetching feedbacks for this interview', err);
@@ -109,7 +109,7 @@ export class InterviewShowComponent implements OnInit{
         (response) => {
           console.log('Feedback submitted successfully', response);
           // Optionally, reset the form and append the new feedback to the list
-          this.interviewfeedbacks.push(response);
+          this.ngOnInit();
           this.feedback = '';
           this.rating = 0;
         },

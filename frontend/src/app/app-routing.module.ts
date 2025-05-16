@@ -29,12 +29,22 @@ import { InterviewsListComponent } from './back/interviews/interviews-list/inter
 import { AddInterviewComponent } from './back/interviews/add-interview/add-interview.component';
 import { UpdateInterviewComponent } from './back/interviews/update-interview/update-interview.component';
 import { InterviewShowComponent } from './back/interviews/interview-show/interview-show.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ArticlesListComponent } from './back/articles/articles-list/articles-list.component';
+import { AddArticleComponent } from './back/articles/add-article/add-article.component';
+import { UpdateArticleComponent } from './back/articles/update-article/update-article.component';
+import { ArticleShowComponent } from './back/articles/article-show/article-show.component';
+import { CommentsListComponent } from './back/comments/comments-list/comments-list.component';
+import { CommentShowComponent } from './back/comments/comment-show/comment-show.component';
+import { UpdateCommentComponent } from './back/comments/update-comment/update-comment.component';
+import { AddCommentComponent } from './back/comments/add-comment/add-comment.component';
 
 export const routes: Routes = [
     {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
     {  path: 'login', component: LoginComponent  },
     {  path: 'register', component: RegisterComponent  },
     {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
+    {  path: 'forgot-password', component: ForgotPasswordComponent, data: { title: 'Forgot Password', breadcrumb: 'Users' } },
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
@@ -55,7 +65,17 @@ export const routes: Routes = [
             { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
             { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
             { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
-            { path: 'interviews/show/:id', component: InterviewShowComponent, data: { title: 'Interview Details', breadcrumb: 'Profile' } }
+            { path: 'interviews/show/:id', component: InterviewShowComponent, data: { title: 'Interview Details', breadcrumb: 'Profile' } },
+
+            { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
+            { path: 'articles/add-article', component: AddArticleComponent, data: { title: 'Add Article', breadcrumb: 'Profile' } },
+            { path: 'articles/update-article/:id', component: UpdateArticleComponent, data: { title: 'Update Article', breadcrumb: 'Profile' } },
+            { path: 'articles/show/:id', component: ArticleShowComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },
+
+            { path: 'comments', component: CommentsListComponent, data: { title: 'Comments List', breadcrumb: 'Profile' } },
+            { path: 'comments/add-comment', component: AddCommentComponent, data: { title: 'Add Comment', breadcrumb: 'Profile' } },
+            { path: 'comments/update-comment/:id', component: UpdateCommentComponent, data: { title: 'Update Comment', breadcrumb: 'Profile' } },
+            { path: 'comments/show/:id', component: CommentShowComponent, data: { title: 'Comment Details', breadcrumb: 'Profile' } }
         ]
     },
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],

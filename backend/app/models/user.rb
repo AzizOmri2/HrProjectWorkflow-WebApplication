@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :applications, foreign_key: :candidate_id, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :interview_feedbacks, dependent: :destroy
+  has_many :articles, foreign_key: 'author_id', dependent: :destroy
+  has_many :comments, foreign_key: 'commenter_id', dependent: :destroy
   before_create :set_jti
   before_validation :downcase_email
 

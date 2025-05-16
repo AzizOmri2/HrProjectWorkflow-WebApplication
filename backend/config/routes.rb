@@ -54,6 +54,10 @@ Rails.application.routes.draw do
   # Interview_Feedbacks
   resources :interview_feedbacks
   get 'interview_feedbacks/:interview_id/interview_feedback', to: 'interview_feedbacks#get_feedbacks_by_interview_id'
+
+
+  # Articles Full Crud
+  resources :articles
   
 
   root 'user#index'

@@ -92,6 +92,7 @@
                               <li *ngFor="let notif of notifications">
                                   <a>
                                       <div style="white-space: normal; position: relative; padding-right: 30px;">
+                                          <h4>{{ notif.title }}</h4>
                                           <h6>{{ notif.message }}</h6>
                                           <small><i class="fa fa-clock-o"> <b> {{ notif.created_at | date:'short' }}</b></i></small>
                                           <a (click)="deleteNotification(notif.id)" title="Delete Notification"
@@ -281,13 +282,35 @@
             </li>
             <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <a>
-                <i class="fa fa-comments"></i>
+                <i class="fa fa-clipboard"></i>
                 <span>Interviews</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <li><a [routerLink]="['/back/interviews/add-interview']"><i class="fa fa-circle-o"></i> Add Interview</a></li>
                 <li><a [routerLink]="['/back/interviews']"><i class="fa fa-circle-o"></i> Interviews List</a></li>
+              </ul>
+            </li>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a>
+                <i class="fa fa-file-text"></i>
+                <span>Articles</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a [routerLink]="['/back/articles/add-article']"><i class="fa fa-circle-o"></i> Add Article</a></li>
+                <li><a [routerLink]="['/back/articles']"><i class="fa fa-circle-o"></i> Articles List</a></li>
+              </ul>
+            </li>
+            <li class="treeview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a>
+                <i class="fa fa-file-text"></i>
+                <span>Comments</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a [routerLink]="['/back/comments/add-comment']"><i class="fa fa-circle-o"></i> Add Comment</a></li>
+                <li><a [routerLink]="['/back/comments']"><i class="fa fa-circle-o"></i> Comments List</a></li>
               </ul>
             </li>
           </ul>
