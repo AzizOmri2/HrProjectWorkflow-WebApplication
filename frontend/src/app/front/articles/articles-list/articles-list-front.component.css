@@ -1,0 +1,51 @@
+.articles-container {
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
+
+
+.article-card {
+  position: relative;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  transition: transform 0.2s;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+}
+
+.article-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.article-card h2 {
+  font-size: 1.5rem;
+  margin: 12px 0 8px;
+  color: #333;
+}
+
+.article-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end; /* Pushes the button to the right */
+  margin-top: 10px;
+}
+
+.more-details-btn {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}

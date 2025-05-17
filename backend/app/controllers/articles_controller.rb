@@ -71,7 +71,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_json(article)
-    article.as_json(only: [:id, :title, :content, :image, :nb_likes]).merge(
+    article.as_json(only: [:id, :title, :content, :image, :nb_likes, :created_at]).merge(
         author: {
         id: article.author.id,
         name: article.author.name

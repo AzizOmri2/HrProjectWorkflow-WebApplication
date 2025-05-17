@@ -1,1 +1,67 @@
-<p>add-comment works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <!-- Show alert when form is submitted successfully -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-check"></i> Comments Added Successfully!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <!-- Show alert when there is an error -->
+            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="icon fa fa-ban"></i> Comments Creation Failed!</h4>
+                    {{ error }}
+                </div>
+            </div>
+            <form style="margin-top:30px;margin-left:100px;width:1050px;" (ngSubmit)="onSubmit()" #addForm="ngForm">
+                <div class="box-body">
+                    <!-- Article Select Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': articleCtrl.touched && !articleCtrl.value,
+                            'has-success': articleCtrl.touched && articleCtrl.valid
+                        }">
+                        <label *ngIf="articleCtrl.touched && !articleCtrl.value" class="control-label" for="article_id">
+                        <i class="fa fa-bell-o"></i>
+                            Article is required
+                        </label>
+
+                        <select class="form-control" id="article_id" name="article_id"
+                            [(ngModel)]="comment.article_id" #articleCtrl="ngModel" required>
+                            <option [ngValue]="null" disabled selected>-- Select an Article --</option>
+                            <option *ngFor="let article of articles" [value]="article.id">{{ article.title }}</option>
+                        </select>
+
+                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                    </div>
+
+                    <!-- Content Required Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': contentCtrl.touched && !contentCtrl.value,
+                            'has-success': contentCtrl.touched && contentCtrl.valid
+                        }">
+                        <label *ngIf="contentCtrl.touched && !contentCtrl.value" class="control-label" for="content">
+                        <i class="fa fa-bell-o"></i>
+                            Content is required
+                        </label>
+
+                        <textarea class="form-control" id="content" name="content" [(ngModel)]="comment.content" #contentCtrl="ngModel" required placeholder="Content"></textarea>
+                        <span class="glyphicon glyphicon-file form-control-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="box-footer" align="center">
+                    <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid" title="Add Comment">Add Comment</button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-info" [routerLink]="['/back/comments']" title="Comments List">Comments List</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>

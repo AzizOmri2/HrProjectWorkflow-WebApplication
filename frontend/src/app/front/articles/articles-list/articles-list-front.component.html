@@ -1,0 +1,13 @@
+<div class="articles-container">
+    <div *ngFor="let article of articles" class="article-card">
+        <h2>
+            <strong>{{ article.title }}</strong>
+        </h2>
+        <img [src]="article.image" alt="Article image" />
+        <br><br>
+        <p>{{ article.content | slice:0:324 }}...</p>
+        <div class="btn-container">
+            <button [routerLink]="['/front/articles/show', article.id]" class="btn btn-primary more-details-btn">More Details</button>
+        </div>
+    </div>
+</div>

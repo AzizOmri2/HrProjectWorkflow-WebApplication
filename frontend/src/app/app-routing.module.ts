@@ -38,6 +38,8 @@ import { CommentsListComponent } from './back/comments/comments-list/comments-li
 import { CommentShowComponent } from './back/comments/comment-show/comment-show.component';
 import { UpdateCommentComponent } from './back/comments/update-comment/update-comment.component';
 import { AddCommentComponent } from './back/comments/add-comment/add-comment.component';
+import { ArticlesListFrontComponent } from './front/articles/articles-list/articles-list-front.component';
+import { ArticleShowFrontComponent } from './front/articles/article-show-front/article-show-front.component';
 
 export const routes: Routes = [
     {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
@@ -86,11 +88,16 @@ export const routes: Routes = [
 
             { path: 'applications/mes-applications', component: MesApplicationsComponent, data: { title: 'My Applications List', breadcrumb: 'Profile' } },
             { path: 'applications/add-application/:id', component: AddApplicationFrontComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
+
+            { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
+            { path: 'articles/show/:id', component: ArticleShowFrontComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },
         ]
     },
     {  path: 'frontvisiteur', component: FrontvisiteurComponent,
         children: [
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+
+            { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
         ]
     }
 ];

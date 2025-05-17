@@ -1,0 +1,94 @@
+<!-- FrontOffice Dependencies -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="../../../../../public/FrontOffice/css/style.css" rel="stylesheet">
+
+<!-- Detail Start -->
+<div class="container-fluid py-5">
+  <div class="container py-5">
+    <div class="row">
+      <!-- Article Content Section -->
+      <div class="col-lg-8">
+        <div class="mb-5">
+          <div class="section-title position-relative mb-5">
+            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Article Details</h6>
+            <h1 class="display-4">{{ article.title }}</h1>
+          </div>
+          <div class="article-meta d-flex align-items-center mb-3">
+            <p class="mb-0"><b>Author : </b><span class="label label-default"> {{ article.author.name }}</span></p>
+            <p class="mb-0 ml-4"><b>Published on : </b><span class="label label-success"> {{ article.created_at | date: "d MMMM y 'at' HH:mm" }}</span></p>
+          </div>
+          <img [src]="article.image" alt="Article Image" class="img-fluid rounded mb-4">
+          <p class="mt-4 article-content">{{ article.content }}</p>
+        </div>
+
+        <!-- Display Comments Section Start -->
+        <div class="mt-5">
+            <h4 class="mb-4">Comments ({{ comments.length }})</h4>
+            <div *ngFor="let comment of comments" class="mb-4 border-bottom pb-2 d-flex align-items-start">
+                <img [src]="comment.commenter.image" alt="Commenter Picture" class="rounded-circle mr-3" style="width: 50px; height: 50px; object-fit: cover;">
+                <div class="flex-grow-1">
+                    <p class="mb-1">
+                        <strong>{{ comment.commenter.name }}</strong>
+                        • <small>{{ comment.created_at | date: 'short' }}</small>
+                        <p>
+                    </p>
+                    <p class="mb-0">{{ comment.content }}</p>
+                </div>
+                <button *ngIf="comment.commenter.id === currentUserId" class="btn btn-link text-danger ml-2" (click)="deleteComment(comment.id)" title="Delete comment">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Display Comments Section End -->
+
+        <!-- Add Comment Section Start -->
+        <div class="bg-light p-4 rounded mt-5">
+            <h4 class="mb-4">Leave a Comment</h4>
+            <form (ngSubmit)="submitComment()" #commentForm="ngForm">
+                <div class="form-group">
+                    <label for="content">Comment</label>
+                    <textarea id="content" class="form-control" rows="4" [(ngModel)]="comment.content" name="content" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="!commentForm.form.valid">Submit</button>
+            </form>
+        </div>
+        <!-- Add Comment Section End -->
+      </div>
+
+      <!-- Sidebar Section -->
+      <div class="col-lg-4 mt-5 mt-lg-0">
+        <div class="bg-primary mb-5 py-3">
+          <h3 class="text-white py-3 px-4 m-0">Article Info</h3>
+          <div class="d-flex justify-content-between border-bottom px-4">
+            <h6 class="text-white my-3">Title</h6>
+            <h6 class="text-white my-3">{{ article.title }}</h6>
+          </div>
+          <div class="d-flex justify-content-between border-bottom px-4">
+            <h6 class="text-white my-3">Author</h6>
+            <h6 class="text-white my-3">{{ article.author.name }}</h6>
+          </div>
+          <div class="d-flex justify-content-between border-bottom px-4">
+            <h6 class="text-white my-3">Published on</h6>
+            <h6 class="text-white my-3">{{ article.created_at | date }}</h6>
+          </div>
+        </div>
+
+        <!-- Recent Articles -->
+        <div class="mb-5">
+          <h2 class="mb-4">Recent Articles</h2>
+          <a class="d-flex align-items-center text-decoration-none mb-4" *ngFor="let item of articles" [routerLink]="['/front/articles/article-details', item.id]">
+            <img [src]="item.image" alt="thumb" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+            <div class="pl-3">
+              <h6>{{ item.title }}</h6>
+              <p>{{ item.content | slice:0:114 }}</p>
+              <small class="text-body"><i class="fa fa-calendar text-primary mr-2"></i>{{ item.created_at | date }}</small>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Detail End -->

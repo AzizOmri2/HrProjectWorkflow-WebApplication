@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './update-article.component.css'
 })
 export class UpdateArticleComponent implements OnInit{
+  userId!: number;
   articleId!: number;
   article: any = {
     title: '',
@@ -37,16 +38,25 @@ export class UpdateArticleComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.articleId = Number(this.route.snapshot.paramMap.get('id'));
-    if (this.articleId) {
-      this.articleService.getArticleById(this.articleId).subscribe({
-        next: data => {
-          this.article = data;
-        },
-        error: err => {
-          console.error('Error fetching article', err);
-        }
-      });
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      this.articleId = Number(this.route.snapshot.paramMap.get('id'));
+      this.article.author_id = userId;  // Assign to author_id
+      if (this.articleId) {
+        this.articleService.getArticleById(this.articleId).subscribe({
+          next: data => {
+            this.article = data;
+            if (!this.article.author_id) {
+              this.article.author_id = userId;
+            }
+          },
+          error: err => {
+            console.error('Error fetching article', err);
+          }
+        });
+      }
+    } else {
+      console.error('User ID not found in localStorage');
     }
   }
 

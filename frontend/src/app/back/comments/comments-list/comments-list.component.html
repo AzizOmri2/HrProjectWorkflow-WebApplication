@@ -1,1 +1,64 @@
-<p>comments-list works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-warning">
+            <div style="background-color:#fff;">
+                <br>
+                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
+                <button [routerLink]="['/back/comments/add-comment']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Comment">
+                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Comment
+                </button>
+                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
+                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a (click)="setActionText('Sort By')">Default</a></li>
+                        <li class="divider"></li>
+                        <li><a (click)="setActionText('Title')">Title</a></li>
+                        <li><a (click)="setActionText('Content')">Content</a></li>
+                        <li><a (click)="setActionText('Author')">Author</a></li>
+                        <li><a (click)="setActionText('NB Likes')">NB Likes</a></li>
+                    </ul>
+                </div>
+                <br><br>
+                <table class="table" *ngIf="comments.length > 0; else noComments">
+                    <thead>
+                        <tr>
+                            <th>Content</th>
+                            <th>Commenter</th>
+                            <th>Article's Title</th>
+                            <th>Created At</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let comment of comments | filter:searchText">
+                            <td>{{ comment.content }}</td>
+                            <td>
+                                <span class="label label-default">{{ comment.commenter.name }}</span>
+                            </td>
+                            <td>
+                                <span class="label label-primary">{{ comment.article.title }}</span>
+                            </td>
+                            <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                            <td>
+                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/comments/show', comment.id]" title="Show Comment's Details"><i class="fa fa-ellipsis-v"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/comments/update-comment', comment.id]" title="Update Comment"><i class="fa fa-edit"></i></button>
+                                &nbsp;
+                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteComment(comment.id)" title="Delete Comment"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #noComments>
+                    <p style="margin-left:20px;" class="text-muted">No comments to show.</p>
+                    <br>
+                </ng-template>
+            </div>    
+        </div>
+    </div>
+</div>
+        

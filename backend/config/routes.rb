@@ -56,8 +56,12 @@ Rails.application.routes.draw do
   get 'interview_feedbacks/:interview_id/interview_feedback', to: 'interview_feedbacks#get_feedbacks_by_interview_id'
 
 
-  # Articles Full Crud
+  # Articles Full CRUD
   resources :articles
+
+  # Comments Full CRUD
+  resources :comments
+  get 'comments/:article_id/by_id_article', to: 'comments#comments_by_article'
   
 
   root 'user#index'
