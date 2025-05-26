@@ -1,0 +1,22 @@
+.article-details {
+  background-color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.75rem;
+}
+
+.badge {
+  font-size: 14px;
+  padding: 0.5em 0.75em;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}

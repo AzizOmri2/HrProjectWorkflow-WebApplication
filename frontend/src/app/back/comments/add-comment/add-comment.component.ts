@@ -15,7 +15,7 @@ export class AddCommentComponent implements OnInit{
   comment: any = {
     content: '',
     commenter_id: '',
-    article_id: ''
+    article_id: null
   };
   showAlert = false;
   typeAlert = '';

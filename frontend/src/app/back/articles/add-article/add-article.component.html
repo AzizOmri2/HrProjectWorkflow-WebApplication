@@ -33,6 +33,12 @@
                         <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
                     </div>
 
+                    <!-- Image Required Field -->
+                    <div class="form-group has-feedback">
+                        <input type="file" class="form-control" id="image" name="image" (change)="onFileSelected($event)" required placeholder="Image">
+                        <span class="glyphicon glyphicon-picture form-control-feedback"></span>
+                    </div>
+
                     <!-- Content Field -->
                     <div class="form-group has-feedback"
                         [ngClass]="{
@@ -43,15 +49,11 @@
                         <i class="fa fa-bell-o"></i>
                             Content is required
                         </label>
-                        <textarea type="text" class="form-control" id="content" name="content" [(ngModel)]="article.content" #contentCtrl="ngModel" required placeholder="Content"></textarea>
-                        <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+                        <textarea type="text" class="form-control" id="content" name="content" [(ngModel)]="article.content" #contentCtrl="ngModel" required placeholder="Content" rows="12"></textarea>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                     </div>
 
-                    <!-- Image Required Field -->
-                    <div class="form-group has-feedback">
-                        <input type="file" class="form-control" id="image" name="image" (change)="onFileSelected($event)" required placeholder="Image">
-                        <span class="glyphicon glyphicon-file form-control-feedback"></span>
-                    </div>
+                    
                 </div>
 
                 <div class="box-footer" align="center">

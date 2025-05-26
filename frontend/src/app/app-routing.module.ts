@@ -56,7 +56,6 @@ export const routes: Routes = [
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
             { path: 'users/add-user', component: AddUserComponent, data: { title: 'Add User', breadcrumb: 'Users' } },
-            { path: 'users/show/:id', component: UserShowComponent, data: { title: 'User Details', breadcrumb: 'Users' } },
             { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
             
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },

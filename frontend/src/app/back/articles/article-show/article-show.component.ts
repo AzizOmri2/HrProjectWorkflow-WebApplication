@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
 import { CommonModule } from '@angular/common';
@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './article-show.component.html',
   styleUrl: './article-show.component.css'
 })
-export class ArticleShowComponent implements OnInit{
-  articleId!: number;
+export class ArticleShowComponent{
   article: any = {
     title: '',
     content: '',
@@ -18,6 +17,8 @@ export class ArticleShowComponent implements OnInit{
     image: '',
     nb_likes: 0
   };
+
+  @Input() articleId!: number;
 
   applications: any[] = [];
 
@@ -27,8 +28,7 @@ export class ArticleShowComponent implements OnInit{
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.articleId = Number(this.route.snapshot.paramMap.get('id'));
+  ngOnChanges() {
     if (this.articleId) {
       this.articleService.getArticleById(this.articleId).subscribe({
         next: data => {

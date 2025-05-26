@@ -10,7 +10,7 @@ class InterviewsController < ApplicationController
         application: {
           include: {
             candidate: { only: [:id, :name] },
-            job_offer: { only: [:id, :title] }
+            job_offer: { only: [:id, :title, :company] }
           },
           only: [:id]
         },
@@ -27,7 +27,7 @@ class InterviewsController < ApplicationController
         application: {
           include: {
             candidate: { only: [:id, :name] },
-            job_offer: { only: [:id, :title] }
+            job_offer: { only: [:id, :title, :company] }
           },
           only: [:id]
         },
@@ -50,7 +50,7 @@ class InterviewsController < ApplicationController
         application: {
           include: {
             candidate: { only: [:id, :name] },
-            job_offer: { only: [:id, :title] }
+            job_offer: { only: [:id, :title, :company] }
           },
           only: [:id]
         },

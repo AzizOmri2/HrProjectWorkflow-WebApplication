@@ -1,0 +1,14 @@
+.user-details {
+  background-color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.badge {
+  font-size: 14px;
+  padding: 0.5em 0.75em;
+}

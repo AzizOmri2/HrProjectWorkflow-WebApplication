@@ -69,4 +69,13 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  # 🔒 Enable SameSite=None for cross-origin cookies
+  Rails.application.config.action_dispatch.cookies_same_site_protection = :none
+
+  # 🍪 Configure session store for cross-origin access from Angular
+  Rails.application.config.session_store :cookie_store,
+    key: '_your_app_session',           # Replace with your actual session key
+    same_site: :none,
+    secure: false                       # Set to true if using HTTPS
 end

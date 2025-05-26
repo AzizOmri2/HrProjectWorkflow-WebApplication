@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_16_142024) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_134917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_142024) do
     t.index ["job_offer_id"], name: "index_applications_on_job_offer_id"
   end
 
+  create_table "article_reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "article_id", null: false
+    t.string "reaction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_reactions_on_article_id"
+    t.index ["user_id", "article_id"], name: "index_article_reactions_on_user_id_and_article_id", unique: true
+    t.index ["user_id"], name: "index_article_reactions_on_user_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -34,6 +45,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_142024) do
     t.integer "nb_likes", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "nb_dislikes", default: 0
     t.index ["author_id"], name: "index_articles_on_author_id"
   end
 
@@ -94,6 +106,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_142024) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.string "location"
+    t.string "company"
     t.index ["created_by_id"], name: "index_offers_on_created_by_id"
   end
 
@@ -118,6 +132,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_142024) do
 
   add_foreign_key "applications", "offers", column: "job_offer_id"
   add_foreign_key "applications", "users", column: "candidate_id"
+  add_foreign_key "article_reactions", "articles"
+  add_foreign_key "article_reactions", "users"
   add_foreign_key "articles", "users", column: "author_id"
   add_foreign_key "comments", "articles"
   add_foreign_key "comments", "users", column: "commenter_id"

@@ -8,7 +8,7 @@
                             <th>Application</th>
                             <td>
                                 <span class="label label-primary">
-                                    {{ interview.application.job_offer.title }} - {{ interview.application.candidate.name }}
+                                    {{ interview.application.job_offer.title }} | {{ interview.application.job_offer.company | uppercase }} | {{ interview.application.candidate.name }}
                                 </span>
                             </td>
                         </tr>

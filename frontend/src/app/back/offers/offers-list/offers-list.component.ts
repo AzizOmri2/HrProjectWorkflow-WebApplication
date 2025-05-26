@@ -2,19 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { OfferService } from '../../../services/offer.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FilterPipe } from '../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { OfferShowComponent } from '../offer-show/offer-show.component';
 
 @Component({
   selector: 'app-offers-list',
-  imports: [CommonModule,RouterModule,FilterPipe,FormsModule],
+  imports: [CommonModule,RouterModule,FormsModule,OfferShowComponent],
   templateUrl: './offers-list.component.html',
   styleUrl: './offers-list.component.css'
 })
 export class OffersListComponent implements OnInit{
-  offers:any;
-  actionText: string = 'Sort By';
-  searchText: string = '';
+  selectedOfferId: number | null = null;
+  offers: any[] = [];
+  filteredOffers: any[] = [];
+
+
+  filterText: string = '';
+  selectedExperience: string = '';
+  selectedSkill: string = '';
+  selectedStatus: string = '';
+  availableSkills: string[] = [];
+  showModal = false;
+  
 
   constructor(private offerService: OfferService, private router : Router){
 
@@ -24,13 +33,30 @@ export class OffersListComponent implements OnInit{
     this.OffersList()
   }
 
+  openOfferInfo(offerId: number) {
+    this.selectedOfferId = offerId;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+
+  closeModal() {
+    this.selectedOfferId = null;
+    this.showModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
   OffersList(){
-    this.offers = this.offerService.getAllOffers().subscribe(
-      offer => {
-        this.offers = offer
-        console.log(this.offers);
+    this.offerService.getAllOffers().subscribe(
+      offers => {
+        this.offers = offers;
+        this.filteredOffers = [...this.offers]; // Initial state
+        this.extractSkills();
+        console.log(offers);
+      },
+      error => {
+        console.error('Error fetching offers:', error);
       }
-    )
+    );
   }
 
   // Delete offer
@@ -48,8 +74,35 @@ export class OffersListComponent implements OnInit{
     }
   }
 
-  setActionText(text: string) {
-    this.actionText = text;
+  extractSkills() {
+    const skillsSet = new Set<string>();
+    this.offers.forEach((offer : any) => {
+      if (offer.skills_required) {
+        offer.skills_required.split(',').forEach((skill: string) => {
+          skillsSet.add(skill.trim());
+        });
+      }
+    });
+    this.availableSkills = Array.from(skillsSet);
+  }
+
+  applyFilters() {
+    this.filteredOffers = this.offers.filter((offer: any) =>
+      (this.filterText === '' ||
+        offer.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        offer.skills_required.toLowerCase().includes(this.filterText.toLowerCase())) &&
+      (this.selectedExperience === '' || offer.experience_level === this.selectedExperience) &&
+      (this.selectedSkill === '' || offer.skills_required.toLowerCase().includes(this.selectedSkill.toLowerCase())) &&
+      (this.selectedStatus === '' || offer.status === this.selectedStatus)
+    );
+  }
+
+  resetFilters() {
+    this.filterText = '';
+    this.selectedExperience = '';
+    this.selectedSkill = '';
+    this.selectedStatus = '';
+    this.filteredOffers = [...this.offers];
   }
   
 }

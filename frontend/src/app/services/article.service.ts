@@ -23,16 +23,57 @@ export class ArticleService {
 
   // Create a new article
   createArticle(article: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/articles`, article );
+    return this.http.post<any>(`${this.apiUrl}/articles`, article);
   }
 
   // Update an existing article
   updateArticle(id: number, article: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/articles/${id}`, article );
+    return this.http.patch<any>(`${this.apiUrl}/articles/${id}`, article);
   }
 
   // Delete an article by ID
   deleteArticle(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/articles/${id}`);
+  }
+
+  // Get Article's Reactions
+  getUserReaction(articleId: number, userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/articles/${articleId}/article_reaction/user_reaction?user_id=${userId}`);
+  }
+
+  // Like an article - pass userId in body
+  likeArticle(articleId: number, userId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/articles/${articleId}/article_reaction/like`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+  }
+
+  // Unlike an article - pass userId in body
+  unlikeArticle(articleId: number, userId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/articles/${articleId}/article_reaction/unlike`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+  }
+
+  // Dislike an article - pass userId in body
+  dislikeArticle(articleId: number, userId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/articles/${articleId}/article_reaction/dislike`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+  }
+
+  // Undislike an article - pass userId in body
+  undislikeArticle(articleId: number, userId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/articles/${articleId}/article_reaction/undislike`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
   }
 }

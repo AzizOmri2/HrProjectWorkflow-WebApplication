@@ -64,6 +64,8 @@ class ArticlesController < ApplicationController
     head :no_content
   end
 
+  
+
   private
 
   def set_article
@@ -71,7 +73,7 @@ class ArticlesController < ApplicationController
   end
 
   def article_json(article)
-    article.as_json(only: [:id, :title, :content, :image, :nb_likes, :created_at]).merge(
+    article.as_json(only: [:id, :title, :content, :image, :nb_likes, :nb_dislikes, :created_at]).merge(
         author: {
         id: article.author.id,
         name: article.author.name
@@ -80,6 +82,6 @@ class ArticlesController < ApplicationController
     end
 
   def article_params
-    params.require(:article).permit(:title, :content, :author_id, :image, :nb_likes)
+    params.require(:article).permit(:title, :content, :author_id, :image, :nb_likes, :nb_dislikes)
   end
 end

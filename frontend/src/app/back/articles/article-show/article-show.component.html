@@ -1,47 +1,48 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="box box-info">
-            <div style="background-color:#fff;">
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Title</th>
-                            <td>{{ article.title }}</td>
-                        </tr>
-                        <tr>
-                            <th>Author</th>
-                            <td>
-                                <span class="label label-default">{{ article.author.name }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>NB Likes</th>
-                            <td>
-                                <span class="label label-danger">{{ article.nb_likes }} &nbsp;<i class="fa fa-heart"></i></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Content</th>
-                            <td>{{ article.content }}</td>
-                        </tr>
-                        <tr>
-                            <th>Image</th>
-                            <td>
-                                <img style="height:200px;" src="{{ article.image }}">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="article-details card shadow-sm border-0 p-4" *ngIf="article">
+    <div class="card-body text-center">
+        <!-- Title -->
+        <h5 class="card-title mb-3 text-primary">{{ article.title }}</h5>
 
-                <div style="background-color:#fff;" align="center">
-                    <br>
-                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
-                        <a style="color:#fff;" [routerLink]="['/back/articles']" title="Back To Articles List">Back To List</a>
-                    </button>
-                    <br>
+        <!-- Image -->
+        <div class="mb-4">
+            <img *ngIf="article.image" [src]="article.image" alt="Article Image" class="img-fluid rounded" style="max-height: 250px;" />
+        </div>
+        <br>
+
+        <!-- Info: likes, author, created_at -->
+        <div class="d-flex justify-content-center align-items-center gap-4 mb-3 flex-wrap">
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <small><strong>Author : </strong></small>
+                        <span class="label label-warning text-dark">
+                            <small>{{ article.author.name }}</small>
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <small><strong>Created At : </strong></small>
+                        <span class="label label-success">
+                            <small>{{ article.created_at | date: 'yyyy-MM-dd HH:mm' }}</small>
+                        </span>
+                    </div>
+                    <div class="col-xs-4">
+                        <small><strong>Reactions : </strong></small>
+                        <span class="label label-danger">
+                            <small>{{ article.nb_likes }} &nbsp;<i class="fa fa-thumbs-up"></i></small>
+                        </span>
+                        &nbsp;
+                        <span class="label label-default">
+                            <small>{{ article.nb_dislikes }} &nbsp;<i class="fa fa-thumbs-down"></i></small>
+                        </span>
+                    </div>
                 </div>
-            </div>    
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-md-12">
+            <br>
+            <p class="text-left text-muted mt-2">{{ article.content }}</p>
         </div>
     </div>
 </div>
-        

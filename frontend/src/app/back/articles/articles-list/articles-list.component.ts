@@ -4,17 +4,19 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { ArticleShowComponent } from '../article-show/article-show.component';
 
 @Component({
   selector: 'app-articles-list',
-  imports: [RouterModule, CommonModule, FilterPipe, FormsModule],
+  imports: [RouterModule, CommonModule, FilterPipe, FormsModule, ArticleShowComponent],
   templateUrl: './articles-list.component.html',
   styleUrl: './articles-list.component.css'
 })
 export class ArticlesListComponent implements OnInit{
   articles:any;
-  actionText: string = 'Sort By';
   searchText: string = '';
+  showModal = false;
+  selectedArticleId: number | null = null;
 
   constructor(private articleService: ArticleService, private router : Router){
 
@@ -22,6 +24,18 @@ export class ArticlesListComponent implements OnInit{
 
   ngOnInit(){
     this.ArticlesList()
+  }
+
+  openArticleInfo(articleId: number) {
+    this.selectedArticleId = articleId;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+
+  closeModal() {
+    this.selectedArticleId = null;
+    this.showModal = false;
+    document.body.style.overflow = 'auto';
   }
 
   ArticlesList(){
@@ -48,7 +62,8 @@ export class ArticlesListComponent implements OnInit{
     }
   }
 
-  setActionText(text: string) {
-    this.actionText = text;
+  resetFilters(): void {
+    this.searchText = '';
   }
+
 }

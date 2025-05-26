@@ -13,7 +13,7 @@
                         <select class="form-select" [(ngModel)]="filterRole">
                             <option value="">Select a Role</option>
                             <option value="admin">Admin</option>
-                            <option value="rh">RH</option>
+                            <option value="rh">HR</option>
                             <option value="candidate">Candidate</option>
                         </select>
                     </div>
@@ -52,7 +52,7 @@
                                         user.role === 'admin' ? 'label-primary' :
                                         user.role === 'rh' ? 'label-danger' :
                                         user.role === 'candidate' ? 'label-warning text-dark' :
-                                        'label-secondary'
+                                        'label-default'
                                     ">
                                     {{ user.role | uppercase }}
                                 </span>
@@ -67,11 +67,8 @@
                             </p>
 
                             <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
-                                <a [routerLink]="['/back/users/show', user.id]" class="btn btn-sm btn-info flex-grow-1" title="Show User Details">
+                                <button (click)="openUserInfo(user.id)" class="btn btn-sm btn-info flex-grow-1" title="Show User Details">
                                     <i class="fa fa-info-circle"></i>
-                                </a>
-                                <button (click)="toggleActive(user.id)" class="btn btn-sm flex-grow-1" [ngClass]="user.active ? 'btn-primary' : 'btn-warning'" [title]="user.active ? 'Ban User' : 'Unban User'">
-                                    <i [ngClass]="user.active ? 'fa fa-ban' : 'fa fa-check'"></i>
                                 </button>
                                 <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger flex-grow-1" title="Delete User">
                                     <i class="fa fa-trash"></i>
@@ -81,6 +78,20 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Modal -->
+<div *ngIf="showModal">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h5 class="modal-title">User Info</h5>
+            <button type="button" class="btn-close" (click)="closeModal()">×</button>
+        </div>
+        <div class="custom-modal-body">
+            <app-user-show *ngIf="selectedUserId !== null" [userId]="selectedUserId"></app-user-show>
         </div>
     </div>
 </div>

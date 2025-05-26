@@ -13,7 +13,7 @@ import { OfferService } from '../../../services/offer.service';
 })
 export class AddApplicationComponent implements OnInit {
   application: any = {
-    job_offer_id: '',
+    job_offer_id: null,
     candidate_id: '',
     cv_file: '',
     status: '',

@@ -76,29 +76,28 @@ export class UpdateProfileFrontComponent implements OnInit{
     
       this.userService.updateUser(this.userId, formData).subscribe({
         next: (res) => {
-          console.log('User updated:', res);
-    
-          // After successful user update, update the user data in localStorage
-          const updatedUser = JSON.parse(localStorage.getItem('user') || '{}');
-          updatedUser.name = this.user.name;
-    
-          // If no new image was selected, retain the old image value
-          if (this.selectedFile) {
-            updatedUser.image = `uploads/${this.selectedFile.name}`; // Update image path
-          } else {
-            // Keep the existing image in localStorage
-            updatedUser.image = updatedUser.image || this.user.image;
-          }
+          console.log('User updated:', res);          
+
+          // After successful update, reload the image from DB (res.image)
+          const updatedImage = res.image
+            ? `${res.image}?t=${Date.now()}` // Add timestamp to bypass browser cache
+            : this.user.image;
     
           // Update the user data in localStorage with the new or existing values
-          localStorage.setItem('user_image', updatedUser.image);
-          localStorage.setItem('user_name', updatedUser.name);
+          localStorage.setItem('user_image', updatedImage);
+          localStorage.setItem('user_name', res.name);
+
+          // Update current image shown
+          this.user.image = updatedImage;
   
           this.typeAlert = 'success';
           this.showAlert = true;
           this.error = "Your Profile's Data was Successfully Updated."
-          // Reload to reflect changes and show message
-          window.location.reload();
+          
+          // Optional: Delay reload to allow image changes to propagate
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
         },
         error: (err) => {
           console.error('Error updating user:', err);

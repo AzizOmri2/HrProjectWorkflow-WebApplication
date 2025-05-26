@@ -57,8 +57,17 @@ Rails.application.routes.draw do
   get 'interviews/by_user/:user_id', to: 'interviews#by_user'
 
 
-  # Articles Full CRUD
-  resources :articles
+  # Articles and ArticleReactions Full CRUD
+  resources :articles do
+    resource :article_reaction, only: [] do
+      get :user_reaction
+      post :like
+      post :unlike
+      post :dislike
+      post :undislike
+    end
+  end
+  
 
   # Comments Full CRUD
   resources :comments

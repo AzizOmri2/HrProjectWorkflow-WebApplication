@@ -30,7 +30,7 @@
                             Title is required
                         </label>
                         <input type="text" class="form-control" id="title" name="title" [(ngModel)]="offer.title" #titleCtrl="ngModel" required placeholder="Title"/>
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                        <span class="glyphicon glyphicon-font form-control-feedback"></span>
                     </div>
 
                     <!-- Department Field -->
@@ -50,14 +50,14 @@
                     <!-- Skills Required Field -->
                     <div class="form-group has-feedback" 
                         [ngClass]="{
-                            'has-warning': skillsCtrl.touched && !skillsCtrl.value,
+                            'has-warning': skillsCtrl.touched && skillsCtrl.invalid,
                             'has-success': skillsCtrl.touched && skillsCtrl.valid
                         }">
-                        <label *ngIf="skillsCtrl.touched && !skillsCtrl.value" class="control-label" for="skills_required">
+                        <label *ngIf="skillsCtrl.touched && skillsCtrl.invalid" class="control-label" for="skills_required">
                             <i class="fa fa-bell-o"></i>
-                            Skills are required
+                            Please enter at least one skill (e.g., SQL, Python)
                         </label>
-                        <input type="text" class="form-control" id="skills_required" name="skills_required" [(ngModel)]="offer.skills_required" #skillsCtrl="ngModel" placeholder="Skills Required" required/>
+                        <input type="text" class="form-control" id="skills_required" name="skills_required" [(ngModel)]="offer.skills_required" #skillsCtrl="ngModel" placeholder="Skills Required" required pattern="^([A-Za-z0-9 ]+)(,\s*[A-Za-z0-9 ]+)*$" />
                         <span class="glyphicon glyphicon-list form-control-feedback"></span>
                     </div>
 
@@ -72,7 +72,7 @@
                             Experience Level is required
                         </label>
                         <select class="form-control" id="experience_level" name="experience_level" [(ngModel)]="offer.experience_level" #experienceLevelCtrl="ngModel" required>
-                            <option [ngValue]="null" disabled selected>-- Select the Experience Level --</option>
+                            <option [ngValue]="null" disabled selected>Select the Experience Level</option>
                             <option [value]="'Entry-level'">Entry-level</option>
                             <option [value]="'Junior'">Junior</option>
                             <option [value]="'Mid-level'">Mid-level</option>
@@ -92,7 +92,34 @@
                             Deadline is required
                         </label>
                         <input type="date" class="form-control" id="deadline" name="deadline" [(ngModel)]="offer.deadline" #deadlineCtrl="ngModel" placeholder="Deadline" required/>
-                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                    </div>
+
+                    <!-- Comapny Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': companyCtrl.touched && !companyCtrl.value,
+                            'has-success': companyCtrl.touched && companyCtrl.valid
+                        }">
+                        <label *ngIf="companyCtrl.touched && !companyCtrl.value" class="control-label" for="company">
+                            <i class="fa fa-bell-o"></i>
+                            Company is required
+                        </label>
+                        <input type="text" class="form-control" id="company" name="company" [(ngModel)]="offer.company" #companyCtrl="ngModel" placeholder="Company" required/>
+                        <span class="glyphicon glyphicon-home form-control-feedback"></span>
+                    </div>
+
+                    <!-- Location Field -->
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': locationCtrl.touched && !locationCtrl.value,
+                            'has-success': locationCtrl.touched && locationCtrl.valid
+                        }">
+                        <label *ngIf="locationCtrl.touched && !locationCtrl.value" class="control-label" for="location">
+                            <i class="fa fa-bell-o"></i>
+                            Location is required
+                        </label>
+                        <input type="text" class="form-control" id="location" name="location" [(ngModel)]="offer.location" #locationCtrl="ngModel" placeholder="Location" required/>
+                        <span class="glyphicon glyphicon-map-marker form-control-feedback"></span>
                     </div>
 
                     <!-- Description Required Field -->
@@ -105,8 +132,8 @@
                             <i class="fa fa-bell-o"></i>
                             Description is required
                         </label>
-                        <textarea type="text" class="form-control" id="description" name="description" [(ngModel)]="offer.description" #descriptionCtrl="ngModel" placeholder="Description" required></textarea>
-                        <span class="glyphicon glyphicon-list form-control-feedback"></span>
+                        <textarea type="text" class="form-control" id="description" name="description" [(ngModel)]="offer.description" #descriptionCtrl="ngModel" placeholder="Description" required rows="4"></textarea>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                     </div>
                 </div>
 

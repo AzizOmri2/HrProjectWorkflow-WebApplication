@@ -32,7 +32,7 @@
 
                         <select class="form-control" id="article_id" name="article_id"
                             [(ngModel)]="comment.article_id" #articleCtrl="ngModel" required>
-                            <option [ngValue]="null" disabled selected>-- Select an Article --</option>
+                            <option [ngValue]="null" disabled selected>Select an Article</option>
                             <option *ngFor="let article of articles" [value]="article.id">{{ article.title }}</option>
                         </select>
 
@@ -51,7 +51,7 @@
                         </label>
 
                         <textarea class="form-control" id="content" name="content" [(ngModel)]="comment.content" #contentCtrl="ngModel" required placeholder="Content"></textarea>
-                        <span class="glyphicon glyphicon-file form-control-feedback"></span>
+                        <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
                     </div>
                 </div>
 

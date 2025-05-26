@@ -33,7 +33,7 @@
                         <select class="form-control" id="application_id" name="application_id"
                             [(ngModel)]="interview.application_id" #applicationIdCtrl="ngModel" required>
                             <option [ngValue]="null" disabled selected>-- Select an Application --</option>
-                            <option *ngFor="let app of applications" [value]="app.id">{{ app.job_offer.title }} - {{ app.candidate.name }}</option>
+                            <option *ngFor="let app of applications" [value]="app.id">{{ app.job_offer.title }} | {{ app.job_offer.company | uppercase }} | {{ app.candidate.name }}</option>
                         </select>
 
                         <span class="glyphicon glyphicon-file form-control-feedback"></span>
@@ -50,7 +50,6 @@
                             Date is required
                         </label>
                         <input type="datetime-local" class="form-control" id="interview_date" name="interview_date" [(ngModel)]="interview.interview_date" #interview_dateCtrl="ngModel" required placeholder="Date"/>
-                        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
                     </div>
 
                     <!-- Interviewer Field -->

@@ -33,7 +33,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let application of applications | filter:searchText">
-                            <td>{{ application.job_offer.title }}</td>
+                            <td><span class="label label-primary">{{ application.job_offer.title }} - {{ application.job_offer.company | uppercase }}</span></td>
                             <td>
                                 <span class="label label-default">{{ application.candidate.name }}</span>
                             </td>

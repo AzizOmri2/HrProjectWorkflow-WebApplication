@@ -4,10 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { UserShowComponent } from '../user-show/user-show.component';
 
 @Component({
   selector: 'app-users-list',
-  imports: [CommonModule,RouterModule,FilterPipe,FormsModule],
+  imports: [CommonModule,RouterModule,FilterPipe,FormsModule, UserShowComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
@@ -16,6 +17,10 @@ export class UsersListComponent implements OnInit{
   searchText: string = '';
   filterRole: string = '';
   filterStatus: string | boolean = '';
+  showModal = false;
+  selectedUserId: number | null = null;
+
+  
 
 
   constructor(
@@ -27,6 +32,18 @@ export class UsersListComponent implements OnInit{
   ngOnInit(){
     this.UsersList()
   }
+  
+  openUserInfo(userId: number) {
+    this.selectedUserId = userId;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+
+  closeModal() {
+    this.selectedUserId = null;
+    this.showModal = false;
+    document.body.style.overflow = 'auto';
+  }
 
   UsersList(){
     this.users = this.userService.getAllUsers().subscribe(
@@ -35,13 +52,6 @@ export class UsersListComponent implements OnInit{
         console.log(this.users);
       }
     )
-  }
-
-
-  toggleActive(id: number) {
-    this.userService.toggleUserActive(id).subscribe(() => {
-      this.ngOnInit();
-    });
   }
 
 

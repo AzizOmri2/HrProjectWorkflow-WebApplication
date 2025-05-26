@@ -23,6 +23,11 @@
                         </h5>
 
                         <p class="mb-2">
+                            <i class="fas fa-building me-2 text-secondary"></i>
+                            <strong> Company : </strong> <span class="label label-default">{{ application.job_offer.company | uppercase }}</span>
+                        </p>
+
+                        <p class="mb-2">
                             <i class="fas fa-calendar-alt me-2 text-secondary"></i>
                             <strong> Applied At : </strong> {{ application.applied_at | date:'fullDate' }} - {{ application.applied_at | date:'shortTime' }}
                         </p>

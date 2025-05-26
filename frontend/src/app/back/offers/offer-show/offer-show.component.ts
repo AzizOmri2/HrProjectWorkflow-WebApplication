@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OfferService } from '../../../services/offer.service';
 import { CommonModule } from '@angular/common';
@@ -10,8 +10,7 @@ import { ApplicationService } from '../../../services/application.service';
   templateUrl: './offer-show.component.html',
   styleUrl: './offer-show.component.css'
 })
-export class OfferShowComponent implements OnInit{
-  offerId!: number;
+export class OfferShowComponent{
   offer: any = {
     title: '',
     department: '',
@@ -31,8 +30,9 @@ export class OfferShowComponent implements OnInit{
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.offerId = Number(this.route.snapshot.paramMap.get('id'));
+  @Input() offerId!: number;
+
+  ngOnChanges() {
     if (this.offerId) {
       this.offerService.getOfferById(this.offerId).subscribe({
         next: data => {

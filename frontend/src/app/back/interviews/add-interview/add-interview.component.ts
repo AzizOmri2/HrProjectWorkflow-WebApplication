@@ -14,9 +14,9 @@ import { UserService } from '../../../services/user.service';
 })
 export class AddInterviewComponent implements OnInit{
   interview: any = {
-    application_id: '',
+    application_id: null,
     interview_date: '',
-    interviewer_id: '',
+    interviewer_id: null,
     link: '',
     status: '',
     result: '',

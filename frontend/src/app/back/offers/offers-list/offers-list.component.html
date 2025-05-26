@@ -1,76 +1,111 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-warning">
-            <div style="background-color:#fff;">
-                <br>
-                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
-                <button [routerLink]="['/back/offers/add-offer']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Job Offer">
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Job Offer
-                </button>
-                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
-                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a (click)="setActionText('Sort By')">Default</a></li>
-                        <li class="divider"></li>
-                        <li><a (click)="setActionText('Title')">Title</a></li>
-                        <li><a (click)="setActionText('Skills')">Skills</a></li>
-                        <li><a (click)="setActionText('Deadline')">Deadline</a></li>
-                        <li><a (click)="setActionText('Status')">Status</a></li>
-                    </ul>
+        <div class="box box-warning p-4 rounded">
+            <div class="filter-section card p-3 mb-4 shadow-sm rounded-4">
+                <div class="row gy-3 gx-2 align-items-center">
+                    <!-- Search Input -->
+                    <div class="col-md-4">
+                        <input type="text" placeholder="🔍 Search..." [(ngModel)]="filterText" id="searchInput" (input)="applyFilters()"/>
+                    </div>
+
+                    <!-- Experience Level Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedExperience" (change)="applyFilters()">
+                            <option value="">Select an Experience Level</option>
+                            <option value="Entry-level">Entry-level</option>
+                            <option value="Junior">Junior</option>
+                            <option value="Mid-level">Mid-level</option>
+                            <option value="Senior">Senior</option>
+                        </select>
+                    </div>
+
+                    <!-- Skills Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedSkill" (change)="applyFilters()">
+                            <option value="">Select a Skill</option>
+                            <option *ngFor="let skill of availableSkills" [value]="skill">{{ skill }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+                            <option value="">Select a Status</option>
+                            <option value="available">Available</option>
+                            <option value="removed">Removed</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2 d-flex gap-2 justify-content-end">
+                        <button class="btn btn-outline-secondary" (click)="resetFilters()">
+                            <i class="fa fa-times"></i>&nbsp;Reset Filter
+                        </button>
+                    </div>
                 </div>
-                <br><br>
-                <table class="table" *ngIf="offers.length > 0; else noOffers">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Department</th>
-                            <th>Skills</th>
-                            <th>Experience</th>
-                            <th>Deadline</th>
-                            <th>Status</th>
-                            <th>Created By</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let offer of offers | filter:searchText">
-                            <td>{{ offer.title }}</td>
-                            <td>{{ offer.department }}</td>
-                            <td>{{ offer.skills_required }}</td>
-                            <td [ngSwitch]="offer.experience_level">
-                                <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
-                                <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
-                                <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
-                                <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                            <td>{{ offer.deadline }}</td>
-                            <td [ngSwitch]="offer.status">
-                                <span *ngSwitchCase="'available'" class="label label-success">Available</span>
-                                <span *ngSwitchCase="'removed'" class="label label-danger">Removed</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                            <td><span class="label label-default">{{ offer.created_by_name }}</span></td>
-                            <td>
-                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/offers/show', offer.id]" title="Show Offer's Details"><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+            <br>
+
+            <!-- Offers Cards Grid -->
+            <div class="row g-4">
+                <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let offer of filteredOffers">
+                    <div class="card h-100 shadow-sm offer-card d-flex flex-column">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-1">{{ offer.title }}</h5>
+                            <p class="card-subtitle text-muted mb-2">{{ offer.department }}</p>
+
+                            <div class="mb-2">
+                                <span class="label label-default">
+                                    {{ offer.company }}
+                                </span>
                                 &nbsp;
-                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/offers/update-offer', offer.id]" title="Update Offer"><i class="fa fa-edit"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteOffer(offer.id)" title="Delete Offer"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <ng-template #noOffers>
-                    <p style="margin-left:20px;" class="text-muted">No job offers to apply.</p>
-                    <br>
-                </ng-template>
-            </div>    
+                                <span class="label"
+                                    [ngClass]="
+                                        offer.experience_level === 'Entry-level' ? 'label-primary' :
+                                        offer.experience_level === 'Senior' ? 'label-danger' :
+                                        offer.experience_level === 'Mid-level' ? 'label-warning' :
+                                        offer.experience_level === 'Junior' ? 'label-success' :
+                                        'label-default'
+                                    ">
+                                    {{ offer.experience_level }}
+                                </span>
+                            </div>
+
+                            <p class="card-text text-muted mb-3 small">
+                                <strong>Skills Required : </strong>{{ offer.skills_required }}
+                            </p>
+
+                            <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
+                                <button (click)="openOfferInfo(offer.id)" class="btn btn-sm btn-info flex-grow-1" title="Show Offer Details">
+                                    <i class="fa fa-info-circle"></i>
+                                </button>
+                                <button class="btn btn-sm btn-success flex-grow-1" title="Update Offer" [routerLink]="['/back/offers/update-offer', offer.id]">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button (click)="deleteOffer(offer.id)" class="btn btn-sm btn-danger flex-grow-1" title="Delete Offer">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-        
+
+<!-- Custom Modal -->
+<div *ngIf="showModal">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h4 class="modal-title">Offer Details</h4>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close">
+                &times;
+            </button>
+        </div>
+        <div class="custom-modal-body">
+            <app-offer-show *ngIf="selectedOfferId !== null" [offerId]="selectedOfferId"></app-offer-show>
+        </div>
+    </div>
+</div>

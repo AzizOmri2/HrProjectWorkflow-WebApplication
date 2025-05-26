@@ -69,7 +69,9 @@ class OffersController < ApplicationController
       :deadline,
       :status,
       :created_by_id,
-      :description
+      :description,
+      :company,
+      :location
     )
   end
 end

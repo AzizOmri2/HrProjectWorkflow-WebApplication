@@ -1,65 +1,64 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="box box-info">
-            <div style="background-color:#fff;">
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Name</th>
-                            <td>{{ user.name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>{{ user.email }}</td>
-                        </tr>
-                        <tr>
-                            <th>Created At</th>
-                            <td>{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Role</th>
-                            <td [ngSwitch]="user.role">
-                                <span *ngSwitchCase="'admin'" class="label label-primary">ADMIN</span>
-                                <span *ngSwitchCase="'rh'" class="label label-danger">HR</span>
-                                <span *ngSwitchCase="'candidate'" class="label label-warning">CANDIDATE</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Connections Number</th>
-                            <td>
-                                <span class="label label-default">{{ user.nbCnx }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Active ?</th>
-                            <td>
-                                <span class="label" [ngClass]="user.active ? 'label-success' : 'label-danger'">
-                                    {{ user.active ? 'YES' : 'NO' }}
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Image</th>
-                            <td>
-                                <img style="width:250px;" [src]="user.image" alt="error-upload">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="background-color:#fff;" align="center">
-                    <br>
-                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
-                        <a style="color:#fff;" [routerLink]="['/back/users']" title="Back To Users List">Back To List</a>
-                    </button>
-                    <br>
-                    <button class="btn btn-block btn-sm" [ngClass]="user.active ? 'btn-primary' : 'btn-warning'" [title]="user.active ? 'Ban User' : 'Unban User'" style="margin-top:-49px;margin-left:145px;width:30px;" (click)="toggleActive(user.id)">
-                        <i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i>
-                    </button>
-                    <br>
+<div class="user-details card shadow-sm border-0 p-4">
+    <div class="card-body">
+        <h5 class="card-title mb-4 text-primary">User Details</h5>
+
+        <div class="row mb-3" *ngIf="user">
+            <!-- Left Side: Connection & Active -->
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <strong>Name:</strong>
+                        <p class="text-muted">{{ user.name }}</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Email:</strong>
+                        <p class="text-muted">{{ user.email }}</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Created At:</strong>
+                        <p class="text-muted">{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Role:</strong>
+                        <p>
+                            <span class="label" [ngClass]="{
+                                'label-primary': user.role === 'admin',
+                                'label-danger': user.role === 'rh',
+                                'label-warning text-dark': user.role === 'candidate',
+                                'label-secondary': user.role !== 'admin' && user.role !== 'rh' && user.role !== 'candidate'
+                            }">
+                            {{ user.role?.toUpperCase() || 'UNKNOWN' }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Connections Number:</strong>
+                        <p>
+                            <span class="label label-default">{{ user.nbCnx }}</span>
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <strong>Active?</strong>
+                        <p>
+                            <span class="label" [ngClass]="user.active ? 'label-success' : 'label-danger'">
+                                {{ user.active ? 'YES' : 'NO' }}
+                            </span>
+                        </p>
+                    </div>
                 </div>
-            </div>    
+            </div>
+
+            <!-- Right Side: Image -->
+            <div class="col-md-4 text-right">
+                <img *ngIf="user.image" [src]="user.image" alt="User Image" class="img-thumbnail" style="max-width: 250px;"/>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button class="btn btn-sm" [ngClass]="user.active ? 'btn-danger' : 'btn-success'" (click)="toggleActive(user.id)" [title]="user.active ? 'Ban User' : 'Unban User'">
+                <i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i>
+                {{ user.active ? 'Ban' : 'Unban' }}
+            </button>
         </div>
     </div>
 </div>
-        

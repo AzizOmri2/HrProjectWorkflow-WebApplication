@@ -32,8 +32,8 @@
 
                         <select class="form-control" id="job_offer_id" name="job_offer_id"
                             [(ngModel)]="application.job_offer_id" #jobOfferCtrl="ngModel" required>
-                            <option [ngValue]="null" disabled selected>-- Select a Job Offer --</option>
-                            <option *ngFor="let offer of jobOffers" [value]="offer.id">{{ offer.title }}</option>
+                            <option [ngValue]="null" disabled selected>Select a Job Offer</option>
+                            <option *ngFor="let offer of jobOffers" [value]="offer.id">{{ offer.title }} | {{ offer.company | uppercase }}</option>
                         </select>
 
                         <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>

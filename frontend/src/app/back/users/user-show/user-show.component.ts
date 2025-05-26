@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-user-show',
@@ -9,9 +10,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './user-show.component.html',
   styleUrl: './user-show.component.css'
 })
-export class UserShowComponent implements OnInit{
+export class UserShowComponent{
 
-  userId!: number;
   user: any = {
     name: '',
     email: '',
@@ -21,14 +21,9 @@ export class UserShowComponent implements OnInit{
     currentPassword: ''
   };
 
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  @Input() userId!: number;
 
-  ngOnInit(): void {
-    this.userId = Number(this.route.snapshot.paramMap.get('id'));
+  ngOnChanges() {
     if (this.userId) {
       this.userService.getUserById(this.userId).subscribe({
         next: data => {
@@ -40,10 +35,15 @@ export class UserShowComponent implements OnInit{
       });
     }
   }
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   toggleActive(id: number) {
     this.userService.toggleUserActive(id).subscribe(() => {
-      this.ngOnInit();
+      this.ngOnChanges();
     });
   }
 

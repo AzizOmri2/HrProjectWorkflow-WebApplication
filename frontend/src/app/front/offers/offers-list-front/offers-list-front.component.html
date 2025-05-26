@@ -75,15 +75,17 @@
                             {{ offer.title | titlecase }}
                         </h5>
                         
-                        <p class="card-text"><strong>Skills:</strong> {{ offer.skills_required }}</p>
                         <p class="card-text" [ngSwitch]="offer.experience_level">
                             <strong>Experience: &nbsp;</strong> 
-                            <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
-                            <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
-                            <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
-                            <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
+                            <span *ngSwitchCase="'Entry-level'" class="label label-primary">ENTRY-LEVEL</span>
+                            <span *ngSwitchCase="'Junior'" class="label label-success">JUNIOR</span>
+                            <span *ngSwitchCase="'Mid-level'" class="label label-warning">MID-LEVEL</span>
+                            <span *ngSwitchCase="'Senior'" class="label label-danger">SENIOR</span>
                             <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                         </p>
+                        <p class="card-text"><strong>Comapny : </strong> <span class="label label-default"> {{ offer.company | uppercase }} </span></p>
+                        <p class="card-text"><strong>Location : </strong> <i class="fa fa-map-marker"></i> {{ offer.location }}</p>
+                        <p class="card-text"><strong>Skills : </strong> {{ offer.skills_required }}</p>
                         <div class="mt-auto">
                             <a [routerLink]="['/front/offers/show', offer.id]" class="btn btn-primary btn-block">Show Details</a>
                         </div>

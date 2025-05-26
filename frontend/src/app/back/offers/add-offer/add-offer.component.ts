@@ -15,11 +15,13 @@ export class AddOfferComponent implements OnInit{
     title: '',
     department: '',
     skills_required: '',
-    experience_level: '',
+    experience_level: null,
     deadline: '', 
     status: 0,
     created_by_id: '' ,
-    description: ''
+    description: '',
+    company: '',
+    location: ''
   };
   showAlert = false;
   typeAlert = '';
@@ -41,7 +43,8 @@ export class AddOfferComponent implements OnInit{
     this.showAlert = false;
     // Ensure offer is valid before submission
     if (this.offer.title && this.offer.department && this.offer.skills_required && 
-        this.offer.experience_level && this.offer.deadline && this.offer.description) {
+        this.offer.experience_level && this.offer.deadline && this.offer.description &&
+        this.offer.company && this.offer.location) {
       
       this.offerService.createOffer(this.offer).subscribe(
         response => {
