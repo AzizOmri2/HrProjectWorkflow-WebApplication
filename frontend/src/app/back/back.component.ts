@@ -76,11 +76,7 @@ export class BackComponent implements OnInit{
       }
       
       // Get THE Image
-      if(storedImage == 'null' || storedImage == '' || storedImage == 'defined'){
-        this.image = 'uploads/default.jpg';
-      } else{
-        this.image = storedImage || '';
-      }
+      this.image = storedImage || '';
 
       // Get THE ID
       const idStr = localStorage.getItem('user_id');

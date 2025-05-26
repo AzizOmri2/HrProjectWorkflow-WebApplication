@@ -40,6 +40,10 @@ import { UpdateCommentComponent } from './back/comments/update-comment/update-co
 import { AddCommentComponent } from './back/comments/add-comment/add-comment.component';
 import { ArticlesListFrontComponent } from './front/articles/articles-list/articles-list-front.component';
 import { ArticleShowFrontComponent } from './front/articles/article-show-front/article-show-front.component';
+import { AboutPageComponent } from './front/other/about-page/about-page.component';
+import { HelpSupportPageComponent } from './front/other/help-support-page/help-support-page.component';
+import { MesInterviewsComponent } from './front/applications/mes-interviews/mes-interviews.component';
+
 
 export const routes: Routes = [
     {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
@@ -47,6 +51,7 @@ export const routes: Routes = [
     {  path: 'register', component: RegisterComponent  },
     {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
     {  path: 'forgot-password', component: ForgotPasswordComponent, data: { title: 'Forgot Password', breadcrumb: 'Users' } },
+    
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
@@ -80,24 +85,33 @@ export const routes: Routes = [
             { path: 'comments/show/:id', component: CommentShowComponent, data: { title: 'Comment Details', breadcrumb: 'Profile' } }
         ]
     },
+    
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],
         children: [
             { path: 'update-profile', component: UpdateProfileFrontComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
 
-            { path: 'applications/mes-applications', component: MesApplicationsComponent, data: { title: 'My Applications List', breadcrumb: 'Profile' } },
+            { path: 'applications/mes-applications', component: MesApplicationsComponent, data: { title: 'My Applications', breadcrumb: 'Profile' } },
             { path: 'applications/add-application/:id', component: AddApplicationFrontComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
+            { path: 'applications/mes-interviews', component: MesInterviewsComponent, data: { title: 'My Interviews', breadcrumb: 'Profile' } },
 
             { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
             { path: 'articles/show/:id', component: ArticleShowFrontComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },
+
+            { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
+            { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },
         ]
     },
+    
     {  path: 'frontvisiteur', component: FrontvisiteurComponent,
         children: [
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
 
             { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
+
+            { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
+            { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },
         ]
     }
 ];

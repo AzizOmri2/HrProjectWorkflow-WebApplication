@@ -21,6 +21,11 @@ export class InterviewService {
     return this.http.get<any>(`${this.apiUrl}/interviews/${id}`);
   }
 
+  // Get a single interview by user_id
+  getInterviewByIdUser(user_id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/interviews/by_user/${user_id}`);
+  }
+
   // Create a new interview
   createInterview(interview: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/interviews`, interview );

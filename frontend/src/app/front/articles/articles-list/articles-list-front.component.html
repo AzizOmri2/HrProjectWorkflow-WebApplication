@@ -1,3 +1,113 @@
+<div class="container">
+    <div class="right-section">
+        <h1>Gain in Efficiency</h1>
+        <p>
+            Let your favorite job slip away? Never again! <br>In your personal space, manage your job 
+            search, centralize all your applications, and compare jobs. <br>Thanks to our personalized 
+            alerts, be the first to apply. <br>Keep track of your application status and get notified 
+            about scheduling your interviews — all in one place for a smoother hiring experience.
+        </p>
+        <div class="btn-group">
+            <button class="btn" [routerLink]="['/front/applications/mes-applications']">Track my applications</button>
+            <a href="/frontvisiteur/about" class="btn" style="background: transparent; color: #2878EB; border: 1px solid #2878EB; margin-left: 10px;">
+                For More
+            </a>
+        </div>
+    </div>
+
+    <div class="left-section">
+        <div class="job-card">
+            <h3>Applications Management</h3>
+            <div class="card-grid">
+                <div class="card-item">MY APPLICATIONS <span style="color: #f0c000;"><strong>{{ apps_count }}</strong></span></div>
+                <div class="card-item">INTERVIEWS <span style="color: #f0c000;"><strong>{{ interviews_count }}</strong></span></div>
+            </div>
+            <div class="company-preview shadow">
+                <div>Job Offer : <b>{{ mes_apps[0].job_offer.title }}</b></div>
+                <div [ngSwitch]="mes_apps[0].status">
+                    <span *ngSwitchCase="'Interviewed'" class="label label-info">Interviewed</span>
+                    <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                    <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                    <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                    <span *ngSwitchCase="'Withdrawn'" class="label label-default">Withdrawn</span>
+                    <span *ngSwitchDefault class="label label-default">APPLY NOW</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recruiter Card -->
+        <div class="job-card">
+            <div class="company-preview">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <img [src]="userImage" alt="Candidate" style="width: 40px; height: 40px; border-radius: 50%;">
+                    <div>
+                        <div style="font-weight: 600;">Candidate</div>
+                        <div style="font-size: 14px;">{{ userName }}</div>
+                    </div>
+                </div>
+                <div style="font-weight: bold; margin-bottom: 10px;">Job Applications</div>
+                    <div style="display: flex; gap: 15px;">
+                    <button class="filter-button">✅ Accepted</button>
+                    <button class="filter-button">📝 Interviewed</button>
+                    <button class="filter-button">❌ Rejected</button>
+                    <button class="filter-button">🏳️ Whithdrawn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br><br><br>
+
+<div class="container">
+    <div class="left-section">
+        <div class="job-card">
+            <div style="display:flex; align-items:center;">
+                <h3>
+                    <strong>Jobs</strong>
+                </h3>
+                <span class="badge">{{ offers_count }}</span>
+            </div>
+
+            <!-- Gray horizontal line -->
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 0px 0;" />
+            
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>{{ offers[0].title }}</h3>
+                <button class="btn more-details-btn" [routerLink]="['/front/offers/show', offers[0]?.id]">Apply Now</button>
+            </div>
+            <p style="color: green;">
+                <strong>🔥 This opportunity matches your profile!</strong>
+            </p>
+        </div>
+        <div class="filters">
+            <img style="width:250px;" src="logo-hrproject-workflow.png">
+        </div>
+    </div>
+
+    <div class="right-section">
+        <h1>Step Behind the Scenes</h1>
+        <p>
+            Go beyond job offers and discover the skills, values, and experience 
+            level behind each one. <br>Get a real sense of where you’re applying, meet
+            your future team, and find a workplace where you truly belong. <br>Learn what
+            to expect at each step of the hiring process, from initial contact to final 
+            interview <strong>to prepare with confidence.</strong>
+        </p>
+        <button class="btn" [routerLink]="isCandidateConnected ? '/front/offers' : '/frontvisiteur/offers'">Find a job</button>
+    </div>
+</div>
+
+
+
+<br><br><br><br>
+
+<!-- Added title for articles and actualities -->
+<div class="articles-title">
+    <h1>Articles & Actualities</h1>
+</div>
+
+
 <div class="articles-container">
     <div *ngFor="let article of articles" class="article-card">
         <h2>
@@ -7,7 +117,7 @@
         <br><br>
         <p>{{ article.content | slice:0:324 }}...</p>
         <div class="btn-container">
-            <button [routerLink]="['/front/articles/show', article.id]" class="btn btn-primary more-details-btn">More Details</button>
+            <button [routerLink]="['/front/articles/show', article.id]" class="btn more-details-btn">More Details</button>
         </div>
     </div>
 </div>

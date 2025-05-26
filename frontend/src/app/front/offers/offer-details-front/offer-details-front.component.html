@@ -17,7 +17,14 @@
                     </div>
                     <p><b>Department : </b>{{ offer.department }}</p> 
                     <p><b>Skills Required : </b>{{ offer.skills_required }}</p>   
-                    <p><b>Experience Level : </b>{{ offer.experience_level }}</p>  
+                    <p [ngSwitch]="offer.experience_level">
+                        <b>Experience Level : </b>
+                        <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
+                        <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
+                        <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
+                        <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
+                        <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                    </p>  
                     <p class="d-inline-block position-relative text-secondary text-uppercase pb-2">
                         <b>This Job is available before : </b>{{ offer.deadline }}
                     </p>                 
@@ -49,7 +56,13 @@
                     </div>
                     <div class="d-flex justify-content-between border-bottom px-4">
                         <h6 class="text-white my-3">Experience</h6>
-                        <h6 class="text-white my-3">{{ offer.experience_level }}</h6>
+                        <h6 class="text-white my-3" [ngSwitch]="offer.experience_level">
+                            <span *ngSwitchCase="'Entry-level'" class="label label-primary">Entry-level</span>
+                            <span *ngSwitchCase="'Junior'" class="label label-success">Junior</span>
+                            <span *ngSwitchCase="'Mid-level'" class="label label-warning">Mid-level</span>
+                            <span *ngSwitchCase="'Senior'" class="label label-danger">Senior</span>
+                            <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                        </h6>
                     </div>
                     <div class="d-flex justify-content-between border-bottom px-4">
                         <h6 class="text-white my-3">Deadline</h6>

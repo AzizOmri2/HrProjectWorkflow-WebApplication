@@ -50,18 +50,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
-                <div class="navbar-nav mx-auto py-0">
+                <div class="navbar-nav py-0">
                     <a routerLink="/front" routerLinkActive="active" class="nav-item nav-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-                    <a routerLink="/fronts" routerLinkActive="active" class="nav-item nav-link">About</a>
+                    <a routerLink="/front/about" routerLinkActive="active" class="nav-item nav-link">About</a>
                     <a routerLink="/front/offers" routerLinkActive="active" class="nav-item nav-link">Jobs</a>
                     <a routerLink="/front/applications/mes-applications" routerLinkActive="active" class="nav-item nav-link">My Applications</a>
-                    <a routerLink="/front/update-profile" routerLinkActive="active" class="nav-item nav-link">Account Management</a>
+                    <a routerLink="/front/applications/mes-interviews" routerLinkActive="active" class="nav-item nav-link">My Interviews</a>
+                    <a routerLink="/front/update-profile" routerLinkActive="active" class="nav-item nav-link">My Account</a>
                 </div>
-                <div class="navbar-nav">
+                <div class="d-flex align-items-center gap-3">
                     <!-- Notification Bell -->
-                    <div class="nav-item nav-link position-relative mr-3" style="cursor: pointer;" (click)="openNotifications()">
-                        <i class="fas fa-bell fa-lg text-primary"></i>
-                        <span *ngIf="notificationCount > 0" class="badge badge-danger position-absolute" style="top: 20px; right: 3px; font-size: 8px;">
+                    <div class="nav-item position-relative" style="cursor: pointer;" (click)="openNotifications()">
+                        <i class="fas fa-bell fa-2x text-primary"></i>
+                        <span *ngIf="notificationCount > 0" class="badge badge-danger position-absolute" style="top: -8px; right: 15px; font-size: 8px;">
                             {{ notificationCount }}
                         </span>
                     </div>
@@ -98,7 +99,7 @@
                     <!-- User Profile -->
                     <div class="d-flex align-items-center nav-item nav-link">
                         <img [src]="image" class="rounded-circle mr-2" width="33" height="33" alt="User" />
-                        <span><strong>{{ userName }}</strong></span>
+                        <h2><strong style="font-size: 1.5rem;">{{ userName }}</strong></h2>
                     </div>
                 </div>
                 <a style="margin-top:5px;margin-right:50px;" (click)="logout()" class="btn btn-primary py-2 px-4 d-none d-lg-block">Sign Out</a>
@@ -174,23 +175,22 @@
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
-                    <h3 class="text-white mb-4">Our Courses</h3>
+                    <h3 class="text-white mb-4">About Our Platform</h3>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Web Design</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Apps Design</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Marketing</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Research</a>
-                        <a class="text-white-50" href="/front"><i class="fa fa-angle-right mr-2"></i>SEO</a>
+                        <a class="text-white-50 mb-2" href="/front/offers"><i class="fa fa-angle-right mr-2"></i>Job Offers</a>
+                        <a class="text-white-50 mb-2" href="/front/applications/mes-applications"><i class="fa fa-angle-right mr-2"></i>My Applications</a>
+                        <a class="text-white-50 mb-2" href="/front/applications/mes-interviews"><i class="fa fa-angle-right mr-2"></i>Interview Invitations</a>
+                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Career Resources</a>
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
                     <h3 class="text-white mb-4">Quick Links</h3>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Privacy Policy</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Terms & Condition</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Regular FAQs</a>
-                        <a class="text-white-50 mb-2" href="/front"><i class="fa fa-angle-right mr-2"></i>Help & Support</a>
-                        <a class="text-white-50" href="/front"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                        <a class="text-white-50 mb-2" href="/front/about"><i class="fa fa-angle-right mr-2"></i>About</a>
+                        <a class="text-white-50 mb-2" href="/front/offers"><i class="fa fa-angle-right mr-2"></i>Browse Job Offers</a>
+                        <a class="text-white-50 mb-2" href="/front/applications/mes-applications"><i class="fa fa-angle-right mr-2"></i>My Applications</a>
+                        <a class="text-white-50 mb-2" href="/front/applications/mes-interviews"><i class="fa fa-angle-right mr-2"></i>My Interviews</a>
+                        <a class="text-white-50" href="/front/support"><i class="fa fa-angle-right mr-2"></i>Help & Support</a>
                     </div>
                 </div>
             </div>

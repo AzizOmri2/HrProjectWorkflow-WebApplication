@@ -115,11 +115,7 @@ export class FrontComponent implements OnInit{
         this.role = storedRole;
 
         //Image
-        if(storedImage == 'null' || storedImage == ''){
-          this.image = 'uploads/default.jpg';
-        } else{
-          this.image = storedImage || '';
-        }
+        this.image = storedImage || '';
       }
 
       // 🔥 Update title on initial load

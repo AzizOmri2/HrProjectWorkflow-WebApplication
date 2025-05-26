@@ -1,0 +1,65 @@
+<!-- FrontOffice Dependencies -->
+<link href="../../../../../public/FrontOffice/css/style.css" rel="stylesheet">
+
+<!-- Interviews Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="section-title text-center position-relative mb-5">
+            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">My Interviews</h6>
+            <h1 class="display-4">You can Track all of your Planned Interviews</h1>
+        </div>
+        <br>
+        <div *ngIf="interviews.length === 0" class="alert alert-warning text-center">
+            You have not any planned interviews yet.
+        </div>
+        <div class="row g-4" *ngIf="interviews.length > 0">
+            <div class="col-md-6 col-lg-4" *ngFor="let interview of interviews">
+                <div class="card interview-card h-100">
+                    <div class="card-body p-5">
+                        <p><strong>Interview For Job Offer : </strong></p>
+                        <h5 class="card-title text-primary mb-5">
+                            <i class="fas fa-briefcase me-2"></i> {{ interview.application.job_offer.title }}
+                        </h5>
+
+                        <p class="mb-2">
+                            <i class="fas fa-calendar-alt me-2 text-secondary"></i>
+                            <strong> Date : </strong> {{ interview.interview_date | date:'fullDate' }}
+                        </p>
+
+                        <p class="mb-2">
+                            <i class="fas fa-clock me-2 text-secondary"></i>
+                            <strong> Time : </strong> {{ interview.interview_date | date:'shortTime' }}
+                        </p>
+
+                        <p class="mb-2">
+                            <i class="fas fa-info-circle me-2 text-secondary"></i>
+                            <strong> Status : </strong>
+                            <span class="badge" [ngClass]="{
+                                'bg-danger': interview.status === 'Cancelled',
+                                'bg-warning text-dark': interview.status === 'Scheduled',
+                                'bg-success': interview.status === 'Finished'}">
+                                {{ interview.status }}
+                            </span>
+                        </p>
+
+                        <p class="mb-2" *ngIf="interview.result !== 'Pending'">
+                            <i class="fas fa-check-circle me-2 text-secondary"></i>
+                            <strong> Result : </strong> 
+                            <span [ngClass]="{
+                                'text-success': interview.result === 'Accepted',
+                                'text-danger': interview.result === 'Rejected'
+                            }"><b>{{ interview.result }}</b></span>
+                        </p>
+
+                        <p class="mb-2">
+                            <i class="fas fa-link me-2 text-secondary"></i>
+                            <strong> Link : </strong> 
+                            <a [href]="interview.link" class="text-decoration-none" target="_blank">{{ interview.link }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Interviews End -->

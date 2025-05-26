@@ -13,10 +13,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class UsersListComponent implements OnInit{
   users:any;
-  actionText: string = 'Sort By';
   searchText: string = '';
+  filterRole: string = '';
+  filterStatus: string | boolean = '';
 
-  constructor(private userService: UserService, private router : Router){
+
+  constructor(
+    private userService: UserService, 
+    private router : Router){
 
   }
 
@@ -56,8 +60,10 @@ export class UsersListComponent implements OnInit{
     }
   }
 
-  setActionText(text: string) {
-    this.actionText = text;
+  resetFilters(): void {
+    this.filterRole = '';
+    this.filterStatus = '';
+    this.searchText = '';
   }
 
 }

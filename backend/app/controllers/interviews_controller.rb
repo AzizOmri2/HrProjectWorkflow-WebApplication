@@ -37,6 +37,29 @@ class InterviewsController < ApplicationController
     )
   end
 
+  # GET /interviews/by_user/:user_id
+  def by_user
+    user_id = params[:user_id]
+
+    @interviews = Interview.joins(application: :candidate)
+                          .where(applications: { candidate_id: user_id })
+                          .includes(application: [:candidate, :job_offer], interviewer: {})
+
+    render json: @interviews.as_json(
+      include: {
+        application: {
+          include: {
+            candidate: { only: [:id, :name] },
+            job_offer: { only: [:id, :title] }
+          },
+          only: [:id]
+        },
+        interviewer: { only: [:id, :name] }
+      },
+      except: [:created_at, :updated_at]
+    )
+  end
+
   # POST /interviews
   def create
     @interview = Interview.new(interview_params)
@@ -84,6 +107,10 @@ class InterviewsController < ApplicationController
   def destroy
     candidate = @interview.application.candidate
     job_title = @interview.application.job_offer.title
+    application = @interview.application
+
+    # Update application status to "Pending"
+    application.update(status: "Pending")
 
     @interview.destroy
 

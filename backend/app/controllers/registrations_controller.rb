@@ -1,6 +1,13 @@
 class RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
+
+  # Override the create method
+  def create
+    assign_default_image_if_blank
+    super
+  end
+
   protected
 
   # Override to prevent session storage
@@ -18,6 +25,12 @@ class RegistrationsController < Devise::RegistrationsController
 
   private
 
+
+  def assign_default_image_if_blank
+    return if params[:user][:image].present?
+    params[:user][:image] = 'uploads/default.jpg'
+  end
+  
   def respond_with(resource, _opts = {})
     Rails.logger.debug "User errors: #{resource.errors.full_messages}"
     if resource.persisted?

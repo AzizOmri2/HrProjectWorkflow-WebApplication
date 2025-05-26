@@ -33,60 +33,41 @@
                     'has-warning': NameCtrl.touched && !NameCtrl.value,
                     'has-success': NameCtrl.touched && NameCtrl.valid
                 }">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="name">Name :</label>
-                            <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name">
-                        </div>
-                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
-                            <i class="fa fa-bell-o"></i>
-                            Name is required
-                        </label>
-                    </div>
+                    <label for="name">Name :</label>
+                    <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name">
+                    <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
+                        <i class="fa fa-bell-o"></i> Name is required
+                    </label>
                 </div>
+
                 <div class="form-group has-feedback" [ngClass]="{
                     'has-warning': EmailCtrl.touched && !EmailCtrl.value,
                     'has-success': EmailCtrl.touched && EmailCtrl.valid
                 }">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="email">Email :</label>
-                            <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
-                        </div>
-                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
-                            <i class="fa fa-bell-o"></i>
-                            Email is required
-                        </label>
-                    </div>
+                    <label for="email">Email :</label>
+                    <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
+                    <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
+                        <i class="fa fa-bell-o"></i> Email is required
+                    </label>
                 </div>
+
                 <div class="form-group has-feedback">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="password">Password :</label>
-                            <input style="padding: 30px 20px;" type="password" class="form-control  bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
-                        </div>
-                    </div>
+                    <label for="password">Password :</label>
+                    <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
                 </div>
+
                 <div class="form-group has-feedback">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="passwordConfirmation">Password Confirmation :</label>
-                            <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
-                        </div>
-                    </div>
+                    <label for="passwordConfirmation">Password Confirmation :</label>
+                    <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
                 </div>
+
                 <div class="form-group has-feedback">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="image">Profile Picture :</label>
-                            <input style="padding: 30px 20px;" type="file" class="form-control  bg-light border-0" id="image" (change)="onFileSelected($event)"/>
-                        </div>
-                    </div>
+                    <label for="image">Profile Picture :</label>
+                    <input style="padding: 30px 20px;" type="file" class="form-control bg-light border-0" id="image" (change)="onFileSelected($event)"/>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-4" style="margin-top:40px;margin-left:300px;">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 50px;" [disabled]="updateForm.invalid" title="Update Profile">Update Profile</button>
-                    </div>
+
+                <div class="form-group text-center" style="margin-top: 40px;">
+                    <button class="btn btn-primary px-5" type="submit" style="height: 50px;" [disabled]="updateForm.invalid" title="Update Profile">UPDATE PROFILE</button>
                 </div>
             </form>
         </div>

@@ -1,3 +1,128 @@
+/* Titles Stylesheets */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.right-section, .left-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.right-section h1 {
+  margin-top: 0;
+}
+
+.job-card {
+  background: #f4f1ed;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.job-card h3 {
+  margin: 10px 0;
+}
+
+.badge {
+  background-color: #eee;
+  color: #333;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+
+.company-preview {
+  background: #fcdc4d;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.filters {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  margin-top: 20px;
+
+  /* Add this for centering */
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering (optional) */
+}
+
+.filter-button {
+  background: #f6f6f6;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+
+.right-section h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.right-section p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.btn {
+  margin-top: 30px;
+  padding: 12px 24px;
+  background: #2878EB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease; /* smooth transition */
+}
+
+.btn:hover {
+  background: #fff;
+  color: #2878EB;
+  border: 1px solid #2878EB; /* optional: add border on hover for better contrast */
+}
+
+
+
+/* Article Stylesheets */
+
+.articles-title {
+  margin: 40px 0;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50; /* dark blue-gray color */
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 3px solid #2980b9; /* blue underline */
+  padding-bottom: 10px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.articles-title h1 {
+  font-size: 3.5rem; /* or larger */
+  margin: 0; /* optional, to reset any default margin */
+}
+
+
 .articles-container {
   padding: 40px 20px;
   background-color: #f8f9fa;

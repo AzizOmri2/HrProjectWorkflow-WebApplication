@@ -1,0 +1,115 @@
+.filter-section {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem; /* added padding for better inner spacing */
+}
+
+.filter-section:hover,
+.filter-section:focus-within {
+  box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
+}
+
+/* Labels */
+.form-label {
+  font-size: 1.25rem;          /* larger label text */
+  color: #495057;
+  font-weight: 700;            /* bolder */
+  margin-right: 0.75rem;       /* vertical spacing below label */
+  display: inline-block;
+}
+
+/* Inputs & Selects */
+.form-control,
+.form-select {
+  border-radius: 0.75rem;
+  font-size: 1.15rem;           /* larger font */
+  padding: 0.65rem 1.2rem;      /* bigger clickable area */
+  border: 1.5px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  height: 3.4rem;               /* consistent height for inputs/selects */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Focus states */
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+  outline: none;
+}
+
+/* Button styles */
+.btn-outline-secondary {
+  font-size: 1.15rem;
+  border-radius: 0.75rem;
+  padding: 0.55rem 1.6rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  height: 3.4rem;            /* match select height */
+  line-height: 3.4rem;       /* vertically center text */
+  display: inline-flex;      /* flex to help center content */
+  align-items: center;       /* vertical align */
+  justify-content: center;   /* horizontal align */
+  box-sizing: border-box;    /* include padding and border in height */
+}
+
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #0d6efd;
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+  border-color: #0d6efd;
+  cursor: pointer;
+}
+
+/* Custom spacing between search and selects */
+.select-row {
+  margin-top: 2rem;
+}
+
+/* Style the search input: rounded corners, taller height, larger font */
+#searchInput {
+  padding-left: 3.75rem;         /* Ensure there's enough space for the icon */
+  border-radius: 2rem;        /* Rounded corners */
+  height: 4.25rem;             /* Slightly shorter for better alignment */
+  font-size: 1.1rem;          /* Clean font size */
+}
+
+/* Position the search icon inside the input */
+.search-icon {
+  position: absolute;
+  top: 52%;                   /* Vertically center */
+  transform: translateY(-50%);
+  left: 30px;                 /* Align icon inside the padding area */
+  pointer-events: none;       /* Allow clicks to pass through */
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+
+.select-row .col-md-10 {
+  max-width: 800px;
+}
+
+@media (max-width: 767.98px) {
+  .select-row .text-end {
+    text-align: left !important;
+    margin-top: 1rem;
+  }
+}
+
+
+/* Offer card enhancements remain unchanged */
+.offer-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px); /* Slight lift */
+  background-color: #f8f9fa; /* Light background */
+}
