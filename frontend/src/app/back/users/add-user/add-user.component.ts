@@ -18,6 +18,9 @@ export class AddUserComponent implements OnInit{
   passwordConfirmation = '';
   role = '';
   image = '';
+  gender = '';
+  birth_date = '';
+  nationality = '';
   active = true;
   error = '';
   showAlert = false;

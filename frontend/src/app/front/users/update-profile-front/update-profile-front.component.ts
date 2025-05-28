@@ -17,7 +17,10 @@ export class UpdateProfileFrontComponent implements OnInit{
       password: '',
       password_confirmation: '',
       image: '', // Adding image field in case it's needed
-      currentPassword: '' // Store current password (don't display)
+      currentPassword: '', // Store current password (don't display)
+      gender: '',
+      birth_date: '',
+      nationality: ''
     };
   selectedFile: File | null = null;
   userId: number = Number(localStorage.getItem("user_id") || 0);
@@ -43,6 +46,7 @@ export class UpdateProfileFrontComponent implements OnInit{
       this.userService.getUserById(id).subscribe({
         next: (userData) => {
           this.user = userData;
+          console.log(this.user);
           // Optionally, store the current password to prevent it from being shown
           this.user.currentPassword = userData.password;
         },
@@ -73,6 +77,10 @@ export class UpdateProfileFrontComponent implements OnInit{
       if (this.selectedFile) {
         formData.append('user[image]', this.selectedFile, this.selectedFile.name); // Append the file
       }
+
+      formData.append('user[gender]', this.user.gender);
+      formData.append('user[birth_date]', this.user.birth_date);
+      formData.append('user[nationality]', this.user.nationality);
     
       this.userService.updateUser(this.userId, formData).subscribe({
         next: (res) => {
@@ -97,7 +105,7 @@ export class UpdateProfileFrontComponent implements OnInit{
           // Optional: Delay reload to allow image changes to propagate
           setTimeout(() => {
             window.location.reload();
-          }, 300);
+          }, 1000);
         },
         error: (err) => {
           console.error('Error updating user:', err);

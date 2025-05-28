@@ -9,13 +9,13 @@
 <div class="row justify-content-center bg-image mx-0 mb-5">
     <div class="col-lg-8 py-5">
         <div class="bg-white p-5 my-5">
-            <h1 class="text-center mb-4"><b>UPDATE YOUR PROFILE :</b></h1>
+            <h1 class="text-center mb-4"><b>EDIT YOUR PROFILE :</b></h1>
             <br>
             <!-- Show alert when form is submitted successfully -->
             <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-check"></i> Your Profile is Updated Successfully!</h4>
+                    <h4><i class="icon fa fa-check"></i> Your Profile is Edited Successfully!</h4>
                     {{ error }}
                 </div>
             </div>
@@ -23,51 +23,65 @@
             <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-ban"></i> Your Profile's Update is Failed!</h4>
+                    <h4><i class="icon fa fa-ban"></i> Your Profile's Edition is Failed!</h4>
                     {{ error }}
                 </div>
             </div>
             <br>
-            <form (ngSubmit)="onSubmit()" #updateForm="ngForm">
-                <div class="form-group has-feedback" [ngClass]="{
-                    'has-warning': NameCtrl.touched && !NameCtrl.value,
-                    'has-success': NameCtrl.touched && NameCtrl.valid
-                }">
-                    <label for="name">Name :</label>
-                    <input style="padding: 30px 20px;" type="text" class="form-control bg-light border-0" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name">
-                    <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
-                        <i class="fa fa-bell-o"></i> Name is required
-                    </label>
+            <form *ngIf="user" (ngSubmit)="onSubmit()" #updateForm="ngForm" class="custom-form">
+                <div class="form-field" [ngClass]="{ 'has-error': NameCtrl.touched && !NameCtrl.valid }">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Enter your name" />
+                    <small *ngIf="NameCtrl.touched && !NameCtrl.valid">Name is required</small>
                 </div>
 
-                <div class="form-group has-feedback" [ngClass]="{
-                    'has-warning': EmailCtrl.touched && !EmailCtrl.value,
-                    'has-success': EmailCtrl.touched && EmailCtrl.valid
-                }">
-                    <label for="email">Email :</label>
-                    <input style="padding: 30px 20px;" type="email" class="form-control bg-light border-0" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
-                    <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
-                        <i class="fa fa-bell-o"></i> Email is required
-                    </label>
+                <div class="form-field" [ngClass]="{ 'has-error': EmailCtrl.touched && !EmailCtrl.valid }">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Enter your email" />
+                    <small *ngIf="EmailCtrl.touched && !EmailCtrl.valid">Valid email is required</small>
                 </div>
 
-                <div class="form-group has-feedback">
-                    <label for="password">Password :</label>
-                    <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
+                <div class="form-field" [ngClass]="{ 'has-error': PasswordCtrl.touched && !PasswordCtrl.valid }">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" [(ngModel)]="user.password" #PasswordCtrl="ngModel" placeholder="Minimum 6 characters" minlength="6" />
+                    <small *ngIf="PasswordCtrl.touched && PasswordCtrl.invalid && PasswordCtrl.value">Password must be at least 6 characters</small>
                 </div>
 
-                <div class="form-group has-feedback">
-                    <label for="passwordConfirmation">Password Confirmation :</label>
-                    <input style="padding: 30px 20px;" type="password" class="form-control bg-light border-0" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
+                <div class="form-field" [ngClass]="{ 'has-error': PasswordConfirmationCtrl.touched && user.password !== user.password_confirmation }">
+                    <label for="passwordConfirmation">Confirm Password</label>
+                    <input type="password" id="passwordConfirmation" name="passwordConfirmation" [(ngModel)]="user.password_confirmation" #PasswordConfirmationCtrl="ngModel" placeholder="Re-enter your password" />
+                    <small *ngIf="PasswordConfirmationCtrl.touched && user.password !== user.password_confirmation">Passwords do not match</small>
                 </div>
 
-                <div class="form-group has-feedback">
-                    <label for="image">Profile Picture :</label>
-                    <input style="padding: 30px 20px;" type="file" class="form-control bg-light border-0" id="image" (change)="onFileSelected($event)"/>
+                <div class="form-field">
+                    <label for="image">Profile Picture</label>
+                    <input type="file" id="image" (change)="onFileSelected($event)" />
                 </div>
 
-                <div class="form-group text-center" style="margin-top: 40px;">
-                    <button class="btn btn-primary px-5" type="submit" style="height: 50px;" [disabled]="updateForm.invalid" title="Update Profile">UPDATE PROFILE</button>
+                <div class="form-field" [ngClass]="{ 'has-error': GenderCtrl.touched && !GenderCtrl.valid }">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" [(ngModel)]="user.gender" #GenderCtrl="ngModel" required>
+                    <option [ngValue]="''" disabled>Select Gender</option>
+                    <option [ngValue]="'Male'">Male</option>
+                    <option [ngValue]="'Female'">Female</option>
+                    </select>
+                    <small *ngIf="GenderCtrl.touched && !GenderCtrl.valid">Gender is required</small>
+                </div>
+
+                <div class="form-field" [ngClass]="{ 'has-error': BirthDateCtrl.touched && !BirthDateCtrl.valid }">
+                    <label for="birth_date">Birth Date</label>
+                    <input type="date" id="birth_date" name="birth_date" [(ngModel)]="user.birth_date" #BirthDateCtrl="ngModel" required />
+                    <small *ngIf="BirthDateCtrl.touched && !BirthDateCtrl.valid">Birth date is required</small>
+                </div>
+
+                <div class="form-field" [ngClass]="{ 'has-error': NationalityCtrl.touched && !NationalityCtrl.valid }">
+                    <label for="nationality">Nationality</label>
+                    <input type="text" id="nationality" name="nationality" [(ngModel)]="user.nationality" #NationalityCtrl="ngModel" placeholder="Enter nationality" required />
+                    <small *ngIf="NationalityCtrl.touched && !NationalityCtrl.valid">Nationality is required</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" [disabled]="updateForm.invalid" title="Edit Profile">Edit Profile</button>
                 </div>
             </form>
         </div>

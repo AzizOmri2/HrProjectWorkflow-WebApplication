@@ -17,7 +17,10 @@ export class UpdateProfileComponent {
     password: '',
     password_confirmation: '',
     image: '', // Adding image field in case it's needed
-    currentPassword: '' // Store current password (don't display)
+    currentPassword: '', // Store current password (don't display)
+    gender: '',
+    birth_date: '',
+    nationality: ''
   };
   selectedFile: File | null = null;
   userId: number = Number(localStorage.getItem("user_id") || 0);
@@ -67,6 +70,10 @@ export class UpdateProfileComponent {
     if (this.selectedFile) {
       formData.append('user[image]', this.selectedFile, this.selectedFile.name); // Append the file
     }
+
+    formData.append('user[gender]', this.user.gender);
+    formData.append('user[birth_date]', this.user.birth_date);
+    formData.append('user[nationality]', this.user.nationality);
   
     this.userService.updateUser(this.userId, formData).subscribe({
       next: (res) => {

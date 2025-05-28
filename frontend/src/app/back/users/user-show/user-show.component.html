@@ -20,6 +20,14 @@
                                     <p class="text-muted">{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</p>
                                 </div>
                                 <div class="col-xs-6">
+                                    <strong>Date Of Birth</strong>
+                                    <p class="text-muted">{{ user.birth_date ? (user.birth_date | date: 'yyyy-MM-dd') : 'Not Specified' }}</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <strong>Nationality</strong>
+                                    <p class="text-muted">{{ user.nationality || 'Not specified' }}</p>
+                                </div>
+                                <div class="col-xs-6">
                                     <strong>Role:</strong>
                                     <p>
                                         <span class="label" [ngClass]="{
@@ -46,6 +54,19 @@
                                         </span>
                                     </p>
                                 </div>
+                                <div class="col-xs-6">
+                                    <strong>Gender</strong>
+                                    <p>
+                                        <span class="label"
+                                            [ngClass]="{
+                                                'label-danger': user.gender === 'Female',
+                                                'label-primary': user.gender === 'Male',
+                                                'label-default': user.gender !== 'Male' && user.gender !== 'Female'
+                                            }">
+                                        {{ user.gender || 'Not specified' }}
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
@@ -55,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between mt-4">
+                    <div class="d-flex justify-content-between mt-50">
                         <button class="btn btn-sm" [ngClass]="user.active ? 'btn-danger' : 'btn-success'" (click)="toggleActive(user.id)" [disabled]="user.role === 'admin'" [title]="user.active ? 'Ban User' : 'Unban User'">
                             <i class="fa" [ngClass]="user.active ? 'fa-ban' : 'fa-check'"></i>
                             {{ user.active ? 'Ban' : 'Unban' }}

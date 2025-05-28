@@ -32,8 +32,6 @@ export class ArticlesListFrontComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    
-
     // Check if candidate is authenticated
     const userData = localStorage.getItem('user_role');
     if (userData === 'candidate') {
@@ -106,8 +104,8 @@ export class ArticlesListFrontComponent implements OnInit{
 
     // Get All Offers
     this.offerService.getAllOffers().subscribe((offers) => {
-      this.offers = offers;
-      this.offers_count = offers.length;
+      this.offers = offers.filter((offer: any) => offer.status === 'available');
+      this.offers_count = this.offers.length;
       console.log(this.offers);
       console.log('Offers count:', this.offers_count);
     });

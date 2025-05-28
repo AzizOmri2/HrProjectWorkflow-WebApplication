@@ -8,7 +8,7 @@
                             'has-warning': NameCtrl.touched && !NameCtrl.value,
                             'has-success': NameCtrl.touched && NameCtrl.valid
                         }">
-                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="title">
+                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="name">
                             <i class="fa fa-bell-o"></i>
                             Name is required
                         </label>
@@ -21,7 +21,7 @@
                             'has-warning': EmailCtrl.touched && !EmailCtrl.value,
                             'has-success': EmailCtrl.touched && EmailCtrl.valid
                         }">
-                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="title">
+                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="email">
                             <i class="fa fa-bell-o"></i>
                             Email is required
                         </label>
@@ -29,19 +29,74 @@
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
             
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" placeholder="Enter password" />
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': PasswordCtrl.touched && PasswordCtrl.invalid,
+                            'has-success': PasswordCtrl.touched && PasswordCtrl.valid
+                        }">
+                        <label *ngIf="PasswordCtrl.touched && PasswordCtrl.invalid">
+                            <i class="fa fa-bell-o"></i> Password must be at least 6 characters.
+                        </label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" [(ngModel)]="user.password" #PasswordCtrl="ngModel" minlength="6"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
-            
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" id="passwordConfirmation" name="password_confirmation" [(ngModel)]="user.password_confirmation" placeholder="Confirm password" />
+
+                    <!-- Password Confirmation Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': PasswordConfirmationCtrl.touched && user.password_confirmation !== user.password,
+                            'has-success': PasswordConfirmationCtrl.touched && user.password_confirmation === user.password
+                        }">
+                        <label *ngIf="PasswordConfirmationCtrl.touched && user.password_confirmation && user.password_confirmation !== user.password">
+                            <i class="fa fa-bell-o"></i> Passwords do not match.
+                        </label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" [(ngModel)]="user.password_confirmation" #PasswordConfirmationCtrl="ngModel"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
             
                     <div class="form-group has-feedback">
                         <input type="file" class="form-control" id="image" (change)="onFileSelected($event)"/>
                         <span class="glyphicon glyphicon-picture form-control-feedback"></span>
+                    </div>
+
+                    
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': GenderCtrl.touched && !GenderCtrl.value,
+                            'has-success': GenderCtrl.touched && GenderCtrl.valid
+                        }">
+                        <label *ngIf="GenderCtrl.touched && !GenderCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Gender.
+                        </label>
+                        <select class="form-control" id="gender" name="gender" [(ngModel)]="user.gender" #GenderCtrl="ngModel">
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': BirthDateCtrl.touched && !BirthDateCtrl.value,
+                            'has-success': BirthDateCtrl.touched && BirthDateCtrl.valid
+                        }">
+                        <label *ngIf="BirthDateCtrl.touched && !BirthDateCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Date of Birth.
+                        </label>
+                        <input type="date" class="form-control" id="birth_date" name="birth_date" [(ngModel)]="user.birth_date" #BirthDateCtrl="ngModel"/>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': NationalityCtrl.touched && !NationalityCtrl.value,
+                            'has-success': NationalityCtrl.touched && NationalityCtrl.valid
+                        }">
+                        <label *ngIf="NationalityCtrl.touched && !NationalityCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Nationality.
+                        </label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter Nationality" [(ngModel)]="user.nationality" #NationalityCtrl="ngModel"/>
+                        <span class="glyphicon glyphicon-map-marker form-control-feedback" aria-hidden="true"></span>
                     </div>
                 </div>
             

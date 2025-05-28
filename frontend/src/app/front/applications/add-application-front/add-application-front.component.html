@@ -26,19 +26,15 @@
                 </div>
             </div>
             <br>
-            <form (ngSubmit)="onSubmit()" #addForm="ngForm" enctype="multipart/form-data">
-                <div class="form-group has-feedback">
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="cv_file">CV Import :</label>
-                            <input style="padding: 30px 20px;" type="file" class="form-control bg-light border-0" id="cv_file" name="cv_file" (change)="onFileChange($event)" required placeholder="CV File">
-                        </div>
-                    </div>
+            <form (ngSubmit)="onSubmit()" class="custom-form" #addForm="ngForm" enctype="multipart/form-data">
+
+                <div class="form-field">
+                    <label for="cv_file">CV Import</label>
+                    <input type="file" id="cv_file" name="cv_file" (change)="onFileChange($event)" required placeholder="CV File">
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-4" style="margin-top:40px;margin-left:240px;">
-                        <button class="btn btn-primary btn-block" type="submit" style="height: 50px;" [disabled]="addForm.invalid || !selectedFile" title="Add Application">Add Application</button>
-                    </div>
+
+                <div class="form-actions">
+                    <button type="submit" [disabled]="addForm.invalid || !selectedFile" title="Add Application">Add Application</button>
                 </div>
             </form>
         </div>

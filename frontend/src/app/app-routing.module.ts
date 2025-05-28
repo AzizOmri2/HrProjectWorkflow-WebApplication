@@ -56,7 +56,7 @@ export const routes: Routes = [
         children: [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
             { path: 'users/add-user', component: AddUserComponent, data: { title: 'Add User', breadcrumb: 'Users' } },
-            { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
+            { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Edit Profile', breadcrumb: 'Profile' } },
             
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
@@ -83,7 +83,7 @@ export const routes: Routes = [
     
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],
         children: [
-            { path: 'update-profile', component: UpdateProfileFrontComponent, data: { title: 'Update Profile', breadcrumb: 'Profile' } },
+            { path: 'update-profile', component: UpdateProfileFrontComponent, data: { title: 'Edit Profile', breadcrumb: 'Profile' } },
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
 

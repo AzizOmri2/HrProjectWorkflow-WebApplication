@@ -35,7 +35,7 @@
                     <!-- Display warning label when input is touched and not completed -->
                     <label *ngIf="nameCtrl.touched && !nameCtrl.value" class="control-label" for="nameCtrl">
                         <i class="fa fa-bell-o"></i>
-                        Full Name is missing
+                        Full Name is missing.
                     </label>
                     
                     <!-- Display error label when input is invalid and touched and there is an error -->
@@ -44,7 +44,7 @@
                         Name should not contain special characters or numbers
                     </label>
                     <input type="text" class="form-control" placeholder="Full name" name="name" [(ngModel)]="name" #nameCtrl="ngModel" required pattern="^[a-zA-Z\s]+$"/>
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <span class="glyphicon glyphicon-font form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback" 
                     [ngClass]="{
@@ -55,7 +55,7 @@
                     <!-- Display warning label when input is touched and not completed -->
                     <label *ngIf="emailCtrl.touched && !emailCtrl.value" class="control-label" for="emailCtrl">
                         <i class="fa fa-bell-o"></i>
-                        Email is missing
+                        Email is missing.
                     </label>
                     
                     <!-- Display error label when input is invalid and touched and there is an error -->
@@ -75,7 +75,7 @@
                     <!-- Warning: Touched but not selected -->
                     <label *ngIf="roleCtrl.touched && !role" class="control-label text-warning" for="roleCtrl">
                         <i class="fa fa-bell-o"></i>
-                        Please select a role
+                        Role is missing.
                     </label>
 
                     <select class="form-control" name="role" [(ngModel)]="role" #roleCtrl="ngModel" required>
@@ -87,6 +87,46 @@
 
                     <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
                 </div>
+
+                <div class="form-group has-feedback"
+                    [ngClass]="{
+                        'has-warning': GenderCtrl.touched && !GenderCtrl.value,
+                        'has-success': GenderCtrl.touched && GenderCtrl.valid
+                    }">
+                    <label *ngIf="GenderCtrl.touched && !GenderCtrl.value">
+                        <i class="fa fa-bell-o"></i> Gender is missing.
+                    </label>
+                    <select class="form-control" id="gender" name="gender" [(ngModel)]="gender" #GenderCtrl="ngModel" required>
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+                </div>
+
+                <div class="form-group has-feedback"
+                    [ngClass]="{
+                        'has-warning': BirthDateCtrl.touched && !BirthDateCtrl.value,
+                        'has-success': BirthDateCtrl.touched && BirthDateCtrl.valid
+                    }">
+                    <label *ngIf="BirthDateCtrl.touched && !BirthDateCtrl.value">
+                        <i class="fa fa-bell-o"></i> Date of Birth is missing.
+                    </label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date" [(ngModel)]="birth_date" #BirthDateCtrl="ngModel" required/>
+                </div>
+
+                <div class="form-group has-feedback"
+                    [ngClass]="{
+                        'has-warning': NationalityCtrl.touched && !NationalityCtrl.value,
+                        'has-success': NationalityCtrl.touched && NationalityCtrl.valid
+                    }">
+                    <label *ngIf="NationalityCtrl.touched && !NationalityCtrl.value">
+                        <i class="fa fa-bell-o"></i> Nationality is missing.
+                    </label>
+                    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter Nationality" [(ngModel)]="nationality" #NationalityCtrl="ngModel"/>
+                    <span class="glyphicon glyphicon-map-marker form-control-feedback" aria-hidden="true"></span>
+                </div>
+                
                 <div class="form-group has-feedback">
                     <label class="control-label" for="generatedPassword">
                         Generated Default Password
