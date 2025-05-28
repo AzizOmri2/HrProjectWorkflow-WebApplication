@@ -74,6 +74,13 @@ Rails.application.routes.draw do
   get 'comments/:article_id/by_id_article', to: 'comments#comments_by_article'
   
 
+  # Reports
+  get '/reports/funnel', to: 'reports#funnel'
+  get '/reports/time_to_hire', to: 'reports#time_to_hire'
+  get '/reports/diversity', to: 'reports#diversity'
+
+
+
   root 'user#index'
   
 end

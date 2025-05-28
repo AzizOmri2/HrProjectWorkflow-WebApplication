@@ -43,6 +43,7 @@ import { ArticleShowFrontComponent } from './front/articles/article-show-front/a
 import { AboutPageComponent } from './front/other/about-page/about-page.component';
 import { HelpSupportPageComponent } from './front/other/help-support-page/help-support-page.component';
 import { MesInterviewsComponent } from './front/applications/mes-interviews/mes-interviews.component';
+import { ReportsComponent } from './back/other/reports/reports.component';
 
 
 export const routes: Routes = [
@@ -54,6 +55,8 @@ export const routes: Routes = [
     
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
+            { path: '', component: ReportsComponent, data: { title: 'Dashboard', breadcrumb: 'Profile' } },
+
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
             { path: 'users/add-user', component: AddUserComponent, data: { title: 'Add User', breadcrumb: 'Users' } },
             { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Edit Profile', breadcrumb: 'Profile' } },

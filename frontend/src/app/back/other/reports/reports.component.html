@@ -1,0 +1,70 @@
+<div class="reports-container">
+    <h1 class="title">RECRUITMENT REPORTS & ANALYSIS</h1>
+
+    <!-- Funnel Section -->
+    <div class="card">
+        <h2 class="section-title">🚀 Recruitment Funnel</h2>
+        <ul class="funnel-list">
+            <li *ngFor="let step of funnelData" class="funnel-item">
+                <span class="step-label">{{ step.label }}</span>
+                <span class="badge">{{ step.count }}</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- Conversion Rates Section -->
+    <div class="card">
+        <h2 class="section-title">📊 Conversion Rates</h2>
+        <ul class="conversion-list">
+            <li *ngFor="let item of conversionRates">
+                <span class="conversion-label">{{ item.label }}</span>
+                <span class="conversion-rate">{{ item.rate }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Diversity Section -->
+    <div class="card">
+        <h2 class="section-title">🌍 Diversity Overview</h2>
+        <div class="diversity-group">
+            <div class="diversity-card">
+                <h3>
+                    <i class="fa fa-users"></i> Gender
+                </h3>
+                <ul>
+                    <li *ngFor="let item of diversityData.gender">
+                        <span class="item-label">{{ item.label }}</span>
+                        <span class="badge small">{{ item.count }}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="diversity-card">
+                <h3><i class="fa fa-globe"></i> Nationality</h3>
+                <ul>
+                    <li *ngFor="let item of diversityData.nationality">
+                        <span class="item-label">{{ item.label }}</span>
+                        <span class="badge small">{{ item.count }}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="diversity-card">
+                <h3><i class="fa fa-clock-o"></i> Age Group</h3>
+                <ul>
+                    <li *ngFor="let item of diversityData.age_group">
+                        <span class="item-label">{{ item.label }}</span>
+                        <span class="badge small">{{ item.count }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time to Hire Section -->
+    <div class="card">
+        <h2 class="section-title">⏱️ Average Time to Hire</h2>
+        <p class="time-to-hire">
+            <span class="badge highlight">{{ timeToHire }} days</span>
+        </p>
+    </div>
+</div>

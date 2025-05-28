@@ -76,6 +76,7 @@ export class InterviewShowComponent{
     this.interviewService.validateInterviewAccept(interviewId).subscribe({
       next: (response) => {
         console.log('Interview validated:', response);
+        this.feedbackUpdated.emit();
       },
       error: (error) => {
         console.error('Validation failed:', error);
@@ -88,6 +89,7 @@ export class InterviewShowComponent{
     this.interviewService.validateInterviewReject(interviewId).subscribe({
       next: (response) => {
         console.log('Interview validated:', response);
+        this.feedbackUpdated.emit();
       },
       error: (error) => {
         console.error('Validation failed:', error);

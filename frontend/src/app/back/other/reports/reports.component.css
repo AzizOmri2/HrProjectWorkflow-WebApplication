@@ -1,0 +1,166 @@
+.reports-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2d3748;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: #2b6cb0;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  padding: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+  color: #2c5282;
+}
+
+.funnel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.funnel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.2s ease;
+}
+
+.funnel-item:hover {
+  background: #f7fafc;
+}
+
+.step-label,
+.item-label {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.badge {
+  background-color: #3182ce;
+  color: #fff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.badge.small {
+  background-color: #4fd1c5;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.badge.highlight {
+  background-color: #38a169;
+  font-size: 1.2rem;
+  padding: 0.6rem 1.2rem;
+}
+
+.diversity-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.diversity-card {
+  flex: 1;
+  min-width: 200px;
+  background: #f0f4f8;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  transition: background-color 0.2s ease;
+}
+
+.diversity-card:hover {
+  background: #e2e8f0;
+}
+
+.diversity-card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #2d3748;
+  font-size: 1.5rem;  /* Classic readable size */
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* space between icon and text */
+}
+
+.fa {
+  font-size: 1.6rem;
+  color: #3182ce; /* nice blue icon color */
+}
+
+.diversity-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.diversity-card li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+
+.time-to-hire {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+
+/* Conversion Rates Styles */
+.conversion-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conversion-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 600;
+  color: #4a5568;
+  cursor: default;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.conversion-list li:hover {
+  background-color: #ebf4ff;
+}
+
+.conversion-label {
+  color: #2b6cb0;
+}
+
+.conversion-rate {
+  color: #2f855a;
+  font-weight: 700;
+}
