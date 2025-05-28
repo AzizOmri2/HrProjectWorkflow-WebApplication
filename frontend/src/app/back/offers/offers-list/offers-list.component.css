@@ -210,8 +210,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1051;
-  max-width: 800px;
-  width: 90%;
+  max-width: 1000px; /* Increase max-width */
+  width: 95%; /* Adjust width to be responsive */
+  max-height: 90vh; /* Add a max-height */
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
@@ -223,10 +224,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  padding-right: 50px;
   border-bottom: 1px solid #dee2e6;
-  background-color: #f7f7f7;
+  padding: 20px;
 }
 
 /* Close Button */
@@ -242,8 +241,7 @@
 /* Modal Body with Vertical Scroll */
 .custom-modal-body {
   padding: 20px;
-  padding-right: 50px;
-  max-height: 70vh; /* Enables scrolling if content is too long */
+  max-height: 80vh; /* Increase height */
   overflow-y: auto;
   background-color: #fff;
 
@@ -270,10 +268,11 @@
 @media (max-width: 768px) {
   .custom-modal {
     top: 5%;
-    width: 95%;
+    width: 98%;
+    max-height: 95vh;
   }
 
   .custom-modal-body {
-    max-height: 60vh;
+    max-height: 85vh;
   }
 }

@@ -1,0 +1,188 @@
+/* Box Container Styling */
+.box.box-warning {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Search Input Styling */
+#searchInput {
+  padding-left: 2.5rem;
+  border-radius: 50px;    /* makes it fully rounded */
+  border: 1px solid #ccc;
+  height: 42px;           /* match select height */
+  font-size: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#searchInput::placeholder {
+  color: #999;
+  font-size: 1.25rem;
+}
+
+#searchInput + span {
+  left: 15px;
+  color: #888;
+  font-size: 1rem;
+}
+
+
+/* Filter Section Styling */
+.filter-section {
+  background-color: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Filter Controls */
+.filter-section label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.filter-section .form-select {
+  min-width: 160px;
+  border-radius: 0.5rem;
+  border-color: #ddd;
+  padding: 0.25rem 0.75rem;
+  height: 42px;
+  font-size: 1.25rem;
+  transition: border-color 0.3s ease;
+}
+
+.filter-section .form-select:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+  outline: none;
+}
+
+/* Buttons */
+.filter-section .btn-outline-secondary {
+  border-radius: 0.5rem;
+  padding: 0.35rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  font-size: 1.25rem;
+  height: 42px;
+  border-color: #F14D5D;      /* Change border color */
+  color: #F14D5D;             /* Change text color */
+  background-color: transparent;
+}
+
+.filter-section .btn-outline-secondary:hover {
+  background-color: #F14D5D;  /* Background changes to your color on hover */
+  color: #fff;                /* Text becomes white on hover for contrast */
+  border-color: #F14D5D;      /* Keep border color on hover */
+}
+
+
+/* Responsive spacing for the button container */
+.filter-section .d-flex.gap-2 {
+  gap: 0.75rem !important;
+}
+
+/* Ensure buttons are full width on small screens */
+@media (max-width: 576px) {
+  .filter-section .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+  .filter-section .btn-outline-secondary,
+  .filter-section .btn-primary {
+    width: 100%;
+  }
+}
+
+
+
+/* Show Modal Styling */
+/* Modal Backdrop */
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal Box */
+.custom-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1051;
+  max-width: 1000px; /* Increase max-width */
+  width: 95%; /* Adjust width to be responsive */
+  max-height: 90vh; /* Add a max-height */
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Header */
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6;
+  padding: 20px;
+}
+
+/* Close Button */
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Modal Body with Vertical Scroll */
+.custom-modal-body {
+  padding: 20px;
+  max-height: 80vh; /* Increase height */
+  overflow-y: auto;
+  background-color: #fff;
+
+  /* Scrollbar style for Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+/* Scrollbar style for Chrome, Edge, Safari */
+.custom-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-modal-body::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .custom-modal {
+    top: 5%;
+    width: 98%;
+    max-height: 95vh;
+  }
+
+  .custom-modal-body {
+    max-height: 85vh;
+  }
+}

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { InterviewService } from '../../../services/interview.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,9 +11,8 @@ import { InterviewFeedbacksService } from '../../../services/interview-feedbacks
   templateUrl: './interview-show.component.html',
   styleUrl: './interview-show.component.css'
 })
-export class InterviewShowComponent implements OnInit{
+export class InterviewShowComponent{
   userId!: number;
-  interviewId!: number;
   interview: any = {
     application_id: '',
     interview_date: '',
@@ -31,21 +30,26 @@ export class InterviewShowComponent implements OnInit{
   interviewfeedbacks: any[] = [];
 
   constructor(
-    private route: ActivatedRoute,
     private interviewService: InterviewService,
-    private interviewFeedbackService: InterviewFeedbacksService,
-    private router: Router
+    private interviewFeedbackService: InterviewFeedbacksService
   ) {}
 
-  ngOnInit(): void {
+  @Input() interviewId!: number;
+  @Output() feedbackUpdated = new EventEmitter<void>();
+
+
+  ngOnChanges() {
+    this.loadInterviewFeedbacksData();
+  }
+
+  loadInterviewFeedbacksData() {
     const idStr = localStorage.getItem('user_id');
-    const id = idStr ? +idStr : null; // Convert to number
+    const id = idStr ? +idStr : null;
 
     if (id !== null) {
       this.userId = id;
     }
 
-    this.interviewId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.interviewId) {
       this.interviewService.getInterviewById(this.interviewId).subscribe({
         next: data => {
@@ -58,14 +62,13 @@ export class InterviewShowComponent implements OnInit{
 
       this.interviewFeedbackService.getInterviewFeedbacksByIdInterview(this.interviewId).subscribe({
         next: data => {
-          this.interviewfeedbacks = data;
+          this.interviewfeedbacks = data; // create a new array reference
         },
         error: err => {
           console.error('Error fetching feedbacks for this interview', err);
         }
       });
     }
-    
   }
 
 
@@ -73,7 +76,6 @@ export class InterviewShowComponent implements OnInit{
     this.interviewService.validateInterviewAccept(interviewId).subscribe({
       next: (response) => {
         console.log('Interview validated:', response);
-        this.ngOnInit();
       },
       error: (error) => {
         console.error('Validation failed:', error);
@@ -86,7 +88,6 @@ export class InterviewShowComponent implements OnInit{
     this.interviewService.validateInterviewReject(interviewId).subscribe({
       next: (response) => {
         console.log('Interview validated:', response);
-        this.ngOnInit();
       },
       error: (error) => {
         console.error('Validation failed:', error);
@@ -104,31 +105,36 @@ export class InterviewShowComponent implements OnInit{
       rating: this.rating
     };
 
-    if(feedbackData.interview_id && feedbackData.user_id && feedbackData.feedback && feedbackData.rating){
-      this.interviewFeedbackService.createInterviewFeedbacks(feedbackData).subscribe(
-        (response) => {
-          console.log('Feedback submitted successfully', response);
-          // Optionally, reset the form and append the new feedback to the list
-          this.ngOnInit();
-          this.feedback = '';
-          this.rating = 0;
-        },
-        (error) => {
-          console.error('Error submitting feedback', error);
-        }
-      );
-    }else{
-      alert('Please fill all required fields !')
+    if (feedbackData.feedback && feedbackData.rating) {
+      if (feedbackData.rating < 1 || feedbackData.rating > 5) {
+        alert('Rating must be between 1 and 5.');
+        return;
+      }else{
+        this.interviewFeedbackService.createInterviewFeedbacks(feedbackData).subscribe(
+          (response) => {
+            console.log('Feedback submitted successfully', response);          
+          },
+          (error) => {
+            console.error('Error submitting feedback', error);
+          }
+        );
+        this.feedback = '';
+        this.rating = 0;
+
+        // Notify parent to reload modal
+        this.feedbackUpdated.emit();
+      }
+    } else {
+      alert('Please fill all required fields!');
     }
-    
   }
 
   deleteFeedback(id: number) {
     if (confirm('Are you sure you want to delete your feedback?')) {
       this.interviewFeedbackService.deleteInterviewFeedback(id).subscribe(
         () => {
-          // Refresh the feedback list after deletion
-          this.ngOnInit();
+          // Notify parent to reload modal
+          this.feedbackUpdated.emit();
         },
         error => {
           console.error('Error deleting feedback:', error);

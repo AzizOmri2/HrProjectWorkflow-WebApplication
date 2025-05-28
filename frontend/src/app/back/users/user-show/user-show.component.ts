@@ -36,9 +36,7 @@ export class UserShowComponent{
     }
   }
   constructor(
-    private route: ActivatedRoute,
     private userService: UserService,
-    private router: Router
   ) {}
 
   toggleActive(id: number) {

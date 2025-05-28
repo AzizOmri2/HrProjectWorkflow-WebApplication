@@ -61,22 +61,18 @@ export const routes: Routes = [
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
             { path: 'offers/update-offer/:id', component: UpdateOfferComponent, data: { title: 'Update Job Offer', breadcrumb: 'Profile' } },
-            { path: 'offers/show/:id', component: OfferShowComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
             
             { path: 'applications', component: ApplicationsListComponent, data: { title: 'Applications List', breadcrumb: 'Profile' } },
             { path: 'applications/add-application', component: AddApplicationComponent, data: { title: 'Add Application', breadcrumb: 'Profile' } },
             { path: 'applications/update-application/:id', component: UpdateApplicationComponent, data: { title: 'Update Application', breadcrumb: 'Profile' } },
-            { path: 'applications/show/:id', component: ApplicationShowComponent, data: { title: 'Application Details', breadcrumb: 'Profile' } },
 
             { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
             { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
             { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
-            { path: 'interviews/show/:id', component: InterviewShowComponent, data: { title: 'Interview Details', breadcrumb: 'Profile' } },
 
             { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
             { path: 'articles/add-article', component: AddArticleComponent, data: { title: 'Add Article', breadcrumb: 'Profile' } },
             { path: 'articles/update-article/:id', component: UpdateArticleComponent, data: { title: 'Update Article', breadcrumb: 'Profile' } },
-            { path: 'articles/show/:id', component: ArticleShowComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },
 
             { path: 'comments', component: CommentsListComponent, data: { title: 'Comments List', breadcrumb: 'Profile' } },
             { path: 'comments/add-comment', component: AddCommentComponent, data: { title: 'Add Comment', breadcrumb: 'Profile' } },
@@ -105,9 +101,10 @@ export const routes: Routes = [
     
     {  path: 'frontvisiteur', component: FrontvisiteurComponent,
         children: [
-            { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: 'home', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
 
-            { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
+            { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
 
             { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
             { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },

@@ -1,15 +1,17 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-info">
-            <div style="background-color:#fff;">
-                <table class="table">
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <table class="table table-striped table-hover">
                     <tbody>
                         <tr>
                             <th>Application</th>
                             <td>
-                                <span class="label label-primary">
-                                    {{ interview.application.job_offer.title }} | {{ interview.application.job_offer.company | uppercase }} | {{ interview.application.candidate.name }}
-                                </span>
+                                <strong>{{ interview.application.job_offer.title }}</strong><br />
+                                <small class="text-muted">
+                                    <i class="fa fa-building text-info"></i> {{ interview.application.job_offer.company | uppercase }} |
+                                    {{ interview.application.candidate.name }}
+                                </small>
                             </td>
                         </tr>
                         <tr>
@@ -19,13 +21,13 @@
                         <tr>
                             <th>Interviewer</th>
                             <td>
-                                <span class="label label-default">{{ interview.interviewer.name }}</span>
+                                <i class="fa fa-user text-primary"></i>&nbsp; <strong>{{ interview.interviewer.name }}</strong>
                             </td>
                         </tr>
                         <tr>
                             <th>Link</th>
                             <td>
-                                <a href="{{ interview.link }}" class="btn btn-primary btn-sm" title="Open The Interview's Reunion">
+                               <a [href]="interview.link" class="btn btn-sm btn-default" title="Open Interview Link" target="_blank">
                                     <i class="fa fa-link"></i>
                                 </a>
                             </td>
@@ -50,7 +52,7 @@
                         </tr>
                         <tr>
                             <th>Duration</th>
-                            <td>{{ interview.duration }} min</td>
+                            <td>{{ interview.duration }}<small><b>min</b></small></td>
                         </tr>
                         <tr>
                             <th>Notes</th>
@@ -59,33 +61,61 @@
                         <tr>
                             <th>Final Decision</th>
                             <td>
-                                <button style="width:30px;" class="btn btn-block btn-success btn-sm" [disabled]="interview.status=='Finished' && interview.result=='Accepted'" (click)="onValidateInterviewAccept(interview.id)" title="Accept Interview"><i class="fa fa-check"></i></button>
-                                &nbsp;
-                                <button style="margin-left:40px;margin-top:-50px;width:30px;" class="btn btn-block btn-danger btn-sm" [disabled]="interview.status=='Finished' && interview.result=='Rejected'" (click)="onValidateInterviewReject(interview.id)" title="Reject Interview"><i class="fa fa-ban"></i></button>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <button class="btn btn-success btn-sm" [disabled]="interview.status == 'Finished' && interview.result == 'Accepted'" (click)="onValidateInterviewAccept(interview.id)" title="Accept Candidate">
+                                        <i class="fa fa-check"></i> Accept
+                                    </button>
+
+                                    <button class="btn btn-danger btn-sm" [disabled]="interview.status == 'Finished' && interview.result == 'Rejected'" (click)="onValidateInterviewReject(interview.id)" title="Reject Candidate">
+                                        <i class="fa fa-ban"></i> Reject
+                                    </button>
+                                </div>    
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <hr style="border-top: 1px solid #ccc; margin: 30px 0;" />
 
                 <!-- Hr Add Comments or Notes Section -->
                 <div style="padding: 25px;">
                     <h4>
                         <i class="fa fa-info"></i> HR can collaborate to facilitate the final decision.
                     </h4>
-                    <form style="margin-top:30px;margin-left:100px;width:950px;" (ngSubmit)="submitFeedback()" #addForm="ngForm">
-                        <div class="form-group">
-                            <textarea class="form-control" id="feedback" [(ngModel)]="feedback" name="feedback" rows="3" placeholder="Feedback" required></textarea>
+                    <br>
+                    <form (ngSubmit)="submitFeedback()" #addForm="ngForm">
+                        <div class="form-group has-feedback"
+                            [ngClass]="{
+                                'has-warning': feedbackRef.touched && !feedbackRef.value,
+                                'has-success': feedbackRef.touched && feedbackRef.valid
+                            }">
+                            <label *ngIf="feedbackRef.touched && !feedbackRef.value" class="control-label" for="rating">
+                            <i class="fa fa-bell-o"></i>
+                                You should give a feedback !
+                            </label>
+
+                            <textarea class="form-control" id="feedback" [(ngModel)]="feedback" #feedbackRef="ngModel" name="feedback" rows="4" placeholder="Feedback" required></textarea>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" id="rating" [(ngModel)]="rating" name="rating" min="1" max="5" required>
+                        
+                        <div class="form-group has-feedback"
+                            [ngClass]="{
+                                'has-warning': ratingRef.touched && ratingRef.invalid,
+                                'has-success': ratingRef.touched && ratingRef.valid
+                            }">
+                            <label *ngIf="ratingRef.touched && ratingRef.invalid" class="control-label" for="rating">
+                            <i class="fa fa-bell-o"></i>
+                                Rating must be between 1 and 5.
+                            </label>
+
+                            <input type="number" class="form-control" id="rating" [(ngModel)]="rating" name="rating" #ratingRef="ngModel" min="1" max="5" placeholder="Rating should be between 1 and 5" required>
                         </div>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary" title="Add Comment">Add Comment</button>
+                            <button type="submit" class="btn btn-primary" title="Add Comment" [disabled]="addForm.invalid">Add Comment</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Comments Section -->
+                <!-- Comments and Feedbacks Section -->
                 <div style="padding: 20px;">
                     <h4>Notes or Comments for this Interview</h4>
                     <table class="table table-bordered" *ngIf="interviewfeedbacks.length > 0; else noInterviewFeedbacks">
@@ -116,15 +146,6 @@
                     <ng-template #noInterviewFeedbacks>
                         <p class="text-muted">No Feedbacks for this interview yet.</p>
                     </ng-template>
-                </div>
-
-
-                <div style="background-color:#fff;" align="center">
-                    <br>
-                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
-                        <a style="color:#fff;" [routerLink]="['/back/interviews']" title="Back To Interviews List">Back To List</a>
-                    </button>
-                    <br>
                 </div>
             </div>    
         </div>

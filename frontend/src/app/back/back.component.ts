@@ -171,7 +171,7 @@ export class BackComponent implements OnInit{
         localStorage.removeItem('user_image');
         localStorage.removeItem('alert_shown');
         this.isLoggedIn = false;
-        window.location.href = '/login'; // Redirect to login page after logout
+        window.location.href = '/frontvisiteur'; // Redirect to visiteur page after logout
       },
       (error) => {
         console.error('Error during logout', error);

@@ -203,22 +203,30 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+/* Modal Box */
 .custom-modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1051;
-  max-width: 800px;
-  width: 90%;
-  max-height: 90vh; /* Set max modal height */
+  max-width: 1000px; /* Increase max-width */
+  width: 95%; /* Adjust width to be responsive */
+  max-height: 90vh; /* Add a max-height */
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 
-  display: flex;
-  flex-direction: column;
+/* Close Button */
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
 }
 
 .custom-modal-header {
@@ -227,16 +235,32 @@
   align-items: center;
   border-bottom: 1px solid #dee2e6;
   padding: 20px;
-  padding-right: 50px;
 }
 
+/* Modal Body with Vertical Scroll */
 .custom-modal-body {
   padding: 20px;
-  padding-right: 50px;
-  overflow-y: auto;        /* Enable vertical scrolling */
-  flex: 1 1 auto;           /* Allow body to expand and scroll if needed */
-  max-height: 70vh;         /* Limit height to make room for scroll */
-  scroll-behavior: smooth;  /* Smooth scroll experience */
+  max-height: 80vh; /* Increase height */
+  overflow-y: auto;
+  background-color: #fff;
+
+  /* Scrollbar style for Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+/* Scrollbar style for Chrome, Edge, Safari */
+.custom-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-modal-body::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
 }
 
 .action-buttons {
@@ -244,4 +268,17 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .custom-modal {
+    top: 5%;
+    width: 98%;
+    max-height: 95vh;
+  }
+
+  .custom-modal-body {
+    max-height: 85vh;
+  }
 }

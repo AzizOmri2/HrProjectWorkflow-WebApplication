@@ -20,3 +20,16 @@
   max-width: 100%;
   height: auto;
 }
+
+.rounded-image {
+  border-radius: 15px; /* Adjust px value for roundness */
+}
+
+.hover-image {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.hover-image:hover {
+  transform: scale(1.05);
+}

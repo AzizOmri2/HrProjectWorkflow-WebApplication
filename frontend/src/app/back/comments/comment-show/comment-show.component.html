@@ -1,39 +1,34 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-info">
-            <div style="background-color:#fff;">
-                <table class="table">
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <table class="table table-striped table-hover">
                     <tbody>
                         <tr>
+                            <th>Article's Title</th>
+                            <td>
+                                <span class="label label-primary">{{ comment.article.title | uppercase }}</span>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Content</th>
-                            <td>{{ comment.content }}</td>
+                            <td>
+                                <small>{{ comment.content }}</small>
+                            </td>
                         </tr>
                         <tr>
                             <th>Commenter</th>
                             <td>
-                                <span class="label label-default">{{ comment.commenter.name }}</span>
+                                <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Article</th>
-                            <td>
-                                <span class="label label-primary">{{ comment.article.title }}</span>
-                            </td>
-                        </tr>
+                        
                         <tr>
                             <th>Created At</th>
                             <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
                         </tr>
                     </tbody>
                 </table>
-
-                <div style="background-color:#fff;" align="center">
-                    <br>
-                    <button style="width:100px;" class="btn btn-block btn-info btn-sm">
-                        <a style="color:#fff;" [routerLink]="['/back/comments']" title="Back To Comments List">Back To List</a>
-                    </button>
-                    <br>
-                </div>
             </div>    
         </div>
     </div>

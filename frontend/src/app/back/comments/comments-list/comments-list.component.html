@@ -1,64 +1,79 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-warning">
-            <div style="background-color:#fff;">
-                <br>
-                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
-                <button [routerLink]="['/back/comments/add-comment']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Comment">
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Comment
-                </button>
-                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
-                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a (click)="setActionText('Sort By')">Default</a></li>
-                        <li class="divider"></li>
-                        <li><a (click)="setActionText('Title')">Title</a></li>
-                        <li><a (click)="setActionText('Content')">Content</a></li>
-                        <li><a (click)="setActionText('Author')">Author</a></li>
-                        <li><a (click)="setActionText('NB Likes')">NB Likes</a></li>
-                    </ul>
+        <div class="box box-warning p-4 rounded">
+            <!-- Filter Section -->
+            <div class="filter-section card p-3 mb-4 shadow-sm rounded-4">
+                <div class="row gy-3 gx-2 align-items-center">
+                    <!-- Search Input -->
+                    <div class="col-md-10">
+                        <input type="text" placeholder="🔍 Search comments..." (input)="applyFilters()" [(ngModel)]="filterText" id="searchInput" />
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2 d-flex gap-2 justify-content-end">
+                        <button class="btn btn-outline-secondary" (click)="resetFilters()">
+                            <i class="fa fa-times"></i>&nbsp;Reset Filter
+                        </button>
+                    </div>
                 </div>
-                <br><br>
-                <table class="table" *ngIf="comments.length > 0; else noComments">
-                    <thead>
-                        <tr>
-                            <th>Content</th>
-                            <th>Commenter</th>
-                            <th>Article's Title</th>
-                            <th>Created At</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let comment of comments | filter:searchText">
-                            <td>{{ comment.content }}</td>
-                            <td>
-                                <span class="label label-default">{{ comment.commenter.name }}</span>
-                            </td>
-                            <td>
-                                <span class="label label-primary">{{ comment.article.title }}</span>
-                            </td>
-                            <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                            <td>
-                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/comments/show', comment.id]" title="Show Comment's Details"><i class="fa fa-ellipsis-v"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/comments/update-comment', comment.id]" title="Update Comment"><i class="fa fa-edit"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteComment(comment.id)" title="Delete Comment"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <ng-template #noComments>
-                    <p style="margin-left:20px;" class="text-muted">No comments to show.</p>
-                    <br>
-                </ng-template>
-            </div>    
+            </div>
+            <br>
+
+            <!-- Comments Table -->
+            <table class="table table-hover table-striped" *ngIf="filteredComments.length > 0; else noComments">
+                <thead>
+                    <tr>
+                        <th>Article's Title</th>
+                        <th>Content</th>        
+                        <th>Commenter</th>                
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let comment of filteredComments">
+                        <td>
+                            <span class="label label-primary">{{ comment.article.title | uppercase }}</span>
+                        </td>
+                        <td>
+                            <small>{{ comment.content }}</small>
+                        </td>
+                        <td>
+                            <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b>
+                        </td>
+                        <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
+                                <button (click)="openCommentInfo(comment.id)" class="btn btn-info" title="Show Details"><i class="fa fa-info-circle"></i></button>
+                                <button [routerLink]="['/back/comments/update-comment', comment.id]" class="btn btn-success" title="Edit Comment"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger" (click)="deleteComment(comment.id)" title="Delete Comment"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- No Comments Message -->
+            <ng-template #noComments>
+                <p class="text-muted" style="padding-left: 10px;">No comments found.</p>
+            </ng-template>
         </div>
     </div>
 </div>
-        
+
+
+<!-- Custom Modal -->
+<div *ngIf="showModal">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h4 class="modal-title">Comment Details</h4>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close">
+                &times;
+            </button>
+        </div>
+        <div class="custom-modal-body">
+            <app-comment-show *ngIf="selectedCommentId !== null" [commentId]="selectedCommentId"></app-comment-show>
+        </div>
+    </div>
+</div>

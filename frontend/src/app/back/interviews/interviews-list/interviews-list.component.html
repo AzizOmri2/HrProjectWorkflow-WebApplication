@@ -1,82 +1,128 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-warning">
-            <div style="background-color:#fff;">
-                <br>
-                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
-                <button [routerLink]="['/back/interviews/add-interview']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Interview">
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Interview
-                </button>
-                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
-                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a (click)="setActionText('Sort By')">Default</a></li>
-                        <li class="divider"></li>
-                        <li><a (click)="setActionText('Status')">Status</a></li>
-                    </ul>
+        <div class="box box-warning p-4 rounded">
+            <div class="filter-section card p-3 mb-4 shadow-sm rounded-4">
+                <div class="row gy-3 gx-2 align-items-center">
+                    <!-- Search Input -->
+                    <div class="col-md-6">
+                        <input type="text" placeholder="🔍 Search interviews..." [(ngModel)]="filterText" id="searchInput" (input)="applyFilters()"/>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+                            <option value="">Select Status</option>
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Finished">Finished</option>
+                            <option value="Canceled">Canceled</option>
+                        </select>
+                    </div>
+
+                    <!-- Result Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedResult" (change)="applyFilters()">
+                            <option value="">Select Result</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2 d-flex gap-2 justify-content-end">
+                        <button class="btn btn-outline-secondary" (click)="resetFilters()">
+                            <i class="fa fa-times"></i>&nbsp;Reset Filter
+                        </button>
+                    </div>
                 </div>
-                <br><br>
-                <table class="table" *ngIf="interviews.length > 0; else noInterviews">
-                    <thead>
-                        <tr>
-                            <th>Application</th>
-                            <th>Date & Time</th>
-                            <th>Interviewer</th>
-                            <th>Link</th>
-                            <th>Status</th>
-                            <th>Result</th>
-                            <th>Duration</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let interview of interviews | filter:searchText">
-                            <td>
-                                <span class="label label-primary">
-                                    {{ interview.application.job_offer.title }} | {{ interview.application.job_offer.company | uppercase }} | {{ interview.application.candidate.name }}
-                                </span>
-                            </td>
-                            <td>{{ interview.interview_date | date: 'yyyy-MM-dd HH:mm' : 'UTC' }}</td>
-                            <td>
-                                <span class="label label-default">{{ interview.interviewer.name }}</span>
-                            </td>
-                            <td>
-                                <a href="{{ interview.link }}" class="btn btn-primary btn-sm" title="Open The Interview's Reunion">
-                                    <i class="fa fa-link"></i>
-                                </a>
-                            </td>
-                            <td [ngSwitch]="interview.status">
-                                <span *ngSwitchCase="'Finished'" class="label label-success">Finished</span>
-                                <span *ngSwitchCase="'Scheduled'" class="label label-warning">Scheduled</span>
-                                <span *ngSwitchCase="'Canceled'" class="label label-danger">Canceled</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                            <td [ngSwitch]="interview.result">
-                                <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
-                                <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
-                                <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                            <td>{{ interview.duration }} min</td>
-                            <td>
-                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/interviews/show', interview.id]" title="Show Interview's Details"><i class="fa fa-ellipsis-v"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/interviews/update-interview', interview.id]" title="Update Interview"><i class="fa fa-edit"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteInterview(interview.id)" title="Delete Interview"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <ng-template #noInterviews>
-                    <p style="margin-left:20px;" class="text-muted">No Interview for any application yet.</p>
-                    <br>
-                </ng-template>
-            </div>    
+            </div>
+            <br>
+
+            <!-- Interviews Table -->
+            <table class="table table-hover table-striped" *ngIf="filteredInterviews.length > 0; else noInterviews">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Date & Time</th>
+                        <th>Interviewer</th>
+                        <th>Link</th>
+                        <th>Status</th>
+                        <th>Result</th>
+                        <th>Duration</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let interview of filteredInterviews">
+                        <td>
+                            <strong>{{ interview.application.job_offer.title }}</strong><br />
+                            <small class="text-muted">
+                                <i class="fa fa-building text-primary"></i> {{ interview.application.job_offer.company | uppercase }} |
+                                {{ interview.application.candidate.name }}
+                            </small>
+                        </td>
+                        <td>{{ interview.interview_date | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td>
+                            <i class="fa fa-user text-primary"></i>&nbsp; <strong>{{ interview.interviewer.name }}</strong>
+                        </td>
+                        <td>
+                            <a [href]="interview.link" class="btn btn-sm btn-default" title="Open Interview Link" target="_blank">
+                                <i class="fa fa-link"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <span [ngSwitch]="interview.status" class="label" [ngClass]="{
+                                'label-warning': interview.status === 'Scheduled',
+                                'label-success': interview.status === 'Finished',
+                                'label-danger': interview.status === 'Canceled',
+                                'label-default': !interview.status
+                            }">
+                                {{ interview.status || 'UNKNOWN' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span [ngSwitch]="interview.result" class="label" [ngClass]="{
+                                'label-success': interview.result === 'Accepted',
+                                'label-danger': interview.result === 'Rejected',
+                                'label-warning': interview.result === 'Pending',
+                                'label-default': !interview.result
+                            }">
+                                {{ interview.result || 'UNKNOWN' }}
+                            </span>
+                        </td>
+                        <td>{{ interview.duration }}<small><b>min</b></small></td>
+                        <td>
+                            <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
+                                <button (click)="openInterviewInfo(interview.id)" class="btn btn-info" title="Show Details"><i class="fa fa-info-circle"></i></button>
+                                <button [routerLink]="['/back/interviews/update-interview', interview.id]" class="btn btn-success" title="Edit Interview"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger" (click)="deleteInterview(interview.id)" title="Delete Interview"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- No Interviews Message -->
+            <ng-template #noInterviews>
+                <p class="text-muted" style="padding-left: 10px;">No interview found.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom Modal -->
+<div *ngIf="showModal">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h4 class="modal-title">Interview Details</h4>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close">
+                &times;
+            </button>
+        </div>
+        <div class="custom-modal-body">
+            <app-interview-show *ngIf="selectedInterviewId !== null" [interviewId]="selectedInterviewId" (feedbackUpdated)="reloadModal()"></app-interview-show>
         </div>
     </div>
 </div>

@@ -174,7 +174,7 @@ export class FrontComponent implements OnInit{
           localStorage.removeItem('user_role');
           localStorage.removeItem('user_image');
           this.isLoggedIn = false;
-          window.location.href = '/login'; // Redirect to login page after logout
+          window.location.href = '/frontvisiteur'; // Redirect to login page after logout
         },
         (error) => {
           console.error('Error during logout', error);

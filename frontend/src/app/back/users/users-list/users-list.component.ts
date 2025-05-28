@@ -45,13 +45,11 @@ export class UsersListComponent implements OnInit{
     document.body.style.overflow = 'auto';
   }
 
-  UsersList(){
-    this.users = this.userService.getAllUsers().subscribe(
-      user => {
-        this.users = user
-        console.log(this.users);
-      }
-    )
+  UsersList() {
+    this.userService.getAllUsers().subscribe(user => {
+      this.users = user; // ✅ store the actual user list
+      console.log(this.users);
+    });
   }
 
 

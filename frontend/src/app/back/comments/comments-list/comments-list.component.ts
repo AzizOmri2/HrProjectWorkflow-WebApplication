@@ -3,18 +3,22 @@ import { CommentService } from '../../../services/comment.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FilterPipe } from '../../../filter.pipe';
+import { CommentShowComponent } from '../comment-show/comment-show.component';
 
 @Component({
   selector: 'app-comments-list',
-  imports: [RouterModule, FormsModule, CommonModule, FilterPipe],
+  imports: [RouterModule, FormsModule, CommonModule, CommentShowComponent],
   templateUrl: './comments-list.component.html',
   styleUrl: './comments-list.component.css'
 })
 export class CommentsListComponent implements OnInit{
-  comments:any;
-  actionText: string = 'Sort By';
-  searchText: string = '';
+  
+  filterText: string = '';
+  comments: any[] = []; // Your original comments list
+  filteredComments: any[] = [];
+
+  selectedCommentId: number | null = null;
+  showModal = false;
 
   constructor(private commentService: CommentService, private router : Router){
 
@@ -25,12 +29,29 @@ export class CommentsListComponent implements OnInit{
   }
 
   CommentsList(){
-    this.comments = this.commentService.getAllComments().subscribe(
-      comment => {
-        this.comments = comment
+    this.commentService.getAllComments().subscribe(
+      (comment: any[]) => {
+        this.comments = comment;
+        this.filteredComments = [...this.comments]; // initialize filtered list
         console.log(this.comments);
+      },
+      error => {
+        console.error('Error fetching comments:', error);
       }
-    )
+    );
+  }
+
+
+  openCommentInfo(commentId: number) {
+    this.selectedCommentId = commentId;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+
+  closeModal() {
+    this.selectedCommentId = null;
+    this.showModal = false;
+    document.body.style.overflow = 'auto';
   }
 
   // Delete comment
@@ -48,7 +69,19 @@ export class CommentsListComponent implements OnInit{
     }
   }
 
-  setActionText(text: string) {
-    this.actionText = text;
+  applyFilters() {
+    this.filteredComments = this.comments.filter((comment: any) =>
+      (this.filterText === '' ||
+        comment.content.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        comment.commenter.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        comment.article.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        comment.created_at.toLowerCase().includes(this.filterText.toLowerCase())
+      )
+    );
+  }
+
+  resetFilters() {
+    this.filterText = '';
+    this.filteredComments = [...this.comments];
   }
 }

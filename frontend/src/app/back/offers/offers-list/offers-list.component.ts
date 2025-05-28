@@ -90,7 +90,11 @@ export class OffersListComponent implements OnInit{
     this.filteredOffers = this.offers.filter((offer: any) =>
       (this.filterText === '' ||
         offer.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
-        offer.skills_required.toLowerCase().includes(this.filterText.toLowerCase())) &&
+        offer.skills_required.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        offer.company.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        offer.experience_level.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        offer.department.toLowerCase().includes(this.filterText.toLowerCase())
+      ) &&
       (this.selectedExperience === '' || offer.experience_level === this.selectedExperience) &&
       (this.selectedSkill === '' || offer.skills_required.toLowerCase().includes(this.selectedSkill.toLowerCase())) &&
       (this.selectedStatus === '' || offer.status === this.selectedStatus)

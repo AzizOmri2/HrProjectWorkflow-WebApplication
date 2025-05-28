@@ -1,71 +1,110 @@
 <div class="row">
     <div class="col-md-12">
-        <div class="box box-warning">
-            <div style="background-color:#fff;">
-                <br>
-                <input style="margin-left:30px;width:900px;" type="text" class="form-control" id="searchInput" placeholder="Search&hellip;" [(ngModel)]="searchText">
-                <button [routerLink]="['/back/applications/add-application']" style="margin-left:1070px;margin-top:-34px;width:135px;" class="btn btn-block btn-primary" title="Add Application">
-                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Application
-                </button>
-                <div style="margin-top:-55px;margin-left:960px;" class="btn-group">
-                    <button type="button" id="actionBtn" class="btn btn-info">{{ actionText }}</button>
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a (click)="setActionText('Sort By')">Default</a></li>
-                        <li class="divider"></li>
-                        <li><a (click)="setActionText('Status')">Status</a></li>
-                    </ul>
+        <div class="box box-warning p-4 rounded">
+            <div class="filter-section card p-3 mb-4 shadow-sm rounded-4">
+                <div class="row gy-3 gx-2 align-items-center">
+                    <!-- Search Input -->
+                    <div class="col-md-8">
+                        <input type="text" placeholder="🔍 Search applications..." [(ngModel)]="filterText" id="searchInput" (input)="applyFilters()"/>
+                    </div>
+
+                    <!-- Application Status Filter -->
+                    <div class="col-md-2">
+                        <select class="form-select" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+                            <option value="">Select a Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Interviewed">Interviewed</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Withdrawn">Withdrawn</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2 d-flex gap-2 justify-content-end">
+                        <button class="btn btn-outline-secondary" (click)="resetFilters()">
+                            <i class="fa fa-times"></i>&nbsp;Reset Filter
+                        </button>
+                    </div>
                 </div>
-                <br><br>
-                <table class="table" *ngIf="applications.length > 0; else noApplications">
-                    <thead>
-                        <tr>
-                            <th>Job Offer</th>
-                            <th>Candidate</th>
-                            <th>Cv File</th>
-                            <th>Status</th>
-                            <th>Applied At</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let application of applications | filter:searchText">
-                            <td><span class="label label-primary">{{ application.job_offer.title }} - {{ application.job_offer.company | uppercase }}</span></td>
-                            <td>
-                                <span class="label label-default">{{ application.candidate.name }}</span>
-                            </td>
-                            <td>
-                                <button class="btn btn-block btn-primary btn-sm" style="width:30px;" title="Download CV" (click)="downloadCv(application.id,application.candidate.name)">
-                                    <i class="fa fa-download"></i>
+            </div>
+            <br>
+
+            <!-- Applications Table -->
+            <table class="table table-hover table-striped" *ngIf="filteredApplications.length > 0; else noApplications">
+                <thead>
+                    <tr>
+                        <th>Job Offer</th>
+                        <th>Candidate</th>
+                        <th>CV</th>
+                        <th>Status</th>
+                        <th>Applied At</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let application of filteredApplications">
+                        <td>
+                            <strong>{{ application.job_offer.title }}</strong><br>
+                            <small class="text-muted">
+                                <i class="fa fa-building text-primary"></i> {{ application.job_offer.company | uppercase }}
+                            </small>
+                        </td>
+                        <td>
+                            <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ application.candidate.name }}</b>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-default" title="Download CV" (click)="downloadCv(application.id, application.candidate.name)"><i class="fa fa-download"></i></button>
+                        </td>
+                        <td>
+                            <span [ngSwitch]="application.status" class="label" [ngClass]="{
+                                    'label-info': application.status === 'Interviewed',
+                                    'label-success': application.status === 'Accepted',
+                                    'label-warning': application.status === 'Pending',
+                                    'label-danger': application.status === 'Rejected',
+                                    'label-default': application.status === 'Withdrawn' || !application.status
+                                }">
+                                {{ application.status || 'UNKNOWN' }}
+                            </span>
+                        </td>
+                        <td>{{ application.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
+                                <button (click)="openApplicationInfo(application.id)" class="btn btn-info" title="Show Details">
+                                    <i class="fa fa-info-circle"></i>
                                 </button>
-                            </td>
-                            <td [ngSwitch]="application.status">
-                                <span *ngSwitchCase="'Interviewed'" class="label label-info">Interviewed</span>
-                                <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
-                                <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
-                                <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
-                                <span *ngSwitchCase="'Withdrawn'" class="label label-default">Withdrawn</span>
-                                <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                            </td>
-                            <td>{{ application.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                            <td>
-                                <button style="width:30px;" class="btn btn-block btn-info btn-sm" [routerLink]="['/back/applications/show', application.id]" title="Show Application's Details"><i class="fa fa-ellipsis-v"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:35px;width:30px;" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/applications/update-application', application.id]" title="Update Application"><i class="fa fa-edit"></i></button>
-                                &nbsp;
-                                <button style="margin-top:-50px;margin-left:70px;width:30px;" class="btn btn-block btn-danger btn-sm" (click)="deleteApplication(application.id)" title="Delete Application"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <ng-template #noApplications>
-                    <p style="margin-left:20px;" class="text-muted">No applications for any job offer.</p>
-                    <br>
-                </ng-template>
-            </div>    
+                                <button [routerLink]="['/back/applications/update-application', application.id]" class="btn btn-success" title="Edit Application">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger" (click)="deleteApplication(application.id)" title="Delete Application">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- No applications -->
+            <ng-template #noApplications>
+                <p class="text-muted" style="padding-left: 10px;">No application found.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Modal -->
+<div *ngIf="showModal">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h4 class="modal-title">Application Details</h4>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close">
+                &times;
+            </button>
+        </div>
+        <div class="custom-modal-body">
+            <app-application-show *ngIf="selectedApplicationId !== null" [applicationId]="selectedApplicationId"></app-application-show>
         </div>
     </div>
 </div>

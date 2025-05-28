@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApplicationService } from '../../../services/application.service';
 import { CommonModule } from '@angular/common';
@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './application-show.component.html',
   styleUrl: './application-show.component.css'
 })
-export class ApplicationShowComponent implements OnInit{
-  applicationId!: number;
+export class ApplicationShowComponent{
   application: any = {
     job_offer_id: '',
     candidat_id: '',
@@ -25,8 +24,9 @@ export class ApplicationShowComponent implements OnInit{
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.applicationId = Number(this.route.snapshot.paramMap.get('id'));
+  @Input() applicationId!: number;
+
+  ngOnChanges() {
     if (this.applicationId) {
       this.applicationService.getApplicationById(this.applicationId).subscribe({
         next: data => {

@@ -10,7 +10,7 @@
                         </tr>
                         <tr>
                             <th>Comapny</th>
-                            <td><i class="fa fa-building"></i>&nbsp; {{ offer.company }}</td>
+                            <td><i class="fa fa-building"></i>&nbsp; <b>{{ offer.company | uppercase }}</b></td>
                         </tr>
                         <tr>
                             <th>Location</th>
@@ -49,7 +49,7 @@
                         <tr>
                             <th>Created By</th>
                             <td>
-                                <i class="fa fa-user"></i>&nbsp; {{ offer.created_by_name }}
+                                <i class="fa fa-user"></i>&nbsp; <b>{{ offer.created_by_name }}</b>
                             </td>
                         </tr>
                         <tr>
@@ -59,22 +59,24 @@
                     </tbody>
                 </table>
 
+                <hr style="border-top: 1px solid #ccc; margin: 30px 0;" />
+                
                 <!-- Applications Section -->
                 <div class="mt-4">
-                    <h4><i class="fa fa-users"></i> Applications</h4>
+                    <h4><i class="fa fa-users"></i>&nbsp; <b>Applications for this Job Offer</b></h4>
+                    <br>
                     <table class="table table-bordered table-hover" *ngIf="applications.length > 0; else noApplications">
                         <thead>
                             <tr>
                                 <th>Candidate Name</th>
                                 <th>Status</th>
                                 <th>Applied At</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let app of applications">
                                 <td>
-                                    <span class="label label-default">{{ app.candidate.name }}</span>
+                                    <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ app.candidate.name }}</b>
                                 </td>
                                 <td [ngSwitch]="app.status">
                                     <span *ngSwitchCase="'Interviewed'" class="label label-info">Interviewed</span>
@@ -85,11 +87,6 @@
                                     <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                                 </td>
                                 <td>{{ app.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
-                                <td>
-                                    <a [routerLink]="['/back/applications/show', app.id]" class="btn btn-info btn-xs" title="Show Details">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                </td>
                             </tr>
                         </tbody>
                     </table>

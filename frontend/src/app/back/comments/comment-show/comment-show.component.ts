@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommentService } from '../../../services/comment.service';
 import { CommonModule } from '@angular/common';
@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './comment-show.component.html',
   styleUrl: './comment-show.component.css'
 })
-export class CommentShowComponent implements OnInit{
-  commentId!: number;
+export class CommentShowComponent{
   comment: any = {
     content: '',
     commenter_id: '',
@@ -19,14 +18,16 @@ export class CommentShowComponent implements OnInit{
 
   applications: any[] = [];
 
+  @Input() commentId!: number;
+
   constructor(
     private route: ActivatedRoute,
     private commentService: CommentService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.commentId = Number(this.route.snapshot.paramMap.get('id'));
+
+  ngOnChanges() {
     if (this.commentId) {
       this.commentService.getCommentById(this.commentId).subscribe({
         next: data => {
@@ -38,4 +39,5 @@ export class CommentShowComponent implements OnInit{
       });
     }
   }
+
 }

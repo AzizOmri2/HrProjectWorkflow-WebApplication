@@ -8,13 +8,15 @@ import { ArticleShowComponent } from '../article-show/article-show.component';
 
 @Component({
   selector: 'app-articles-list',
-  imports: [RouterModule, CommonModule, FilterPipe, FormsModule, ArticleShowComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ArticleShowComponent],
   templateUrl: './articles-list.component.html',
   styleUrl: './articles-list.component.css'
 })
 export class ArticlesListComponent implements OnInit{
   articles:any;
-  searchText: string = '';
+  filteredArticles: any[] = [];
+
+  filterText: string = '';
   showModal = false;
   selectedArticleId: number | null = null;
 
@@ -39,12 +41,16 @@ export class ArticlesListComponent implements OnInit{
   }
 
   ArticlesList(){
-    this.articles = this.articleService.getAllArticles().subscribe(
+    this.articleService.getAllArticles().subscribe(
       article => {
-        this.articles = article
+        this.articles = article;
+        this.filteredArticles = [...this.articles]; // Initial state
         console.log(this.articles);
+      },
+      error => {
+        console.error('Error fetching articles:', error);
       }
-    )
+    );
   }
 
   // Delete article
@@ -62,8 +68,19 @@ export class ArticlesListComponent implements OnInit{
     }
   }
 
-  resetFilters(): void {
-    this.searchText = '';
+  applyFilters() {
+    this.filteredArticles = this.articles.filter((article: any) =>
+      (this.filterText === '' ||
+        article.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        article.content.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        article.author.name.toLowerCase().includes(this.filterText.toLowerCase())
+      )
+    );
+  }
+
+  resetFilters() {
+    this.filterText = '';
+    this.filteredArticles = [...this.articles];
   }
 
 }
