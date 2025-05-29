@@ -65,13 +65,18 @@ class UserController < ApplicationController
 
     def destroy
       @user = User.find_by(id: params[:id])
-      # Store Image file path before destroying
-      image_file_path = Rails.root.join('..', 'frontend', 'public', @user.image) if @user.image.present?
+      
 
       if @user
         # Save user info before deletion for the notification
         deleted_user_name = @user.name
         deleted_user_email = @user.email
+
+        # Store image path unless it's the default image
+        image_file_path = nil
+        if @user.image.present? && @user.image != 'uploads/default.jpg'
+          image_file_path = Rails.root.join('..', 'frontend', 'public', @user.image)
+        end
 
         @user.destroy
         # Delete the Image file if it exists

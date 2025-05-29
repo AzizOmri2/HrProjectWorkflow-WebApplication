@@ -55,6 +55,15 @@
                             <p class="card-subtitle text-muted mb-2">{{ offer.department }}</p>
 
                             <div class="mb-2">
+                                <span class="label"
+                                    [ngClass]="
+                                        offer.status === 'available' ? 'label-success' :
+                                        offer.status === 'removed' ? 'label-danger' :
+                                        'label-default'
+                                    ">
+                                    {{ offer.status | uppercase }}
+                                </span>
+                                &nbsp;
                                 <span class="label label-default">
                                     {{ offer.company }}
                                 </span>

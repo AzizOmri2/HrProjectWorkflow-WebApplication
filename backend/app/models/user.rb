@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
+         :recoverable, # <-- Added for password reset
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
 
   
+  # Associations
   has_many :applications, foreign_key: :candidate_id, dependent: :destroy
   has_many :interviews, foreign_key: :interviewer_id, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -10,17 +12,17 @@ class User < ApplicationRecord
   has_many :articles, foreign_key: 'author_id', dependent: :destroy
   has_many :article_reactions, dependent: :destroy
   has_many :comments, foreign_key: 'commenter_id', dependent: :destroy
+  
+  # Callbacks
   before_create :set_jti
   before_validation :downcase_email
   before_destroy :reset_applications_status_if_rh
 
   # Validations
   validates :active, inclusion: { in: [true, false] }
-
-  # Validate email
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^@\s]+@[^@\s]+\z/ }  
 
-  # Role enum definition for Rails 8
+  # Role enum
   enum :role, { admin: 0, rh: 1, candidate: 2 }, default: :candidate
 
   # Method to increment the login count

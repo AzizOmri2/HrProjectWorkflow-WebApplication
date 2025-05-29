@@ -3,6 +3,7 @@ import { UserService } from '../../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-update-profile-front',
@@ -27,15 +28,17 @@ export class UpdateProfileFrontComponent implements OnInit{
   showAlert = false;
   typeAlert = '';
   error='';
+  isLoggedIn: boolean = true;
     
   
     constructor(
       private userService: UserService, 
-      private route: ActivatedRoute
+      private authService: AuthService
     ) {}
   
     // OnInit lifecycle hook to fetch user data by ID
     ngOnInit(): void {
+      this.isLoggedIn = true;
       if (this.userId) {
         this.getUserDetails(this.userId);
       }
@@ -115,5 +118,48 @@ export class UpdateProfileFrontComponent implements OnInit{
         }
       });
     }
+
+
+    logout() {
+      this.authService.logout().subscribe(
+        (response) => {
+          console.log('Logged out successfully', response);
+          localStorage.removeItem('auth_token'); // Remove the token
+          localStorage.removeItem('user_id');
+          localStorage.removeItem('user_name');
+          localStorage.removeItem('created_at');
+          localStorage.removeItem('user_role');
+          localStorage.removeItem('user_image');
+          localStorage.removeItem('alert_shown');
+          this.isLoggedIn = false;
+          window.location.href = '/frontvisiteur'; // Redirect to visiteur page after logout
+        },
+        (error) => {
+          console.error('Error during logout', error);
+        }
+      );
+    }
+
+    deleteAccount() {
+      if (confirm('Are you sure you want to delete your account?')) {
+        const idStr = localStorage.getItem('user_id');
+        const id = idStr ? +idStr : null; // Convert to number
+
+        if (id !== null) {
+          this.userService.deleteUser(id).subscribe(
+            () => {
+              this.logout();
+            },
+            error => {
+              console.error('Error deleting User:', error);
+            }
+          );
+        } else {
+          console.error('User ID not found in localStorage.');
+        }
+      }
+    }
+
+
 
 }

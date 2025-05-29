@@ -60,7 +60,7 @@
 
                 <div class="form-field" [ngClass]="{ 'has-error': GenderCtrl.touched && !GenderCtrl.valid }">
                     <label for="gender">Gender</label>
-                    <select id="gender" name="gender" [(ngModel)]="user.gender" #GenderCtrl="ngModel" required>
+                    <select id="gender" name="gender" [(ngModel)]="user.gender" #GenderCtrl="ngModel">
                     <option [ngValue]="''" disabled>Select Gender</option>
                     <option [ngValue]="'Male'">Male</option>
                     <option [ngValue]="'Female'">Female</option>
@@ -70,13 +70,13 @@
 
                 <div class="form-field" [ngClass]="{ 'has-error': BirthDateCtrl.touched && !BirthDateCtrl.valid }">
                     <label for="birth_date">Birth Date</label>
-                    <input type="date" id="birth_date" name="birth_date" [(ngModel)]="user.birth_date" #BirthDateCtrl="ngModel" required />
+                    <input type="date" id="birth_date" name="birth_date" [(ngModel)]="user.birth_date" #BirthDateCtrl="ngModel"/>
                     <small *ngIf="BirthDateCtrl.touched && !BirthDateCtrl.valid">Birth date is required</small>
                 </div>
 
                 <div class="form-field" [ngClass]="{ 'has-error': NationalityCtrl.touched && !NationalityCtrl.valid }">
                     <label for="nationality">Nationality</label>
-                    <input type="text" id="nationality" name="nationality" [(ngModel)]="user.nationality" #NationalityCtrl="ngModel" placeholder="Enter nationality" required />
+                    <input type="text" id="nationality" name="nationality" [(ngModel)]="user.nationality" #NationalityCtrl="ngModel" placeholder="Enter nationality"/>
                     <small *ngIf="NationalityCtrl.touched && !NationalityCtrl.valid">Nationality is required</small>
                 </div>
 
@@ -84,6 +84,13 @@
                     <button type="submit" [disabled]="updateForm.invalid" title="Edit Profile">Edit Profile</button>
                 </div>
             </form>
+        </div>
+        <div class="bg-white p-5 my-5">
+            <h1 class="text-center mb-4"><b>DELETE YOUR PROFILE :</b></h1>
+            <br>
+            <div class="form-actions">
+                <button type="submit" (click)="deleteAccount()" title="Delete Profile">Delete Profile</button>
+            </div>
         </div>
     </div>
 </div>
