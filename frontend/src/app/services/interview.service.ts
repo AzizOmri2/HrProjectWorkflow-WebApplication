@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -44,12 +44,14 @@ export class InterviewService {
 
   // ✅ Method to validate an interview (Accept)
   validateInterviewAccept(interviewId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/accept`, {});
+    const headers = new HttpHeaders({ 'Accept': 'application/json' });
+    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/accept`, {}, { headers });
   }
 
 
   // ✅ Method to validate an interview (Reject)
   validateInterviewReject(interviewId: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/reject`, {});
+    const headers = new HttpHeaders({ 'Accept': 'application/json' });
+    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/reject`, {}, { headers });
   }
 }

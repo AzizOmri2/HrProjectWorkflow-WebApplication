@@ -141,7 +141,11 @@ class InterviewsController < ApplicationController
         message: "Congratulations! Your interview for the job '#{application.job_offer.title}' has been accepted.",
         read: false
       )
+
+      InterviewMailer.interview_accepted(candidate, @interview, application).deliver_later
     end
+
+    
 
     render json: {
       message: "Interview validated successfully",
@@ -171,7 +175,11 @@ class InterviewsController < ApplicationController
         message: "Unfortunately, your interview for the job '#{application.job_offer.title}' has been rejected.",
         read: false
       )
+
+      InterviewMailer.interview_rejected(candidate, @interview, application).deliver_later
     end
+
+    
 
     render json: {
       message: "Interview validated successfully",

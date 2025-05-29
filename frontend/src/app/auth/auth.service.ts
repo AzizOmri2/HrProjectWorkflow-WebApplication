@@ -68,4 +68,22 @@ export class AuthService {
   private removeToken(): void {
     localStorage.removeItem(this.tokenKey);
   }
+
+
+  requestPasswordReset(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users/password`, 
+      { user: { email } },
+      { headers: { 'Accept': 'application/json' } }
+    );
+  }
+
+  resetPassword(token: string, password: string, passwordConfirmation: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/password`, {
+      user: {
+        reset_password_token: token,
+        password,
+        password_confirmation: passwordConfirmation
+      }
+    });
+  }
 }

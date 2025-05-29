@@ -1,0 +1,11 @@
+<h1>Bienvenue sur notre plateforme !</h1>
+
+<p>Merci de vous être inscrit.</p>
+
+<p>Pour activer votre compte, veuillez cliquer sur le lien suivant :</p>
+
+<p>
+  <%= link_to 'Confirmer mon adresse e-mail', confirmation_url(@resource, confirmation_token: @token) %>
+</p>
+
+<p>À bientôt !</p>

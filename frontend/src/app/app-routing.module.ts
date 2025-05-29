@@ -22,18 +22,14 @@ import { OfferDetailsFrontComponent } from './front/offers/offer-details-front/o
 import { ApplicationsListComponent } from './back/applications/applications-list/applications-list.component';
 import { AddApplicationComponent } from './back/applications/add-application/add-application.component';
 import { UpdateApplicationComponent } from './back/applications/update-application/update-application.component';
-import { ApplicationShowComponent } from './back/applications/application-show/application-show.component';
 import { MesApplicationsComponent } from './front/applications/mes-applications/mes-applications.component';
 import { AddApplicationFrontComponent } from './front/applications/add-application-front/add-application-front.component';
 import { InterviewsListComponent } from './back/interviews/interviews-list/interviews-list.component';
 import { AddInterviewComponent } from './back/interviews/add-interview/add-interview.component';
 import { UpdateInterviewComponent } from './back/interviews/update-interview/update-interview.component';
-import { InterviewShowComponent } from './back/interviews/interview-show/interview-show.component';
-import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ArticlesListComponent } from './back/articles/articles-list/articles-list.component';
 import { AddArticleComponent } from './back/articles/add-article/add-article.component';
 import { UpdateArticleComponent } from './back/articles/update-article/update-article.component';
-import { ArticleShowComponent } from './back/articles/article-show/article-show.component';
 import { CommentsListComponent } from './back/comments/comments-list/comments-list.component';
 import { CommentShowComponent } from './back/comments/comment-show/comment-show.component';
 import { UpdateCommentComponent } from './back/comments/update-comment/update-comment.component';
@@ -44,6 +40,8 @@ import { AboutPageComponent } from './front/other/about-page/about-page.componen
 import { HelpSupportPageComponent } from './front/other/help-support-page/help-support-page.component';
 import { MesInterviewsComponent } from './front/applications/mes-interviews/mes-interviews.component';
 import { ReportsComponent } from './back/other/reports/reports.component';
+import { FindEmailComponent } from './auth/find-email/find-email.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -51,7 +49,8 @@ export const routes: Routes = [
     {  path: 'login', component: LoginComponent  },
     {  path: 'register', component: RegisterComponent  },
     {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
-    {  path: 'forgot-password', component: ForgotPasswordComponent, data: { title: 'Forgot Password', breadcrumb: 'Users' } },
+    {  path: 'find-email', component: FindEmailComponent, data: { title: 'Find Account To Reset', breadcrumb: 'Users' } },
+    {  path: 'reset-password', component: ResetPasswordComponent, data: { title: 'Reset Password', breadcrumb: 'Users' } },
     
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [

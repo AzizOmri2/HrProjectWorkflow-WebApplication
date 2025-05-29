@@ -1,0 +1,43 @@
+<div class="login-body">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/login"><b>HR</b>Project Workflow</a>
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg">Find your account to restore it.</p>
+            <!-- Success alert -->
+            <div *ngIf="message" class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+
+            <!-- Danger alert -->
+            <div *ngIf="error" class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            
+            <form #forgotPasswordForm="ngForm" (ngSubmit)="onSubmit()">
+                <div class="form-group has-feedback" 
+                    [ngClass]="{
+                        'has-warning': emailCtrl.touched && emailCtrl.invalid,
+                        'has-success': emailCtrl.touched && emailCtrl.valid
+                    }">
+                    <!-- Error: Email is blank -->
+                    <label *ngIf="emailCtrl.touched && emailCtrl.invalid"
+                        class="control-label text-danger" for="emailCtrl">
+                        <i class="fa fa-times-circle-o"></i>
+                        Email field cannot be empty.
+                    </label>
+                    <input type="email" class="form-control" placeholder="Enter your Email" name="email" [(ngModel)]="email" #emailCtrl="ngModel" required/>
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+              
+                <div class="row">
+                    <div class="col-xs-5" style="margin-left:204px;">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat" [disabled]="forgotPasswordForm.invalid" title="Continue">Continue</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
