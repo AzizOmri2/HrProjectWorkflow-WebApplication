@@ -14,6 +14,7 @@ export class OffersListFrontComponent implements OnInit{
 
   offers: any[] = [];
   filteredOffers: any[] = [];
+  candidateId: string = '';
 
   // Filter fields
   filterText: string = '';
@@ -24,6 +25,14 @@ export class OffersListFrontComponent implements OnInit{
   constructor(private offerService: OfferService, private router: Router) {}
 
   ngOnInit() {
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      this.candidateId = userId;
+    } else {
+      this.candidateId = '';
+      console.error('User ID not found in localStorage');
+    }
+
     this.OffersList();
   }
 

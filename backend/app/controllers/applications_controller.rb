@@ -119,8 +119,25 @@ class ApplicationsController < ApplicationController
 
   # PUT /applications/:id/withdraw
   def withdraw
+    previous_status = @application.status  # Save the current status before updating
+
     if @application.update(status: 'Withdrawn')
-      notify_hr(@application, "Application Withdrawn", "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'.")
+
+      if previous_status == 'Interviewed'
+        interview = Interview.find_by(application_id: @application.id)
+
+        if interview&.interviewer
+          Notification.create!(
+            user: interview.interviewer,
+            title: "Application Withdrawn",
+            message: "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'. You should deal with the Interview Scheduled.",
+            read: false
+          )
+        end
+        
+      else
+        notify_hr(@application, "Application Withdrawn", "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'.")
+      end
       render json: @application, status: :ok
     else
       render json: { errors: @application.errors.full_messages }, status: :unprocessable_entity
@@ -161,6 +178,15 @@ class ApplicationsController < ApplicationController
     else
       render json: { error: 'Application or file not found' }, status: :not_found
     end
+  end
+
+  # GET /applications/not_withdrawn
+  def not_withdrawn
+    applications = Application.includes(:job_offer, :candidate).where.not(status: 'Withdrawn')
+    render json: applications.as_json(include: {
+      job_offer: { only: [:title, :company] },
+      candidate: { only: [:name] }
+    })
   end
 
   private

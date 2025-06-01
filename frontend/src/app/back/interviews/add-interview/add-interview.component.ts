@@ -31,8 +31,7 @@ export class AddInterviewComponent implements OnInit{
   constructor(
     private userService: UserService, 
     private applicationService: ApplicationService, 
-    private interviewService: InterviewService, 
-    private router:Router
+    private interviewService: InterviewService
   ) {}
 
   applications: any[] = [];
@@ -40,7 +39,7 @@ export class AddInterviewComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.applicationService.getAllApplications().subscribe(data => {
+    this.applicationService.getApplicationsNotWithdrawn().subscribe(data => {
       this.applications = data;
     });
 

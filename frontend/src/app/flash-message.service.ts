@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class FlashMessageService {
   private message: string | null = null;
-  private messageType: 'success' | 'error' | null = null;
+  private messageType: 'success' | 'error' | 'warning' | null = null;
 
   
-  setMessage(type: 'success' | 'error', text: string) {
+  setMessage(type: 'success' | 'error' | 'warning', text: string) {
     // Store the message in localStorage
     localStorage.setItem('flash_message', JSON.stringify({ type, text }));
   }

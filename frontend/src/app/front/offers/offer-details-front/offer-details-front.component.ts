@@ -43,7 +43,6 @@ export class OfferDetailsFrontComponent implements OnInit{
       this.candidateId = userId;
     } else {
       console.error('User ID not found in localStorage');
-      return;
     }
 
     if (this.offerId) {

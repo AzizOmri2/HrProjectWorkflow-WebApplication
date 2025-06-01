@@ -87,7 +87,10 @@
                         <p class="card-text"><strong>Location : </strong> <i class="fa fa-map-marker"></i> {{ offer.location }}</p>
                         <p class="card-text"><strong>Skills : </strong> {{ offer.skills_required }}</p>
                         <div class="mt-auto">
-                            <a [routerLink]="['/front/offers/show', offer.id]" class="btn btn-primary btn-block">Show Details</a>
+                            <a [routerLink]="[candidateId === '' ? '/frontvisiteur/offers/show' : '/front/offers/show', offer.id]" 
+                                class="btn btn-primary btn-block">
+                                Show Details
+                            </a>
                         </div>
                     </div>
                 </div>

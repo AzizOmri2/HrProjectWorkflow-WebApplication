@@ -9,6 +9,17 @@
 <div class="row justify-content-center bg-image mx-0 mb-5">
     <div class="col-lg-8 py-5">
         <div class="bg-white p-5 my-5">
+            <h1 class="text-center mb-4"><b>DELETE YOUR PROFILE :</b></h1>
+            <br>
+            <label class="warning-label">
+                <i class="fa fa-exclamation-triangle fa-warning-icon" aria-hidden="true"></i>
+                This action is irreversible. Please make sure you really want to delete your profile before proceeding.
+            </label>
+            <div class="form-actions">
+                <button type="submit" (click)="deleteAccount()" title="Delete Profile">Delete Profile</button>
+            </div>
+        </div>
+        <div class="bg-white p-5 my-5">
             <h1 class="text-center mb-4"><b>EDIT YOUR PROFILE :</b></h1>
             <br>
             <!-- Show alert when form is submitted successfully -->
@@ -85,12 +96,6 @@
                 </div>
             </form>
         </div>
-        <div class="bg-white p-5 my-5">
-            <h1 class="text-center mb-4"><b>DELETE YOUR PROFILE :</b></h1>
-            <br>
-            <div class="form-actions">
-                <button type="submit" (click)="deleteAccount()" title="Delete Profile">Delete Profile</button>
-            </div>
-        </div>
+        
     </div>
 </div>

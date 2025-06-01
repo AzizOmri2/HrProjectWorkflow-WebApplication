@@ -117,7 +117,10 @@
         <br><br>
         <p>{{ article.content | slice:0:324 }}...</p>
         <div class="btn-container">
-            <button [routerLink]="['/front/articles/show', article.id]" class="btn more-details-btn">More Details</button>
+            <button [routerLink]="[isCandidateConnected ? '/front/articles/show' : '/frontvisiteur/articles/show', article.id]" 
+                class="btn more-details-btn">
+                More Details
+            </button>
         </div>
     </div>
 </div>

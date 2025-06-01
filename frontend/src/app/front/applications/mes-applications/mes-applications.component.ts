@@ -44,7 +44,7 @@ export class MesApplicationsComponent implements OnInit{
 
   withDrawApplication(applicationId: number) {
     const confirmed = window.confirm(
-      "⚠️ You're about to withdraw your application.\n\nThis action is irreversible. Do you want to continue?"
+      "⚠️ You're about to withdraw your application.\n\nIf you continue, hr cannot plan an interview.\nThis action is irreversible. Do you want to continue?"
     );
     if (!confirmed) {
       return; // User canceled

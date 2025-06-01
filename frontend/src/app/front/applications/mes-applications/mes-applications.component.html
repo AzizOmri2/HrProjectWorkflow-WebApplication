@@ -10,6 +10,7 @@
             <h1 class="display-4">You can Check every Application you Submit</h1>
         </div>
         <br>
+        <!-- Displaying an alert if no job offer has been applied to -->
         <div *ngIf="applications.length === 0" class="alert alert-warning text-center">
             You have not applied to any job offer yet.
         </div>
@@ -17,6 +18,8 @@
             <div class="col-md-6 col-lg-4" *ngFor="let application of applications">
                 <div class="card interview-card h-100">
                     <div class="card-body p-5">
+
+                        <!-- Displaying Application's Data -->
                         <p><strong>Applied for Job Offer : </strong></p>
                         <h5 class="card-title text-primary mb-4">
                             <i class="fas fa-briefcase me-2"></i> {{ application.job_offer.title }}
@@ -40,14 +43,29 @@
                                 <span *ngSwitchCase="'Accepted'" class="badge bg-success">Accepted</span>
                                 <span *ngSwitchCase="'Pending'" class="badge bg-warning text-dark">Pending</span>
                                 <span *ngSwitchCase="'Rejected'" class="badge bg-danger">Rejected</span>
-                                <span *ngSwitchCase="'Withdrawn'" class="badge bg-secondary">Withdrawn</span>
-                                <span *ngSwitchDefault class="badge bg-secondary">UNKNOWN</span>
+                                <span *ngSwitchCase="'Withdrawn'" class="badge bg-default">Withdrawn</span>
+                                <span *ngSwitchDefault class="badge bg-default">UNKNOWN</span>
                             </span>
                         </p>
+                        
 
+                        <!-- Status-specific labels -->
+                        <div class="mt-4">
+                            <div *ngIf="application.status === 'Withdrawn'" class="text-default mt-1">
+                                <i class="fas fa-times-circle me-1"></i><b> You cannot withdraw this application because it has already been withdrawn.</b> 
+                            </div>
+                            <div *ngIf="application.status === 'Rejected'" class="text-danger mt-1">
+                                <i class="fas fa-times-circle me-1"></i><b> You cannot withdraw this application because it has been rejected.</b> 
+                            </div>
+                            <div *ngIf="application.status === 'Accepted'" class="text-success mt-1">
+                                <i class="fas fa-times-circle me-1"></i><b> You cannot withdraw this application because it has been accepted.</b> 
+                            </div>
+                        </div>
+
+                        <!-- Withdraw & Download CV Buttons -->
                         <div class="d-flex justify-content-between pt-4">
                             <button class="btn btn-danger" (click)="withDrawApplication(application.id)" 
-                                [disabled]="application.status === 'Withdrawn'" 
+                                [disabled]="application.status !== 'Pending' && application.status !== 'Interviewed'"
                                 title="Withdraw Application">
                                 <i class="fas fa-times me-1"></i> Withdraw
                             </button>

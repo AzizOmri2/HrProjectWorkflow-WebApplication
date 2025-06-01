@@ -90,6 +90,8 @@ export class ArticlesListFrontComponent implements OnInit{
       this.interviews_count = 2;
       this.userImage = "https://randomuser.me/api/portraits/men/81.jpg";
       this.userName = "John Doe";
+
+      this.isCandidateConnected = false;
     }
 
     

@@ -57,7 +57,7 @@ export class UpdateInterviewComponent implements OnInit{
       });
     }
 
-    this.applicationService.getAllApplications().subscribe(data => {
+    this.applicationService.getApplicationsNotWithdrawn().subscribe(data => {
       this.applications = data;
     });
 

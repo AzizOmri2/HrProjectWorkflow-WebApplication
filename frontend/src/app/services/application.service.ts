@@ -16,6 +16,11 @@ export class ApplicationService {
     return this.http.get<any[]>(`${this.apiUrl}/applications`);
   }
 
+  // Get applications that are NOT withdrawn
+  getApplicationsNotWithdrawn(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/applications/not_withdrawn`);
+  }
+
   // Get applications by Candidat_ID
   getApplicationsByCandidatId(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/applications/by_candidate/${id}`);

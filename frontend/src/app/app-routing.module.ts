@@ -103,10 +103,11 @@ export const routes: Routes = [
     
     {  path: 'frontvisiteur', component: FrontvisiteurComponent,
         children: [
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
+            { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
+            { path: 'articles/show/:id', component: ArticleShowFrontComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },
 
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+            { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
 
             { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
             { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },

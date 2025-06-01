@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :offers
 
   # Applications Full CRUD
+  get 'applications/not_withdrawn', to: 'applications#not_withdrawn'
   resources :applications
   put 'applications/:id/withdraw', to: 'applications#withdraw'
   get 'applications/by_candidate/:id', to: 'applications#by_candidate'
