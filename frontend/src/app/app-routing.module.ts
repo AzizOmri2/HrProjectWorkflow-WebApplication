@@ -46,6 +46,7 @@ import { BackHrComponent } from './back-hr/back-hr.component';
 import { NotFoundComponent } from './back/other/not-found/not-found.component';
 import { AccessDeniedComponent } from './back/other/access-denied/access-denied.component';
 import { LockScreenComponent } from './auth/lock-screen/lock-screen.component';
+import { CalendarInterviewsComponent } from './back/interviews/calendar-interviews/calendar-interviews.component';
 
 
 export const routes: Routes = [
@@ -78,6 +79,7 @@ export const routes: Routes = [
             { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
             { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
             { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
+            { path: 'interviews/calendar', component: CalendarInterviewsComponent, data: { title: 'Interviews Calendar', breadcrumb: 'Profile' } },
 
             { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
             { path: 'articles/add-article', component: AddArticleComponent, data: { title: 'Add Article', breadcrumb: 'Profile' } },
@@ -108,6 +110,7 @@ export const routes: Routes = [
             { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
             { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
             { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
+            { path: 'interviews/calendar', component: CalendarInterviewsComponent, data: { title: 'Interviews Calendar', breadcrumb: 'Profile' } },
 
             { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
 

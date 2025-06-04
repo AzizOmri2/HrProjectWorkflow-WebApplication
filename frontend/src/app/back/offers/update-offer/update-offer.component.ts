@@ -34,40 +34,46 @@ export class UpdateOfferComponent implements OnInit{
 
   ngOnInit(): void {
     // Retrieve the user Role from localStorage
-    const roleUser = localStorage.getItem('user_role');
-    if(roleUser){
-      this.userRole = roleUser;
-    } else {
-      console.error('User Role not found in localStorage');
+    this.userRole = localStorage.getItem('user_role');
+
+    if (!this.userRole) {
+      console.error('User role not found in localStorage');
     }
-    
-    this.offerId = Number(this.route.snapshot.paramMap.get('id'));
+
+    // Retrieve the offer Id from URL
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.offerId = Number(idParam);
+
     if (this.offerId) {
-      this.offerService.getOfferById(this.offerId).subscribe({
-        next: data => {
-          this.offer = data;
-        },
-        error: err => {
-          console.error('Error fetching offer', err);
-        }
-      });
+      this.loadOffer();
     }
+  }
+
+  loadOffer(): void {
+    this.offerService.getOfferById(this.offerId).subscribe({
+      next: data => {
+        this.offer = data;
+      },
+      error: (err) => {
+        console.error('Error fetching offer:', err);
+      }
+    });
   }
 
   onSubmit() {
     this.showAlert = false;
+
     this.offerService.updateOffer(this.offerId, this.offer).subscribe({
-      next: res => {
-        console.log('Offer updated successfully:', res);
+      next: () => {
+        this.showAlert = true;
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The Job Offer was successfully updated."
+        this.error = 'The job offer was successfully updated.';
       },
-      error: err => {
-        console.error('Error updating offer', err);
-        this.typeAlert = 'danger';
+      error: (err) => {
+        console.error('Error updating offer:', err);
         this.showAlert = true;
-        this.error = "The Job Offer's update was failed."
+        this.typeAlert = 'danger';
+        this.error = "The job offer's update failed.";
       }
     });
   }

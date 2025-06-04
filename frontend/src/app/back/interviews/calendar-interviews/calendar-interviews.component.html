@@ -1,0 +1,75 @@
+<div #calendar id="calendrier"></div>
+
+<!-- Custom Modal -->
+<div *ngIf="showModal" class="modal-wrapper">
+    <div class="custom-modal-backdrop" (click)="closeModal()"></div>
+
+    <div class="custom-modal">
+        <div class="custom-modal-header">
+            <h4 class="modal-title">Interview Details</h4>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close">&times;</button>
+        </div>
+
+        <div class="custom-modal-body" *ngIf="selectedEventDetails">
+            <table class="table table-striped table-hover">
+                <tbody>
+                    <tr>
+                        <th>Application</th>
+                        <td>
+                            <strong>{{ selectedEventDetails.application.job_offer.title }}</strong><br />
+                            <small class="text-muted">
+                                <i class="fa fa-building text-info"></i> {{ selectedEventDetails.application.job_offer.company | uppercase }} |
+                                {{ selectedEventDetails.application.candidate.name }}
+                            </small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Date & Time</th>
+                        <td>{{ selectedEventDetails.interview_date | date: 'yyyy-MM-dd HH:mm' : 'UTC' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Interviewer</th>
+                        <td>
+                            <i class="fa fa-user text-primary"></i>&nbsp; 
+                            <strong>{{ selectedEventDetails.interviewerName }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Link</th>
+                        <td>
+                            <a [href]="selectedEventDetails.link" class="btn btn-sm btn-default" title="Open Interview Link" target="_blank">
+                                <i class="fa fa-link"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td [ngSwitch]="selectedEventDetails.status">
+                            <span *ngSwitchCase="'Finished'" class="label label-success">Finished</span>
+                            <span *ngSwitchCase="'Scheduled'" class="label label-warning">Scheduled</span>
+                            <span *ngSwitchCase="'Canceled'" class="label label-danger">Canceled</span>
+                            <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Result</th>
+                        <td [ngSwitch]="selectedEventDetails.result">
+                            <span *ngSwitchCase="'Accepted'" class="label label-success">Accepted</span>
+                            <span *ngSwitchCase="'Rejected'" class="label label-danger">Rejected</span>
+                            <span *ngSwitchCase="'Pending'" class="label label-warning">Pending</span>
+                            <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Duration</th>
+                        <td>{{ selectedEventDetails.duration }}<small><b> min</b></small></td>
+                    </tr>
+                    <tr>
+                        <th>Notes</th>
+                        <td>{{ selectedEventDetails.notes || 'None' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
