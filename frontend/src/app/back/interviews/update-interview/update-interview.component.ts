@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './update-interview.component.css'
 })
 export class UpdateInterviewComponent implements OnInit{
+  userRole: string | null = null;
   interviewId!: number;
   interview: any = {
     application_id: '',
@@ -41,6 +42,14 @@ export class UpdateInterviewComponent implements OnInit{
 
 
   ngOnInit(): void {
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
+
     this.interviewId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.interviewId) {
       this.interviewService.getInterviewById(this.interviewId).subscribe({

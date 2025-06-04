@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-offer.component.css'
 })
 export class AddOfferComponent implements OnInit{
+  userRole: string | null = null;
   offer: any = {
     title: '',
     department: '',
@@ -32,7 +33,14 @@ export class AddOfferComponent implements OnInit{
   ngOnInit(): void {
     // Retrieve the user ID from localStorage
     const userId = localStorage.getItem('user_id');
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
     if (userId) {
+      if(roleUser){
+        this.userRole = roleUser;
+      } else {
+        console.error('User Role not found in localStorage');
+      }
       this.offer.created_by_id = userId;  // Assign to created_by_id
     } else {
       console.error('User ID not found in localStorage');

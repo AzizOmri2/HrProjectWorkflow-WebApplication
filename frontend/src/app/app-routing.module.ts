@@ -42,6 +42,7 @@ import { MesInterviewsComponent } from './front/applications/mes-interviews/mes-
 import { ReportsComponent } from './back/other/reports/reports.component';
 import { FindEmailComponent } from './auth/find-email/find-email.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { BackHrComponent } from './back-hr/back-hr.component';
 
 
 export const routes: Routes = [
@@ -80,6 +81,28 @@ export const routes: Routes = [
             { path: 'comments/add-comment', component: AddCommentComponent, data: { title: 'Add Comment', breadcrumb: 'Profile' } },
             { path: 'comments/update-comment/:id', component: UpdateCommentComponent, data: { title: 'Update Comment', breadcrumb: 'Profile' } },
             { path: 'comments/show/:id', component: CommentShowComponent, data: { title: 'Comment Details', breadcrumb: 'Profile' } }
+        ]
+    },
+
+    {  path: 'back-hr', component: BackHrComponent, canActivate: [AuthGuard],
+        children: [
+            { path: '', component: ReportsComponent, data: { title: 'Dashboard', breadcrumb: 'Profile' } },
+
+            { path: 'update-profile', component: UpdateProfileComponent, data: { title: 'Edit Profile', breadcrumb: 'Profile' } },
+            
+            { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
+            { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
+            { path: 'offers/update-offer/:id', component: UpdateOfferComponent, data: { title: 'Update Job Offer', breadcrumb: 'Profile' } },
+            
+            { path: 'applications', component: ApplicationsListComponent, data: { title: 'Applications List', breadcrumb: 'Profile' } },
+
+            { path: 'interviews', component: InterviewsListComponent, data: { title: 'Interviews List', breadcrumb: 'Profile' } },
+            { path: 'interviews/add-interview', component: AddInterviewComponent, data: { title: 'Add Interview', breadcrumb: 'Profile' } },
+            { path: 'interviews/update-interview/:id', component: UpdateInterviewComponent, data: { title: 'Update Interview', breadcrumb: 'Profile' } },
+
+            { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
+
+            { path: 'comments', component: CommentsListComponent, data: { title: 'Comments List', breadcrumb: 'Profile' } },
         ]
     },
     

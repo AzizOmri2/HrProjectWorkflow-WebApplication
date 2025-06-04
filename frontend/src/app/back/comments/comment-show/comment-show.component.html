@@ -11,21 +11,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>Commenter</th>
+                            <td>
+                                <small><i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b></small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Created At</th>
+                            <td><small>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</small></td>
+                        </tr>
+                        <tr>
                             <th>Content</th>
                             <td>
                                 <small>{{ comment.content }}</small>
                             </td>
-                        </tr>
-                        <tr>
-                            <th>Commenter</th>
-                            <td>
-                                <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <th>Created At</th>
-                            <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
                         </tr>
                     </tbody>
                 </table>

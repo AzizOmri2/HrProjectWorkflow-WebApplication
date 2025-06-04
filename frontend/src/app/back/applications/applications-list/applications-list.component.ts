@@ -12,6 +12,7 @@ import { ApplicationShowComponent } from '../application-show/application-show.c
   styleUrl: './applications-list.component.css'
 })
 export class ApplicationsListComponent implements OnInit{
+  userRole: string | null = null;
   applications: any[] = [];
   filteredApplications: any[] = [];
   filterText: string = '';
@@ -24,6 +25,13 @@ export class ApplicationsListComponent implements OnInit{
   constructor(private applicationService: ApplicationService, private router: Router) {}
 
   ngOnInit() {
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
     this.getApplicationsList();
   }
 

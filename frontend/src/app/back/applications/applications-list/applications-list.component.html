@@ -73,10 +73,10 @@
                                 <button (click)="openApplicationInfo(application.id)" class="btn btn-info" title="Show Details">
                                     <i class="fa fa-info-circle"></i>
                                 </button>
-                                <button [routerLink]="['/back/applications/update-application', application.id]" class="btn btn-success" title="Edit Application">
+                                <button *ngIf="userRole === 'admin'" [routerLink]="['/back/applications/update-application', application.id]" class="btn btn-success" title="Edit Application">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger" (click)="deleteApplication(application.id)" title="Delete Application">
+                                <button *ngIf="userRole === 'admin'" class="btn btn-danger" (click)="deleteApplication(application.id)" title="Delete Application">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>

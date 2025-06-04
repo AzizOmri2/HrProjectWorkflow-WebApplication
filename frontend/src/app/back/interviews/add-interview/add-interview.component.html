@@ -111,7 +111,10 @@
                 <div class="box-footer" align="center">
                     <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid" title="Add Interview">Add Interview</button>
                     &nbsp;
-                    <button type="submit" class="btn btn-info" [routerLink]="['/back/interviews']" title="Interviews List">Interviews List</button>
+                    <!-- HR Button -->
+                    <button *ngIf="userRole === 'rh'" type="submit" class="btn btn-info" [routerLink]="['/back-hr/interviews']" title="Interviews List">Interviews List</button>
+                    <!-- ADMIN Button -->
+                    <button *ngIf="userRole === 'admin'" type="submit" class="btn btn-info" [routerLink]="['/back/interviews']" title="Interviews List">Interviews List</button>
                 </div>
             </form>
             <br><br>

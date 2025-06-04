@@ -13,6 +13,7 @@ import { UserService } from '../../../services/user.service';
   styleUrl: './add-interview.component.css'
 })
 export class AddInterviewComponent implements OnInit{
+  userRole: string | null = null;
   interview: any = {
     application_id: null,
     interview_date: '',
@@ -39,6 +40,14 @@ export class AddInterviewComponent implements OnInit{
 
 
   ngOnInit(): void {
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
+    
     this.applicationService.getApplicationsNotWithdrawn().subscribe(data => {
       this.applications = data;
     });

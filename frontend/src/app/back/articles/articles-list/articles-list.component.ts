@@ -13,6 +13,7 @@ import { ArticleShowComponent } from '../article-show/article-show.component';
   styleUrl: './articles-list.component.css'
 })
 export class ArticlesListComponent implements OnInit{
+  userRole: string | null = null;
   articles:any;
   filteredArticles: any[] = [];
 
@@ -25,6 +26,13 @@ export class ArticlesListComponent implements OnInit{
   }
 
   ngOnInit(){
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
     this.ArticlesList()
   }
 

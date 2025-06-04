@@ -11,6 +11,7 @@ import { OfferService } from '../../../services/offer.service';
   styleUrl: './update-offer.component.css'
 })
 export class UpdateOfferComponent implements OnInit{
+  userRole: string | null = null;
   offerId!: number;
   offer: any = {
     title: '',
@@ -32,6 +33,14 @@ export class UpdateOfferComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
+    
     this.offerId = Number(this.route.snapshot.paramMap.get('id'));
     if (this.offerId) {
       this.offerService.getOfferById(this.offerId).subscribe({

@@ -50,15 +50,23 @@ export class LoginComponent {
             this.isLoggedIn = true;
               
             // Redirect based on user role
-            if (user.role === 'admin' || user.role === 'rh') {
+            if (user.role === 'admin') {
               if(user.nbCnx === 1){
                 //this.router.navigate(['/update-password']);
                 window.location.href = '/update-password';
               }else{
-                //this.router.navigate(['/back']); // Admin ou RH
+                //this.router.navigate(['/back']); // Admin
                 window.location.href = '/back';
               }
-            } else {
+            } else if(user.role === 'rh'){
+              if(user.nbCnx === 1){
+                //this.router.navigate(['/update-password']);
+                window.location.href = '/update-password';
+              }else{
+                //this.router.navigate(['/back-hr']); // RH
+                window.location.href = '/back-hr';
+              }
+            }else {
               //this.router.navigate(['/front']); // RH or Candidate
               window.location.href = '/front';
             }

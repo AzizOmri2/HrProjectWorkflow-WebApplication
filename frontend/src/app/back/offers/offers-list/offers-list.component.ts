@@ -12,6 +12,7 @@ import { OfferShowComponent } from '../offer-show/offer-show.component';
   styleUrl: './offers-list.component.css'
 })
 export class OffersListComponent implements OnInit{
+  userRole: string | null = null;
   selectedOfferId: number | null = null;
   offers: any[] = [];
   filteredOffers: any[] = [];
@@ -30,6 +31,14 @@ export class OffersListComponent implements OnInit{
   }
 
   ngOnInit(){
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
+
     this.OffersList()
   }
 

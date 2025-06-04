@@ -140,7 +140,10 @@
                 <div class="box-footer" align="center">
                     <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid" title="Add Job Offer">Add Job Offer</button>
                     &nbsp;
-                    <button type="submit" class="btn btn-info" [routerLink]="['/back/offers']" title="Job Offers List">Job Offers List</button>
+                    <!-- HR Button -->
+                    <button *ngIf="userRole === 'rh'" type="submit" class="btn btn-info" [routerLink]="['/back-hr/offers']" title="Job Offers List">Job Offers List</button>
+                    <!-- ADMIN Button -->
+                    <button *ngIf="userRole === 'admin'" type="submit" class="btn btn-info" [routerLink]="['/back/offers']" title="Job Offers List">Job Offers List</button>
                 </div>
             </form>
             <br><br>

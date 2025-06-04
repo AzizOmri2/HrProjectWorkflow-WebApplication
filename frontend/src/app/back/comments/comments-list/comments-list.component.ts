@@ -12,7 +12,7 @@ import { CommentShowComponent } from '../comment-show/comment-show.component';
   styleUrl: './comments-list.component.css'
 })
 export class CommentsListComponent implements OnInit{
-  
+  userRole: string | null = null;
   filterText: string = '';
   comments: any[] = []; // Your original comments list
   filteredComments: any[] = [];
@@ -25,6 +25,13 @@ export class CommentsListComponent implements OnInit{
   }
 
   ngOnInit(){
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
     this.CommentsList()
   }
 

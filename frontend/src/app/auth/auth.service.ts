@@ -58,6 +58,10 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
+  getRole(): string | null {
+    return localStorage.getItem("user_role");
+  }
+
   private setToken(response: HttpResponse<AuthResponse>): void {
     const token = response.headers.get('Authorization')?.replace('Bearer ', '');
     if (token) {

@@ -26,23 +26,27 @@
                                     </div>
                                     <div class="col-xs-4">
                                         <small><strong>Created At : </strong></small>
-                                        <span class="label label-success">
+                                        <span class="label label-default">
                                             <small>{{ article.created_at | date: 'yyyy-MM-dd HH:mm' }}</small>
                                         </span>
                                     </div>
-                                    <div class="col-xs-4">
-                                        <small><strong>Reactions : </strong></small>
-                                        <span class="label label-danger">
-                                            <small>{{ article.nb_likes }} &nbsp;<i class="fa fa-thumbs-up"></i></small>
-                                        </span>
-                                        &nbsp;
-                                        <span class="label label-default">
-                                            <small>{{ article.nb_dislikes }} &nbsp;<i class="fa fa-thumbs-down"></i></small>
-                                        </span>
+                                    <div *ngIf="hasLiked !== null && hasDisliked !== null" class="col-xs-4">
+                                        <!-- Reactions and Like / Dislike Buttons -->
+                                        
+                                        <div class="reaction-buttons">
+                                            <small><strong>Reactions : </strong></small>
+                                            <button class="btn" [ngClass]="hasLiked ? 'btn-success' : 'btn-outline-success'" (click)="likeArticle()" title="Like Article">
+                                                <small>{{ likeCount }} &nbsp;<i class="fa fa-thumbs-up"></i></small>
+                                            </button>
+                                            <button class="btn" [ngClass]="hasDisliked ? 'btn-danger' : 'btn-outline-danger'" (click)="dislikeArticle()" title="Dislike Article">
+                                                <small>{{ dislikeCount }} &nbsp;<i class="fa fa-thumbs-down"></i></small>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
 
                         <br>
                         <!-- Content -->

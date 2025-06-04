@@ -27,7 +27,7 @@
                         <th>Content</th>        
                         <th>Commenter</th>                
                         <th>Created At</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,14 +39,20 @@
                             <small>{{ comment.content }}</small>
                         </td>
                         <td>
-                            <i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b>
+                            <small><i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b></small>
                         </td>
-                        <td>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td><small>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</small></td>
                         <td>
                             <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
-                                <button (click)="openCommentInfo(comment.id)" class="btn btn-info" title="Show Details"><i class="fa fa-info-circle"></i></button>
-                                <button [routerLink]="['/back/comments/update-comment', comment.id]" class="btn btn-success" title="Edit Comment"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-danger" (click)="deleteComment(comment.id)" title="Delete Comment"><i class="fa fa-trash"></i></button>
+                                <button (click)="openCommentInfo(comment.id)" class="btn btn-info" title="Show Details">
+                                    <i class="fa fa-info-circle"></i>
+                                </button>
+                                <button *ngIf="userRole === 'admin'" [routerLink]="['/back/comments/update-comment', comment.id]" class="btn btn-success" title="Edit Comment">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button *ngIf="userRole === 'admin'" class="btn btn-danger" (click)="deleteComment(comment.id)" title="Delete Comment">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>

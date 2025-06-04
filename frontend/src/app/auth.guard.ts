@@ -15,14 +15,25 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    // Check if user is authenticated by verifying if a token exists
-    if (this.authService.isLoggedIn()) {
-      return true; // Allow access to the route
-    } else {
-      // Redirect to login if not authenticated
-      this.router.navigate(['/login']);
+    if (!this.authService.isLoggedIn()) {
       this.flashMessageService.setMessage('error', 'You need to sign in.');
-      return false; // Deny access to the route
+      this.router.navigate(['/login']);
+      return false;
     }
+
+    const role = this.authService.getRole(); // assume this returns: 'admin', 'hr', or 'candidat'
+    const url = state.url;
+
+    // Block access based on role
+    if (
+      (role === 'admin' && (url.startsWith('/front') || url.startsWith('/back-hr'))) ||
+      (role === 'rh' && (url.startsWith('/back') || url.startsWith('/front'))) ||
+      (role === 'candidat' && (url.startsWith('/back') || url.startsWith('/back-hr')))
+    ) {
+      this.router.navigate(['/']); // redirect to a safe route
+      return false;
+    }
+
+    return true; // Authorized
   }
 }

@@ -12,6 +12,7 @@ import { InterviewShowComponent } from '../interview-show/interview-show.compone
   styleUrl: './interviews-list.component.css'
 })
 export class InterviewsListComponent implements OnInit{
+  userRole: string | null = null;
   filterText: string = '';
   selectedStatus: string = '';
   selectedResult: string = '';
@@ -28,6 +29,13 @@ export class InterviewsListComponent implements OnInit{
   }
 
   ngOnInit(){
+    // Retrieve the user Role from localStorage
+    const roleUser = localStorage.getItem('user_role');
+    if(roleUser){
+      this.userRole = roleUser;
+    } else {
+      console.error('User Role not found in localStorage');
+    }
     this.InterviewsList()
   }
 

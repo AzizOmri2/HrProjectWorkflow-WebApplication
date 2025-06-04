@@ -40,10 +40,10 @@
                                 <button (click)="openArticleInfo(article.id)" class="btn btn-sm btn-info flex-grow-1" title="Show Article Details">
                                     <i class="fa fa-info-circle"></i>
                                 </button>
-                                <button class="btn btn-block btn-success btn-sm" [routerLink]="['/back/articles/update-article', article.id]" title="Update Article">
+                                <button *ngIf="userRole === 'admin'" class="btn btn-block btn-success btn-sm" [routerLink]="['/back/articles/update-article', article.id]" title="Update Article">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button (click)="deleteArticle(article.id)" class="btn btn-sm btn-danger flex-grow-1" title="Delete Article">
+                                <button *ngIf="userRole === 'admin'" (click)="deleteArticle(article.id)" class="btn btn-sm btn-danger flex-grow-1" title="Delete Article">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>

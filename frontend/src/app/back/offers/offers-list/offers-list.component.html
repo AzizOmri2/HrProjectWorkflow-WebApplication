@@ -88,7 +88,11 @@
                                 <button (click)="openOfferInfo(offer.id)" class="btn btn-sm btn-info flex-grow-1" title="Show Offer Details">
                                     <i class="fa fa-info-circle"></i>
                                 </button>
-                                <button class="btn btn-sm btn-success flex-grow-1" title="Update Offer" [routerLink]="['/back/offers/update-offer', offer.id]">
+                                <!-- HR Update Button -->
+                                <button *ngIf="userRole === 'rh'" class="btn btn-sm btn-success flex-grow-1" title="Update Offer" [routerLink]="['/back-hr/offers/update-offer', offer.id]">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button *ngIf="userRole === 'admin'" class="btn btn-sm btn-success flex-grow-1" title="Update Offer" [routerLink]="['/back/offers/update-offer', offer.id]">
                                     <i class="fa fa-edit"></i>
                                 </button>
                                 <button (click)="deleteOffer(offer.id)" class="btn btn-sm btn-danger flex-grow-1" title="Delete Offer">
