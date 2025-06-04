@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { FlashMessageService } from './flash-message.service';
@@ -9,7 +9,12 @@ import { FlashMessageService } from './flash-message.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router,private flashMessageService: FlashMessageService) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private flashMessageService: FlashMessageService,
+    private route: ActivatedRoute
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -21,16 +26,17 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const role = this.authService.getRole(); // assume this returns: 'admin', 'hr', or 'candidat'
+    const role = this.authService.getRole(); // this function returns: 'admin', 'rh', or 'candidat'
     const url = state.url;
 
     // Block access based on role
     if (
       (role === 'admin' && (url.startsWith('/front') || url.startsWith('/back-hr'))) ||
-      (role === 'rh' && (url.startsWith('/back') || url.startsWith('/front'))) ||
-      (role === 'candidat' && (url.startsWith('/back') || url.startsWith('/back-hr')))
+      (role === 'rh' && ((url.startsWith('/back') && !url.startsWith('/back-hr')) || url.startsWith('/front'))) ||
+      (role === 'candidate' && (url.startsWith('/back') || url.startsWith('/back-hr')))
     ) {
-      this.router.navigate(['/']); // redirect to a safe route
+      //Redirection to a Error AccessDenied
+      this.router.navigate(['access-denied']);
       return false;
     }
 

@@ -7,8 +7,8 @@ class UserController < ApplicationController
     end
 
     def hr_users
-      hr_users = User.where(role: 1)
-      render json: hr_users
+        hr_users = User.where(role: 1)
+        render json: hr_users
     end
 
     def show

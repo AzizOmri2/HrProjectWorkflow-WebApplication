@@ -34,7 +34,7 @@
                 </h3>
                 <ul>
                     <li *ngFor="let item of diversityData.gender">
-                        <span class="item-label">{{ item.label }}</span>
+                        <span class="item-label">{{ item.label && item.label.trim() !== '' ? item.label : 'Not Defined' }}</span>
                         <span class="badge small">{{ item.count }}</span>
                     </li>
                 </ul>
@@ -43,7 +43,7 @@
                 <h3><i class="fa fa-globe"></i> Nationality</h3>
                 <ul>
                     <li *ngFor="let item of diversityData.nationality">
-                        <span class="item-label">{{ item.label }}</span>
+                        <span class="item-label">{{ item.label && item.label.trim() !== '' ? item.label : 'Not Defined' }}</span>
                         <span class="badge small">{{ item.count }}</span>
                     </li>
                 </ul>

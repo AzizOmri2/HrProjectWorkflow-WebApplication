@@ -43,16 +43,22 @@ import { ReportsComponent } from './back/other/reports/reports.component';
 import { FindEmailComponent } from './auth/find-email/find-email.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { BackHrComponent } from './back-hr/back-hr.component';
+import { NotFoundComponent } from './back/other/not-found/not-found.component';
+import { AccessDeniedComponent } from './back/other/access-denied/access-denied.component';
+import { LockScreenComponent } from './auth/lock-screen/lock-screen.component';
 
 
 export const routes: Routes = [
     {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
-    {  path: 'login', component: LoginComponent  },
-    {  path: 'register', component: RegisterComponent  },
+    {  path: 'login', component: LoginComponent, data: { title: 'Login', breadcrumb: 'Users' } },
+    {  path: 'register', component: RegisterComponent, data: { title: 'Regiter', breadcrumb: 'Users' } },
+    {  path: 'lock', component: LockScreenComponent, data: { title: 'Lock Screen', breadcrumb: 'Users' } },
     {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
     {  path: 'find-email', component: FindEmailComponent, data: { title: 'Find Account To Reset', breadcrumb: 'Users' } },
     {  path: 'reset-password', component: ResetPasswordComponent, data: { title: 'Reset Password', breadcrumb: 'Users' } },
-    
+    {  path: '404-not-found', component: NotFoundComponent, data: { title: '404 Not Found', breadcrumb: 'Users' } },
+    {  path: 'access-denied', component: AccessDeniedComponent, data: { title: '403 Access Denied', breadcrumb: 'Users' } },
+
     {  path: 'back', component: BackComponent, canActivate: [AuthGuard],
         children: [
             { path: '', component: ReportsComponent, data: { title: 'Dashboard', breadcrumb: 'Profile' } },
@@ -80,7 +86,10 @@ export const routes: Routes = [
             { path: 'comments', component: CommentsListComponent, data: { title: 'Comments List', breadcrumb: 'Profile' } },
             { path: 'comments/add-comment', component: AddCommentComponent, data: { title: 'Add Comment', breadcrumb: 'Profile' } },
             { path: 'comments/update-comment/:id', component: UpdateCommentComponent, data: { title: 'Update Comment', breadcrumb: 'Profile' } },
-            { path: 'comments/show/:id', component: CommentShowComponent, data: { title: 'Comment Details', breadcrumb: 'Profile' } }
+            { path: 'comments/show/:id', component: CommentShowComponent, data: { title: 'Comment Details', breadcrumb: 'Profile' } },
+        
+            {  path: '404-not-found', component: NotFoundComponent, data: { title: '404 Not Found', breadcrumb: 'Profile' } },
+            {  path: 'access-denied', component: AccessDeniedComponent, data: { title: '403 Access Denied', breadcrumb: 'Profile' } },
         ]
     },
 
@@ -103,6 +112,9 @@ export const routes: Routes = [
             { path: 'articles', component: ArticlesListComponent, data: { title: 'Articles List', breadcrumb: 'Profile' } },
 
             { path: 'comments', component: CommentsListComponent, data: { title: 'Comments List', breadcrumb: 'Profile' } },
+        
+            {  path: '404-not-found', component: NotFoundComponent, data: { title: '404 Not Found', breadcrumb: 'Profile' } },
+            {  path: 'access-denied', component: AccessDeniedComponent, data: { title: '403 Access Denied', breadcrumb: 'Profile' } },
         ]
     },
     
@@ -121,6 +133,9 @@ export const routes: Routes = [
 
             { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
             { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },
+        
+            {  path: '404-not-found', component: NotFoundComponent, data: { title: '404 Not Found', breadcrumb: 'Profile' } },
+            {  path: 'access-denied', component: AccessDeniedComponent, data: { title: '403 Access Denied', breadcrumb: 'Profile' } },
         ]
     },
     
@@ -135,7 +150,9 @@ export const routes: Routes = [
             { path: 'about', component: AboutPageComponent, data: { title: 'About', breadcrumb: 'Profile' } },
             { path: 'support', component: HelpSupportPageComponent, data: { title: 'Help & Support', breadcrumb: 'Profile' } },
         ]
-    }
+    },
+
+    { path: '**', redirectTo: '404-not-found' }
 ];
 
 

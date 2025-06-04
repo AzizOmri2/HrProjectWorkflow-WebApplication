@@ -1,0 +1,31 @@
+<div class="error-page">
+    <div class="error-code">404</div>
+    <div class="error-message" *ngIf="userRole === 'empty'">
+        <h1><i class="fa fa-warning"></i> Oops! Page not found.</h1>
+        <p>
+            We couldn’t find the page you were looking for.<br>
+            Meanwhile, you may <a href="/frontvisiteur">return to home page</a>.
+        </p>
+    </div>
+    <div class="error-message" *ngIf="userRole === 'admin'">
+        <h1><i class="fa fa-warning"></i> Oops! Page not found.</h1>
+        <p>
+            We couldn’t find the page you were looking for.<br>
+            Meanwhile, you may <a href="/back">return to dashboard</a>.
+        </p>
+    </div>
+    <div class="error-message" *ngIf="userRole === 'rh'">
+        <h1><i class="fa fa-warning"></i> Oops! Page not found.</h1>
+        <p>
+            We couldn’t find the page you were looking for.<br>
+            Meanwhile, you may <a href="/back-hr">return to dashboard</a>.
+        </p>
+    </div>
+    <div class="error-message" *ngIf="userRole === 'candidate'">
+        <h1><i class="fa fa-warning"></i> Oops! Page not found.</h1>
+        <p>
+            We couldn’t find the page you were looking for.<br>
+            Meanwhile, you may <a href="/front">return to home page</a>.
+        </p>
+    </div>
+</div>

@@ -160,13 +160,7 @@ export class BackHrComponent implements OnInit{
     this.authService.logout().subscribe(
       (response) => {
         console.log('Logged out successfully', response);
-        localStorage.removeItem('auth_token'); // Remove the token
-        localStorage.removeItem('user_id');
-        localStorage.removeItem('user_name');
-        localStorage.removeItem('created_at');
-        localStorage.removeItem('user_role');
-        localStorage.removeItem('user_image');
-        localStorage.removeItem('alert_shown');
+        localStorage.clear();
         this.isLoggedIn = false;
         window.location.href = '/frontvisiteur'; // Redirect to visiteur page after logout
       },
@@ -178,7 +172,12 @@ export class BackHrComponent implements OnInit{
 
 
   deleteAccount() {
-    if (confirm('Are you sure you want to delete your account?')) {
+    const confirmed = window.confirm(
+      "⚠️ You're about to delete your account.\n\nThis action is irreversible. Do you want to continue?"
+    );
+    if (!confirmed) {
+      return; // User canceled
+    }else{
       const idStr = localStorage.getItem('user_id');
       const id = idStr ? +idStr : null; // Convert to number
 

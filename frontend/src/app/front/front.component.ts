@@ -167,12 +167,7 @@ export class FrontComponent implements OnInit{
       this.authService.logout().subscribe(
         (response) => {
           console.log('Logged out successfully', response);
-          localStorage.removeItem('auth_token'); // Remove the token
-          localStorage.removeItem('user_id');
-          localStorage.removeItem('user_name');
-          localStorage.removeItem('created_at');
-          localStorage.removeItem('user_role');
-          localStorage.removeItem('user_image');
+          localStorage.clear();
           this.isLoggedIn = false;
           window.location.href = '/frontvisiteur'; // Redirect to login page after logout
         },

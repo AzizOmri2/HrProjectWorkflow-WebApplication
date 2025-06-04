@@ -196,9 +196,10 @@
                   <!-- Menu Body -->
                   <li class="user-body">
                     <div class="pull-left">
-                      <p>Delete your Account ? 
-                        <a (click)="deleteAccount()">
-                          <b>Here.</b>
+                      <p class="text-muted">
+                        Want to delete your account?&nbsp;
+                        <a (click)="deleteAccount()" class="text-danger" style="font-weight: bold; cursor: pointer;">
+                          Click here.
                         </a>
                       </p>
                     </div>
@@ -206,7 +207,7 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a [routerLink]="['/back-hr/update-profile']" class="btn btn-default btn-flat">Update Profile</a>
+                      <a [routerLink]="['/back-hr/update-profile']" class="btn btn-default btn-flat">Edit Profile</a>
                     </div>
                     <div class="pull-right">
                       <a (click)="logout()" class="btn btn-default btn-flat">Sign out</a>
