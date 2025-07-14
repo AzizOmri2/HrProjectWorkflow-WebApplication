@@ -27,8 +27,7 @@ export class ArticlesListFrontComponent implements OnInit{
   constructor(
     private articleService: ArticleService,
     private applicationService: ApplicationService,
-    private offerService: OfferService,
-    private router: Router, 
+    private offerService: OfferService
   ) {}
 
   ngOnInit(): void {

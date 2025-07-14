@@ -17,10 +17,10 @@
                     </div>
                     <div class="article-meta d-flex align-items-center mb-3">
                         <p class="mb-0"><b>Author : </b><span class="label label-default"> {{ article.author.name }}</span></p>
-                        <p class="mb-0 ml-4"><b>Published on : </b><span class="label label-success"> {{ article.created_at | date: "d MMMM y 'at' HH:mm" }}</span></p>
+                        <p class="mb-0 ml-4"><b>Published on : </b><span class="label label-success"> {{ article.created_at | date: "MMM d, y 'at' HH:mm" }}</span></p>
                     </div>
                     <img [src]="article.image" alt="Article Image" class="img-fluid rounded mb-4">
-                    <p class="mt-4 article-content">{{ article.content }}</p>
+                    <p class="mt-4 article-content formatted-text" [innerHTML]="article.content"></p>
                   
                     <!-- Like / Dislike Buttons -->
                     <div *ngIf="hasLiked !== null && hasDisliked !== null" class="d-flex align-items-center mt-3">
@@ -90,11 +90,19 @@
                 <!-- Recent Articles -->
                 <div class="mb-5">
                     <h2 class="mb-4">Recent Articles</h2>
-                    <a class="d-flex align-items-center text-decoration-none mb-4" *ngFor="let item of articles" [routerLink]="['/front/articles/article-details', item.id]">
+                    <a 
+                        class="d-flex align-items-center text-decoration-none mb-4" 
+                        *ngFor="let item of articles"
+                        [routerLink]="[
+                            userRole === 'candidate' 
+                            ? '/front/articles/show' 
+                            : '/frontvisiteur/articles/show',
+                            item.id
+                        ]">
                         <img [src]="item.image" alt="thumb" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
                         <div class="pl-3">
                             <h6>{{ item.title }}</h6>
-                            <p>{{ item.content | slice:0:114 }}</p>
+                            <p>{{ item.content | slice:0:150 }}...</p>
                             <small class="text-body"><i class="fa fa-calendar text-primary mr-2"></i>{{ item.created_at | date }}</small>
                         </div>
                     </a>

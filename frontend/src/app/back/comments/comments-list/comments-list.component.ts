@@ -5,12 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CommentShowComponent } from '../comment-show/comment-show.component';
 
+declare var $: any;
+
+
 @Component({
   selector: 'app-comments-list',
   imports: [RouterModule, FormsModule, CommonModule, CommentShowComponent],
   templateUrl: './comments-list.component.html',
   styleUrl: './comments-list.component.css'
 })
+
+
 export class CommentsListComponent implements OnInit{
   userRole: string | null = null;
   filterText: string = '';
@@ -20,9 +25,14 @@ export class CommentsListComponent implements OnInit{
   selectedCommentId: number | null = null;
   showModal = false;
 
-  constructor(private commentService: CommentService, private router : Router){
+  commentIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this comment?';
+  typeAlert = '';
+  alertMessage='';
 
-  }
+  constructor(
+    private commentService: CommentService
+  ){}
 
   ngOnInit(){
     // Retrieve the user Role from localStorage
@@ -61,16 +71,32 @@ export class CommentsListComponent implements OnInit{
     document.body.style.overflow = 'auto';
   }
 
-  // Delete comment
+  // Called from UI (when user clicks Delete button)
   deleteComment(id: number) {
-    if (confirm('Are you sure you want to delete this comment?')) {
-      this.commentService.deleteComment(id).subscribe(
+    this.commentIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this comment?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  // Called when user confirms deletion
+  confirmDelete() {
+    if (this.commentIdToDelete !== null) {
+      this.commentService.deleteComment(this.commentIdToDelete).subscribe(
         () => {
-          // Refresh the comment list after deletion
-          this.ngOnInit();
+          this.CommentsList();
+          this.commentIdToDelete = null;
+
+          // Show success modal
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected comment was deleted successfully. The list has been updated accordingly.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         },
         error => {
-          console.error('Error deleting comment:', error);
+          this.typeAlert = 'danger';
+          this.alertMessage = "The system encountered an issue while deleting the comment. Please review your data or try again later.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         }
       );
     }
@@ -90,5 +116,14 @@ export class CommentsListComponent implements OnInit{
   resetFilters() {
     this.filterText = '';
     this.filteredComments = [...this.comments];
+  }
+
+  ngAfterViewInit() {
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
   }
 }

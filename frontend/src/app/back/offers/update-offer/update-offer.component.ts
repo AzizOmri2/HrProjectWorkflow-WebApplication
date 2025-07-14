@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OfferService } from '../../../services/offer.service';
 
+
+declare var $: any;
+
 @Component({
   selector: 'app-update-offer',
   imports: [FormsModule, CommonModule, RouterModule],
@@ -17,19 +20,19 @@ export class UpdateOfferComponent implements OnInit{
     title: '',
     department: '',
     skills_required: '',
-    experience_level: '',
-    deadline: '',
-    status: '',
-    created_by_id: ''
+    experience_level: null,
+    deadline: '', 
+    status: 0,
+    created_by_id: '' ,
+    description: '',
+    location: ''
   };
-  showAlert = false;
   typeAlert = '';
   error='';
 
   constructor(
     private route: ActivatedRoute,
-    private offerService: OfferService,
-    private router: Router
+    private offerService: OfferService
   ) {}
 
   ngOnInit(): void {
@@ -61,19 +64,24 @@ export class UpdateOfferComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
-
     this.offerService.updateOffer(this.offerId, this.offer).subscribe({
       next: () => {
-        this.showAlert = true;
         this.typeAlert = 'success';
-        this.error = 'The job offer was successfully updated.';
+        this.error = 'Your changes to the job offer have been saved.';
+        $('#alertModal').modal('show');
       },
       error: (err) => {
-        console.error('Error updating offer:', err);
-        this.showAlert = true;
         this.typeAlert = 'danger';
-        this.error = "The job offer's update failed.";
+        this.error = "The system encountered an issue while updating the job offer. Please review your data or try again later.";
+        $('#alertModal').modal('show');
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
       }
     });
   }

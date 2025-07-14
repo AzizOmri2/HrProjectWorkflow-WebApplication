@@ -46,6 +46,7 @@ export class LoginComponent {
             localStorage.setItem('created_at', user.created_at);
             localStorage.setItem('user_role', user.role);
             localStorage.setItem('user_image', user.image);
+            localStorage.removeItem('alert_shown');
             
             this.isLoggedIn = true;
               
@@ -84,11 +85,11 @@ export class LoginComponent {
           }
           // Specific error handling based on the error message
           if (errorMsg.includes('password')) {
-            this.flashMessage = { type: 'error', text: '❌ Incorrect password.' };
+            this.flashMessage = { type: 'error', text: '❌ The password is incorrect.<br>Need help? You can reset your password.' };
           } else if (errorMsg.includes('inactive')) {
-            this.flashMessage = { type: 'error', text: '❌ Your account is inactive. Please contact Administration.' };
+            this.flashMessage = { type: 'error', text: '❌ Your account is inactive.<br>Please contact Administration.' };
           } else if (errorMsg.includes('not found')) {
-            this.flashMessage = { type: 'error', text: '❌ Email not found.' };
+            this.flashMessage = { type: 'error', text: '❌ Email not found.<br>Please verify your email and try again.' };
           } else {
             this.flashMessage = { type: 'error', text: `❌ Login Failed: ${errorMsg}` };
           }

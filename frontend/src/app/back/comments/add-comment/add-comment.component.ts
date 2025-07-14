@@ -5,27 +5,29 @@ import { ArticleService } from '../../../services/article.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+declare var $: any;
+
 @Component({
   selector: 'app-add-comment',
   imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './add-comment.component.html',
   styleUrl: './add-comment.component.css'
 })
+
+
 export class AddCommentComponent implements OnInit{
   comment: any = {
     content: '',
     commenter_id: '',
     article_id: null
   };
-  showAlert = false;
   typeAlert = '';
   error='';
   
 
   constructor(
     private commentService: CommentService, 
-    private articleService: ArticleService,
-    private router:Router
+    private articleService: ArticleService
   ) {}
 
   articles: any[] = [];
@@ -46,27 +48,25 @@ export class AddCommentComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
-    // Ensure application is valid before submission
-    if (this.comment.content && this.comment.commenter_id && this.comment.article_id) {
-      this.commentService.createComment(this.comment).subscribe(
-        response => {
-          console.log('Comment added successfully:', response);
-          this.typeAlert = 'success';
-          this.showAlert = true;
-          this.error = "The Comment was successfully created."
-        },
-        error => {
-          console.error('Error adding comment:', error);
-          this.typeAlert = 'danger';
-          this.showAlert = true;
-          this.error = error.error?.error || "There was an error with your comment. Please try again.";
-        }
-      );
-    } else {
-      this.typeAlert = 'danger';
-      this.showAlert = true;
-      this.error = "Please fill all required fields."
-    }
+    this.commentService.createComment(this.comment).subscribe(
+      response => {
+        this.typeAlert = 'success';
+        this.error = "Your comment has been submitted and recorded successfully."
+        $('#alertModal').modal('show');
+      },
+      error => {
+        this.typeAlert = 'danger';
+        this.error = "The system encountered an issue while submitting your comment. Please review your data or try again later.";
+        $('#alertModal').modal('show');
+      }
+    );
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 }

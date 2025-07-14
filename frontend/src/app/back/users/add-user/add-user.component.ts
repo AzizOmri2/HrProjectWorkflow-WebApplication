@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 import { FlashMessageService } from '../../../flash-message.service';
 import { CommonModule } from '@angular/common';
+
+declare var $: any;
+
 
 @Component({
   selector: 'app-add-user',
@@ -11,6 +14,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.css'
 })
+
+
 export class AddUserComponent implements OnInit{
   name = '';
   email = '';
@@ -22,13 +27,13 @@ export class AddUserComponent implements OnInit{
   birth_date = '';
   nationality = '';
   active = true;
+
+
+  typeAlert: 'success' | 'danger' | 'info' = 'success';
   error = '';
-  showAlert = false;
-  typeAlert = '';
 
   constructor(
     private authService: AuthService, 
-    private router: Router,
     private flashMessageService: FlashMessageService
   ){}
 
@@ -49,30 +54,32 @@ export class AddUserComponent implements OnInit{
 
   copyPassword() {
     navigator.clipboard.writeText(this.password).then(() => {
-      alert("Password copied to clipboard");
+      this.typeAlert = 'info';
+      this.error = "The password has been copied to your clipboard.";
+      $('#alertModal').modal('show');
     });
   }
 
   onSubmit(): void {
-    this.error = '';
-    this.showAlert = false;
-    console.log('Submitting:', 
-      { user: 
-        { name: this.name, email: this.email, password: this.password, password_confirmation: this.passwordConfirmation, role: this.role, image: this.image, active: this.active  } 
-      }
-    );
     this.authService.register(this.name, this.email, this.password, this.role, this.image, this.active).subscribe({
       next: (response) => {
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The user account was successfully created."
+        this.error = "The user account data has been submitted and recorded successfully.";
+        $('#alertModal').modal('show');
       },
       error: (err) => {
-        this.error = err.error.errors?.join(', ') || err.error.message || 'Registration failed';
         this.typeAlert = 'danger';
-        this.showAlert = true;
+        this.error = "The system encountered an issue while creating the account. Please review your data or try again later.";
+        $('#alertModal').modal('show');
       }
     });
   }
 
+  ngAfterViewInit(): void {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
+  }
 }

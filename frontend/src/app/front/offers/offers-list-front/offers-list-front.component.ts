@@ -66,7 +66,6 @@ export class OffersListFrontComponent implements OnInit{
       (this.filterText === '' ||
         offer.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.skills_required.toLowerCase().includes(this.filterText.toLowerCase()) ||
-        offer.company.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.location.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.experience_level.toLowerCase().includes(this.filterText.toLowerCase())
       ) &&

@@ -6,12 +6,18 @@ import { ApplicationService } from '../../../services/application.service';
 import { InterviewService } from '../../../services/interview.service';
 import { CommonModule } from '@angular/common';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-update-interview',
   imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './update-interview.component.html',
   styleUrl: './update-interview.component.css'
 })
+
+
 export class UpdateInterviewComponent implements OnInit{
   userRole: string | null = null;
   interviewId!: number;
@@ -25,7 +31,6 @@ export class UpdateInterviewComponent implements OnInit{
     duration: '',
     notes: ''
   };
-  showAlert = false;
   typeAlert = '';
   error='';
   
@@ -75,31 +80,27 @@ export class UpdateInterviewComponent implements OnInit{
     });
   }
 
-  onSubmit() {
-    this.showAlert = false;
-    // Ensure interview is valid before submission
-    if (this.interview.application_id && this.interview.interview_date && this.interview.interviewer_id && 
-        this.interview.link && this.interview.status && this.interview.result && this.interview.duration) {
-      
-      this.interviewService.updateInterview(this.interviewId,this.interview).subscribe(
-        response => {
-          console.log('Interview update successfully:', response);
-          this.typeAlert = 'success';
-          this.showAlert = true;
-          this.error = "The Interview was successfully updated."
-        },
-        error => {
-          console.error('Error planning interview:', error);
-          this.typeAlert = 'danger';
-          this.showAlert = true;
-          this.error = error.error?.error || "There was an error with your interview's planification. Please try again.";
-        }
-      );
-    } else {
-      this.typeAlert = 'danger';
-      this.showAlert = true;
-      this.error = "Please fill all required fields."
-    }
+  onSubmit() {      
+    this.interviewService.updateInterview(this.interviewId,this.interview).subscribe(
+      response => {
+        this.typeAlert = 'success';
+        this.error = "Your changes to the interview have been saved."
+        $('#alertModal').modal('show');
+      },
+      error => {
+        this.typeAlert = 'danger';
+        this.error = "The system encountered an issue while updating the interview. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    );
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 
 }

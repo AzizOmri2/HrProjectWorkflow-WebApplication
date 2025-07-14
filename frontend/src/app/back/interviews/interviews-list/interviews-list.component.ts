@@ -5,12 +5,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InterviewShowComponent } from '../interview-show/interview-show.component';
 
+declare var $: any;
+
+
 @Component({
   selector: 'app-interviews-list',
   imports: [RouterModule,CommonModule, FormsModule, InterviewShowComponent],
   templateUrl: './interviews-list.component.html',
   styleUrl: './interviews-list.component.css'
 })
+
+
 export class InterviewsListComponent implements OnInit{
   userRole: string | null = null;
   filterText: string = '';
@@ -23,10 +28,15 @@ export class InterviewsListComponent implements OnInit{
 
   showModal = false;
 
+  interviewIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this interview?';
+  typeAlert = '';
+  alertMessage='';
 
-  constructor(private interviewService: InterviewService, private router : Router){
 
-  }
+  constructor(
+    private interviewService: InterviewService
+  ){}
 
   ngOnInit(){
     // Retrieve the user Role from localStorage
@@ -76,16 +86,32 @@ export class InterviewsListComponent implements OnInit{
     document.body.style.overflow = 'auto';
   }
 
-  // Delete Interview
+  // Called from UI (when user clicks Delete button)
   deleteInterview(id: number) {
-    if (confirm('Are you sure you want to delete this interview?')) {
-      this.interviewService.deleteInterview(id).subscribe(
+    this.interviewIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this interview?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  // Called when user confirms deletion
+  confirmDelete() {
+    if (this.interviewIdToDelete !== null) {
+      this.interviewService.deleteInterview(this.interviewIdToDelete).subscribe(
         () => {
-          // Refresh the interview list after deletion
-          this.ngOnInit();
+          this.InterviewsList();
+          this.interviewIdToDelete = null;
+
+          // Show success modal
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected interview was deleted successfully. The list has been updated accordingly.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         },
         error => {
-          console.error('Error deleting interview:', error);
+          this.typeAlert = 'danger';
+          this.alertMessage = "The system encountered an issue while deleting the interview. Please review your data or try again later.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         }
       );
     }
@@ -96,7 +122,7 @@ export class InterviewsListComponent implements OnInit{
     this.filteredInterviews = this.interviews.filter((interview: any) =>
       (this.filterText === '' ||
         interview.application.job_offer.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
-        interview.application.job_offer.company.toLowerCase().includes(this.filterText.toLowerCase()) ||
+        interview.application.job_offer.location.toLowerCase().includes(this.filterText.toLowerCase()) ||
         interview.application.candidate.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
         interview.interviewer.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
         interview.status?.toLowerCase().includes(this.filterText.toLowerCase()) ||
@@ -114,5 +140,14 @@ export class InterviewsListComponent implements OnInit{
     this.selectedStatus = '';
     this.selectedResult = '';
     this.filteredInterviews = [...this.interviews];
+  }
+
+  ngAfterViewInit() {
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
   }
 }

@@ -1,3 +1,12 @@
+/* Box Container Styling */
+.box.box-warning {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+
 /* Modal Backdrop */
 .custom-modal-backdrop {
   position: fixed;

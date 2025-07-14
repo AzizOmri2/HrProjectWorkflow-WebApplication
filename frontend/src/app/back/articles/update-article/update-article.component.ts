@@ -4,12 +4,18 @@ import { ArticleService } from '../../../services/article.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-update-article',
   imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './update-article.component.html',
   styleUrl: './update-article.component.css'
 })
+
+
 export class UpdateArticleComponent implements OnInit{
   userId!: number;
   articleId!: number;
@@ -21,14 +27,12 @@ export class UpdateArticleComponent implements OnInit{
     nb_likes: 0
   };
   selectedFile: File | null = null;
-  showAlert = false;
   typeAlert = '';
   error='';
 
   constructor(
     private route: ActivatedRoute,
-    private articleService: ArticleService,
-    private router: Router
+    private articleService: ArticleService
   ) {}
 
 
@@ -61,8 +65,6 @@ export class UpdateArticleComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
-
     const formData = new FormData();
     formData.append('article[title]', this.article.title);
     formData.append('article[content]', this.article.content);
@@ -76,16 +78,22 @@ export class UpdateArticleComponent implements OnInit{
 
     this.articleService.updateArticle(this.articleId, formData).subscribe({
       next: res => {
-        console.log('Article updated successfully:', res);
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The Article was successfully updated."
+        this.error = "Your changes to the article have been saved."
+        $('#alertModal').modal('show');
       },
       error: err => {
-        console.error('Error updating article', err);
         this.typeAlert = 'danger';
-        this.showAlert = true;
-        this.error = "The Article's update was failed."
+        this.error = "The system encountered an issue while updating the article. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
       }
     });
   }

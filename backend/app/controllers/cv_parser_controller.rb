@@ -1,0 +1,2 @@
+class CvParserController < ApplicationController
+end

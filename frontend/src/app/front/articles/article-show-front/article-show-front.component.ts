@@ -39,6 +39,8 @@ export class ArticleShowFrontComponent implements OnInit{
   hasLiked: boolean | null = null;
   hasDisliked: boolean | null = null;
 
+  userRole:any;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -52,6 +54,13 @@ export class ArticleShowFrontComponent implements OnInit{
     this.comment.article_id = this.articleId;
 
     const userId = localStorage.getItem('user_id');
+    const userData = localStorage.getItem('user_role');
+    if(userData){
+      this.userRole = userData;
+    }else{
+      this.userRole = null;
+    }
+    
 
     if (userId && !isNaN(+userId)) {
       this.currentUserId = +userId;

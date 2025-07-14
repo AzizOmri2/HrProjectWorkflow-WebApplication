@@ -9,7 +9,7 @@
                     'alert-success': flashMessage.type === 'success',
                     'alert-danger': flashMessage.type === 'error'
                 }">
-                {{ flashMessage.text }}
+                <span [innerHTML]="flashMessage.text"></span>
             </div>
             <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
                 <div class="form-group has-feedback" 

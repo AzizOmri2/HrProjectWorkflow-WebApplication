@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 import { NotificationService } from '../services/notification.service';
 
 
+declare var $: any;
 
 @Component({
   selector: 'app-back',
@@ -29,6 +30,10 @@ export class BackComponent implements OnInit{
   unreadCount = 0;
   userId: number = 0;
   
+  userAccountToDelete: number | null = null;
+  deleteAccountMessage: string = 'Are you sure you want to delete your account?';
+  typeAlertDeleteAccount = '';
+  alertDeleteMessage='';
 
   constructor(
     private authService: AuthService, 
@@ -43,15 +48,7 @@ export class BackComponent implements OnInit{
 
   ngOnInit(): void {
     const alertShown = localStorage.getItem('alert_shown');
-    if (!alertShown) {
-      this.showAlert = true;
-      setTimeout(() => {
-        this.showAlert = false;
-        localStorage.setItem('alert_shown', 'true'); // Mark as shown
-      }, 5000);
-    } else {
-      this.showAlert = false; // Do not show if already marked
-    }
+    this.showAlert = !alertShown;
 
     const storedName = localStorage.getItem('user_name');
     const storedDate = localStorage.getItem('created_at');
@@ -106,6 +103,15 @@ export class BackComponent implements OnInit{
       .subscribe(() => {
         this.updatePageTitle(this.activatedRoute);
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.showAlert) {
+      setTimeout(() => {
+        $('#welcomeModal').modal('show'); // 👈 Show modal
+        localStorage.setItem('alert_shown', 'true'); // 👈 Prevent repeat
+      }, 0);
+    }
   }
 
   // Helper to get deepest route and set title/breadcrumb
@@ -174,29 +180,28 @@ export class BackComponent implements OnInit{
   }
 
 
-  deleteAccount() {
-    const confirmed = window.confirm(
-      "⚠️ You're about to delete your account.\n\nThis action is irreversible. Do you want to continue?"
-    );
-    if (!confirmed) {
-      return; // User canceled
-    }else {
-      const idStr = localStorage.getItem('user_id');
-      const id = idStr ? +idStr : null; // Convert to number
+  deleteUserAccount() {
+    this.deleteAccountMessage = "⚠️ You're about to delete your account.\n\nThis action is irreversible. Do you want to continue?";
+    this.userAccountToDelete = Number(localStorage.getItem('user_id'));
+    $('#confirmDeleteAccountModal').modal('show');
+  }
 
-      if (id !== null) {
-        this.userService.deleteUser(id).subscribe(
-          () => {
-            this.logout();
-          },
-          error => {
-            console.error('Error deleting User:', error);
-          }
-        );
-      } else {
-        console.error('User ID not found in localStorage.');
-      }
+  confirmDeleteAccount() {
+    if (this.userAccountToDelete !== null) {
+      this.userService.deleteUser(this.userAccountToDelete).subscribe(
+        () => {
+          $('#confirmDeleteAccountModal').modal('hide');
+          this.logout();  // logs out and redirects to login page
+        },
+        error => {
+          console.error('Error deleting User:', error);
+          $('#confirmDeleteAccountModal').modal('hide');
+          // Optional: you can add some inline alert or toast here instead of modal
+          alert("Error deleting account, please try again.");
+        }
+      );
     }
   }
+  
 
 }

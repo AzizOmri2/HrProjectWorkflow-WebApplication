@@ -5,12 +5,17 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApplicationService } from '../../../services/application.service';
 import { OfferService } from '../../../services/offer.service';
 
+
+declare var $: any;
+
 @Component({
   selector: 'app-update-application',
   imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './update-application.component.html',
   styleUrl: './update-application.component.css'
 })
+
+
 export class UpdateApplicationComponent implements OnInit{
   applicationId!: number;
   application: any = {
@@ -21,15 +26,13 @@ export class UpdateApplicationComponent implements OnInit{
     applied_at: ''
   };
   selectedFile: File | null = null;
-  showAlert = false;
   typeAlert = '';
   error='';
 
   constructor(
     private route: ActivatedRoute,
     private applicationService: ApplicationService,
-    private offerService: OfferService,
-    private router: Router
+    private offerService: OfferService
   ) {}
 
   jobOffers: any[] = [];
@@ -63,8 +66,6 @@ export class UpdateApplicationComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
-
     const formData = new FormData();
     formData.append('application[job_offer_id]', this.application.job_offer_id);
     formData.append('application[candidate_id]', this.application.candidate_id);
@@ -78,16 +79,24 @@ export class UpdateApplicationComponent implements OnInit{
 
     this.applicationService.updateApplication(this.applicationId, formData).subscribe({
       next: res => {
-        console.log('Application updated successfully:', res);
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The Application was successfully updated."
+        this.error = "Your changes to the application have been saved."
+        $('#alertModal').modal('show');
       },
       error: err => {
         console.error('Error updating application', err);
         this.typeAlert = 'danger';
-        this.showAlert = true;
-        this.error = "The Application's update was failed."
+        this.error = "The system encountered an issue while updating the application. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    });
+  }
+
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
       }
     });
   }

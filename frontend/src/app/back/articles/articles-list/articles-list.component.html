@@ -1,6 +1,48 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box box-warning p-4 rounded">
+            <!-- Modal Confirm Delete -->
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteLabel">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content custom-modal-content text-center">
+                        <div class="modal-body px-4 py-5">
+                            <div class="animated-icon">
+                                <i class="fa fa-exclamation-triangle text-warning" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-warning font-weight-bold">Confirm Deletion</h4>
+                            </div>
+                            <p class="text-muted mt-3 mb-0" style="font-size: 15px;">{{ deleteMessage }}</p>
+
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-danger px-4" (click)="confirmDelete()">Delete</button>
+                                <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Result Alert Modal -->
+            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content custom-modal-content text-center">
+                        <div class="modal-body px-4 py-5">
+                            <!-- Success Message -->
+                            <div *ngIf="typeAlert === 'success'" class="animated-icon">
+                                <i class="fa fa-check-circle text-success" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-success font-weight-bold">Success!</h4>
+                            </div>
+                            <!-- Error Message -->
+                            <div *ngIf="typeAlert === 'danger'" class="animated-icon">
+                                <i class="fa fa-times-circle text-danger" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-danger font-weight-bold">Oops! Something Went Wrong!</h4>
+                            </div>
+
+                            <p class="text-muted mt-3 mb-0" style="font-size: 15px;">{{ alertMessage }}</p>
+
+                            <button id="closeModalBtn" type="button" class="btn-close-custom mt-4" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="filter-section card p-3 mb-4 shadow-sm rounded-4">
                 <div class="row gy-3 gx-3 align-items-center">
                     <div class="col-md-10">

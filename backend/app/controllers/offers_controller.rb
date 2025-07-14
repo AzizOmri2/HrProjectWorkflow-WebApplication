@@ -70,7 +70,6 @@ class OffersController < ApplicationController
       :status,
       :created_by_id,
       :description,
-      :company,
       :location
     )
   end

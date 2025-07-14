@@ -5,7 +5,7 @@ class ApplicationsController < ApplicationController
   def index
     applications = Application.includes(:job_offer, :candidate).all
     render json: applications.as_json(include: {
-      job_offer: { only: [:title, :company] },
+      job_offer: { only: [:title, :location] },
       candidate: { only: [:name] }
     })
   end
@@ -13,7 +13,7 @@ class ApplicationsController < ApplicationController
   # GET /applications/:id
   def show
     render json: @application.as_json(include: {
-      job_offer: { only: [:title, :company] },
+      job_offer: { only: [:title, :location] },
       candidate: { only: [:name] }
     })
   end
@@ -148,7 +148,7 @@ class ApplicationsController < ApplicationController
   def by_candidate
     applications = Application.includes(:job_offer, :candidate).where(candidate_id: params[:id])
     render json: applications.as_json(include: {
-      job_offer: { only: [:title, :company] },
+      job_offer: { only: [:title, :location] },
       candidate: { only: [:name] }
     })
   end
@@ -157,7 +157,7 @@ class ApplicationsController < ApplicationController
   def by_offer
     applications = Application.includes(:job_offer, :candidate).where(job_offer_id: params[:id])
     render json: applications.as_json(include: {
-      job_offer: { only: [:title, :company] },
+      job_offer: { only: [:title, :location] },
       candidate: { only: [:name] }
     })
   end
@@ -184,7 +184,7 @@ class ApplicationsController < ApplicationController
   def not_withdrawn
     applications = Application.includes(:job_offer, :candidate).where.not(status: 'Withdrawn')
     render json: applications.as_json(include: {
-      job_offer: { only: [:title, :company] },
+      job_offer: { only: [:title, :location] },
       candidate: { only: [:name] }
     })
   end

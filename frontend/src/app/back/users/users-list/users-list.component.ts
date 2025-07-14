@@ -6,13 +6,19 @@ import { FilterPipe } from '../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { UserShowComponent } from '../user-show/user-show.component';
 
+declare var $: any;
+
+
 @Component({
   selector: 'app-users-list',
   imports: [CommonModule,RouterModule,FilterPipe,FormsModule, UserShowComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
+
+
 export class UsersListComponent implements OnInit{
+  connectedUserId: number | null = null;
   users:any;
   searchText: string = '';
   filterRole: string = '';
@@ -20,16 +26,20 @@ export class UsersListComponent implements OnInit{
   showModal = false;
   selectedUserId: number | null = null;
 
-  
+  userIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this user?';
+  typeAlert = '';
+  alertMessage='';
 
 
   constructor(
     private userService: UserService, 
-    private router : Router){
-
-  }
+  ){}
 
   ngOnInit(){
+    const storedId = localStorage.getItem("user_id");
+    this.connectedUserId = storedId !== null ? Number(storedId) : null;
+    
     this.UsersList()
   }
   
@@ -43,6 +53,7 @@ export class UsersListComponent implements OnInit{
     this.selectedUserId = null;
     this.showModal = false;
     document.body.style.overflow = 'auto';
+    window.location.reload();
   }
 
   UsersList() {
@@ -53,16 +64,29 @@ export class UsersListComponent implements OnInit{
   }
 
 
-  // Delete user
-  deleteUser(id: number) {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(id).subscribe(
+  deleteUser(id: number): void {
+    this.userIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this user?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  confirmDelete(): void {
+    if (this.userIdToDelete !== null) {
+      this.userService.deleteUser(this.userIdToDelete).subscribe(
         () => {
-          // Refresh the user list after deletion
-          this.ngOnInit();
+          this.UsersList();
+          this.userIdToDelete = null;
+
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected user was deleted successfully. The list has been updated.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         },
         error => {
-          console.error('Error deleting user:', error);
+          this.typeAlert = 'danger';
+          this.alertMessage = "An error occurred while trying to delete the user. Please try again.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         }
       );
     }
@@ -72,6 +96,14 @@ export class UsersListComponent implements OnInit{
     this.filterRole = '';
     this.filterStatus = '';
     this.searchText = '';
+  }
+
+  ngAfterViewInit(): void {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 
 }

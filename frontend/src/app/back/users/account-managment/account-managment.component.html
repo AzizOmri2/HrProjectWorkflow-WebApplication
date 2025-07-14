@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <!-- Modal Alert Popup -->
+            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content custom-modal-content text-center">
+                        <div class="modal-body px-4 py-5">
+                            <!-- Success -->
+                            <div *ngIf="typeAlert === 'success'" class="animated-icon">
+                                <i class="fa fa-check-circle text-success" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-success font-weight-bold">Success!</h4>
+                            </div>
+                            <!-- Error -->
+                            <div *ngIf="typeAlert === 'danger'" class="animated-icon">
+                                <i class="fa fa-times-circle text-danger" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-danger font-weight-bold">Oops! Something Went Wrong!</h4>
+                            </div>
+                            <p class="text-muted mt-3 mb-0" style="font-size: 15px;">{{ error }}</p>
+                            <button id="closeModalBtn" type="button" class="btn-close-custom mt-4" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form style="margin-top:30px;margin-left:150px;width:1000px;" (ngSubmit)="onSubmit()" #updateForm="ngForm">
+                <div class="box-body">
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': NameCtrl.touched && !NameCtrl.value,
+                            'has-success': NameCtrl.touched && NameCtrl.valid
+                        }">
+                        <label *ngIf="NameCtrl.touched && !NameCtrl.value" class="control-label" for="name">
+                            <i class="fa fa-bell-o"></i>
+                            Name is required
+                        </label>
+                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" #NameCtrl="ngModel" required placeholder="Name"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback" 
+                        [ngClass]="{
+                            'has-warning': EmailCtrl.touched && !EmailCtrl.value,
+                            'has-success': EmailCtrl.touched && EmailCtrl.valid
+                        }">
+                        <label *ngIf="EmailCtrl.touched && !EmailCtrl.value" class="control-label" for="email">
+                            <i class="fa fa-bell-o"></i>
+                            Email is required
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" #EmailCtrl="ngModel" required placeholder="Email"/>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+            
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': PasswordCtrl.touched && PasswordCtrl.invalid,
+                            'has-success': PasswordCtrl.touched && PasswordCtrl.valid
+                        }">
+                        <label *ngIf="PasswordCtrl.touched && PasswordCtrl.invalid">
+                            <i class="fa fa-bell-o"></i> Password must be at least 6 characters.
+                        </label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" [(ngModel)]="user.password" #PasswordCtrl="ngModel" minlength="6"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <!-- Password Confirmation Field -->
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': PasswordConfirmationCtrl.touched && user.password_confirmation !== user.password,
+                            'has-success': PasswordConfirmationCtrl.touched && user.password_confirmation === user.password
+                        }">
+                        <label *ngIf="PasswordConfirmationCtrl.touched && user.password_confirmation && user.password_confirmation !== user.password">
+                            <i class="fa fa-bell-o"></i> Passwords do not match.
+                        </label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" [(ngModel)]="user.password_confirmation" #PasswordConfirmationCtrl="ngModel"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                        <input type="file" id="image" class="form-control file-input-custom" (change)="onFileSelected($event)" />
+                        <span class="glyphicon glyphicon-picture form-control-feedback"></span>
+                    </div>
+
+                    
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': GenderCtrl.touched && !GenderCtrl.value,
+                            'has-success': GenderCtrl.touched && GenderCtrl.valid
+                        }">
+                        <label *ngIf="GenderCtrl.touched && !GenderCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Gender.
+                        </label>
+                        <select class="form-control" id="gender" name="gender" [(ngModel)]="user.gender" #GenderCtrl="ngModel">
+                            <option value="" disabled selected>Select your gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': BirthDateCtrl.touched && !BirthDateCtrl.value,
+                            'has-success': BirthDateCtrl.touched && BirthDateCtrl.valid
+                        }">
+                        <label *ngIf="BirthDateCtrl.touched && !BirthDateCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Date of Birth.
+                        </label>
+                        <input type="date" class="form-control" id="birth_date" name="birth_date" [(ngModel)]="user.birth_date" #BirthDateCtrl="ngModel"/>
+                    </div>
+
+                    <div class="form-group has-feedback"
+                        [ngClass]="{
+                            'has-warning': NationalityCtrl.touched && !NationalityCtrl.value,
+                            'has-success': NationalityCtrl.touched && NationalityCtrl.valid
+                        }">
+                        <label *ngIf="NationalityCtrl.touched && !NationalityCtrl.value">
+                            <i class="fa fa-bell-o"></i> You should specify your Nationality.
+                        </label>
+                        <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Enter Nationality" [(ngModel)]="user.nationality" #NationalityCtrl="ngModel"/>
+                        <span class="glyphicon glyphicon-map-marker form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                </div>
+            
+                <div class="box-footer" align="center">
+                    <button type="submit" [disabled]="updateForm.invalid" class="btn btn-primary" title="Edit Account">Edit Account</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+    
+</div>

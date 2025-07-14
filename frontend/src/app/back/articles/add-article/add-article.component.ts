@@ -4,12 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-add-article',
   imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './add-article.component.html',
   styleUrl: './add-article.component.css'
 })
+
+
 export class AddArticleComponent implements OnInit {
   article: any = {
     title: '',
@@ -19,13 +25,11 @@ export class AddArticleComponent implements OnInit {
     nb_likes: 0
   };
   selectedFile: File | null = null;
-  showAlert = false;
   typeAlert = '';
   error='';
 
   constructor(
-    private articleService: ArticleService, 
-    private router:Router
+    private articleService: ArticleService
   ) {}
   
   ngOnInit(): void {
@@ -44,9 +48,7 @@ export class AddArticleComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
-  onSubmit(){
-    this.showAlert = false;
-    
+  onSubmit(){    
     const formData = new FormData();
     formData.append('article[title]', this.article.title);
     formData.append('article[content]', this.article.content);
@@ -59,17 +61,23 @@ export class AddArticleComponent implements OnInit {
 
     this.articleService.createArticle(formData).subscribe(
       response => {
-        console.log('Article added successfully:', response);
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The Article was successfully added."
+        this.error = "Your article has been submitted and recorded successfully."
+        $('#alertModal').modal('show');
       },
       error => {
-        console.error('Error adding article:', error);
         this.typeAlert = 'danger';
-        this.showAlert = true;
-        this.error = "The Article's creation was failed."
+        this.error = "The system encountered an issue while submitting your article. Please review your data or try again later."
+        $('#alertModal').modal('show');
       }
     );
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 }

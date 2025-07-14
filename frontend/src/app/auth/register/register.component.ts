@@ -28,7 +28,10 @@ export class RegisterComponent{
   active = true;
   error = '';
 
-  constructor(private authService: AuthService, private router: Router,private flashMessageService: FlashMessageService) {}
+  constructor(
+    private authService: AuthService,
+    private flashMessageService: FlashMessageService
+  ) {}
 
   register(): void {
     this.error = '';
@@ -39,7 +42,7 @@ export class RegisterComponent{
     );
     this.authService.register(this.name, this.email, this.password, this.role, this.image, this.active).subscribe({
       next: (response) => {
-        this.flashMessageService.setMessage('success', 'Registration successful! You can now log in.');
+        this.flashMessageService.setMessage('success', 'Registration successful!<br>You can now log in.');
         window.location.href = '/login';
       },
       error: (err) => {

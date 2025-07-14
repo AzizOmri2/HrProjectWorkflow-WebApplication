@@ -6,12 +6,18 @@ import { UserService } from '../services/user.service';
 import { NotificationService } from '../services/notification.service';
 import { filter } from 'rxjs';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-back-hr',
   imports: [CommonModule, RouterModule],
   templateUrl: './back-hr.component.html',
   styleUrl: './back-hr.component.css'
 })
+
+
 export class BackHrComponent implements OnInit{
   isLoggedIn: boolean = true;
   userName: string = '';
@@ -40,15 +46,7 @@ export class BackHrComponent implements OnInit{
 
   ngOnInit(): void {
     const alertShown = localStorage.getItem('alert_shown');
-    if (!alertShown) {
-      this.showAlert = true;
-      setTimeout(() => {
-        this.showAlert = false;
-        localStorage.setItem('alert_shown', 'true'); // Mark as shown
-      }, 5000);
-    } else {
-      this.showAlert = false; // Do not show if already marked
-    }
+    this.showAlert = !alertShown;
 
     const storedName = localStorage.getItem('user_name');
     const storedDate = localStorage.getItem('created_at');
@@ -104,6 +102,16 @@ export class BackHrComponent implements OnInit{
         this.updatePageTitle(this.activatedRoute);
       });
   }
+
+  ngAfterViewInit(): void {
+    if (this.showAlert) {
+      setTimeout(() => {
+        $('#welcomeModal').modal('show'); // 👈 Show modal
+        localStorage.setItem('alert_shown', 'true'); // 👈 Prevent repeat
+      }, 0);
+    }
+  }
+
 
   // Helper to get deepest route and set title/breadcrumb
   private updatePageTitle(route: ActivatedRoute) {

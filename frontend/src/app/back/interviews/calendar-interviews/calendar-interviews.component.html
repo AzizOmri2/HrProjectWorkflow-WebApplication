@@ -1,4 +1,10 @@
-<div #calendar id="calendrier"></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-danger p-4 rounded">
+            <div #calendar id="calendrier"></div>
+        </div>
+    </div>
+</div>
 
 <!-- Custom Modal -->
 <div *ngIf="showModal" class="modal-wrapper">
@@ -18,8 +24,8 @@
                         <td>
                             <strong>{{ selectedEventDetails.application.job_offer.title }}</strong><br />
                             <small class="text-muted">
-                                <i class="fa fa-building text-info"></i> {{ selectedEventDetails.application.job_offer.company | uppercase }} |
-                                {{ selectedEventDetails.application.candidate.name }}
+                                <i class="fa fa-map-marker text-info"></i> {{ selectedEventDetails.application.job_offer.location }} |
+                                <i class="fa fa-user text-info"></i> {{ selectedEventDetails.application.candidate.name }}
                             </small>
                         </td>
                     </tr>

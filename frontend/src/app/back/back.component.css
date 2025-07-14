@@ -1,0 +1,95 @@
+/* Optional: Center text and tweak spacing */
+.modal-body {
+  font-size: 16px;
+}
+
+.modal-header.alert-success {
+  background-color: #dff0d8;
+  color: #3c763d;
+  border-bottom: 1px solid #d6e9c6;
+}
+
+
+/* Alert Delete & Confirm Modals */
+
+/* Centered Modal Styling */
+.custom-modal-content {
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  animation: fadeInUp 0.4s ease-out;
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+  margin-top:150px;
+}
+
+/* Animate Icon */
+.animated-icon {
+  animation: popIn 0.5s ease-in-out;
+}
+
+/* Icon pop effect */
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Modal entry animation */
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Backdrop */
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Styled Close Button */
+.btn-close-custom {
+  padding: 8px 20px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-close-custom:hover {
+  background-color: #5a6268;
+  cursor: pointer;
+}
+
+/* Adjust buttons inside modal footer */
+.modal-body .btn {
+  border-radius: 25px;
+  min-width: 100px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+/* Spacing between Delete and Cancel buttons */
+.modal-body .btn + .btn {
+  margin-left: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .custom-modal-content {
+    width: 90%;
+  }
+}

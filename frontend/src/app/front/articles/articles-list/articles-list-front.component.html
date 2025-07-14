@@ -9,7 +9,7 @@
         </p>
         <div class="btn-group">
             <button class="btn" [routerLink]="['/front/applications/mes-applications']">Track my applications</button>
-            <a href="/frontvisiteur/about" class="btn" style="background: transparent; color: #2878EB; border: 1px solid #2878EB; margin-left: 10px;">
+            <a [routerLink]="isCandidateConnected ? '/front/about' : '/frontvisiteur/about'" class="btn" style="background: transparent; color: #2878EB; border: 1px solid #2878EB; margin-left: 10px;">
                 For More
             </a>
         </div>

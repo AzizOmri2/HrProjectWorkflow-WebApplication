@@ -1,0 +1,10 @@
+/* Optional: Center text and tweak spacing */
+.modal-body {
+  font-size: 16px;
+}
+
+.modal-header.alert-success {
+  background-color: #dff0d8;
+  color: #3c763d;
+  border-bottom: 1px solid #d6e9c6;
+}

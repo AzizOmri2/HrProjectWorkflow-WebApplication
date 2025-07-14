@@ -5,12 +5,18 @@ import { ArticleService } from '../../../services/article.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-update-comment',
   imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './update-comment.component.html',
   styleUrl: './update-comment.component.css'
 })
+
+
 export class UpdateCommentComponent implements OnInit{
   commentId!: number;
   comment: any = {
@@ -18,15 +24,13 @@ export class UpdateCommentComponent implements OnInit{
     commenter_id: '',
     article_id: ''
   };
-  showAlert = false;
   typeAlert = '';
   error='';
 
   constructor(
     private route: ActivatedRoute,
     private commentService: CommentService,
-    private articleService: ArticleService,
-    private router: Router
+    private articleService: ArticleService
   ) {}
 
   articles: any[] = [];
@@ -59,19 +63,24 @@ export class UpdateCommentComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
     this.commentService.updateComment(this.commentId, this.comment).subscribe({
       next: res => {
-        console.log('Comment updated successfully:', res);
         this.typeAlert = 'success';
-        this.showAlert = true;
-        this.error = "The Comment was successfully updated."
+        this.error = "Your changes to the comment have been saved."
+        $('#alertModal').modal('show');
       },
       error: err => {
-        console.error('Error updating comment', err);
         this.typeAlert = 'danger';
-        this.showAlert = true;
-        this.error = "The Comment's update was failed."
+        this.error = "The system encountered an issue while updating the comment. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
       }
     });
   }

@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (!this.authService.isLoggedIn()) {
-      this.flashMessageService.setMessage('error', 'You need to sign in.');
+      this.flashMessageService.setMessage('error', "⚠️ It looks like you're not signed in.<br>Please log in to proceed.");
       this.router.navigate(['/login']);
       return false;
     }

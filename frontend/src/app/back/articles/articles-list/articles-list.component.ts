@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ArticleService } from '../../../services/article.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FilterPipe } from '../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ArticleShowComponent } from '../article-show/article-show.component';
+
+
+declare var $: any;
+
 
 @Component({
   selector: 'app-articles-list',
@@ -12,6 +15,8 @@ import { ArticleShowComponent } from '../article-show/article-show.component';
   templateUrl: './articles-list.component.html',
   styleUrl: './articles-list.component.css'
 })
+
+
 export class ArticlesListComponent implements OnInit{
   userRole: string | null = null;
   articles:any;
@@ -20,6 +25,11 @@ export class ArticlesListComponent implements OnInit{
   filterText: string = '';
   showModal = false;
   selectedArticleId: number | null = null;
+
+  articleIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this article?';
+  typeAlert = '';
+  alertMessage='';
 
   constructor(private articleService: ArticleService, private router : Router){
 
@@ -61,16 +71,32 @@ export class ArticlesListComponent implements OnInit{
     );
   }
 
-  // Delete article
+  // Called from UI (when user clicks Delete button)
   deleteArticle(id: number) {
-    if (confirm('Are you sure you want to delete this article?')) {
-      this.articleService.deleteArticle(id).subscribe(
+    this.articleIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this article?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  // Called when user confirms deletion
+  confirmDelete() {
+    if (this.articleIdToDelete !== null) {
+      this.articleService.deleteArticle(this.articleIdToDelete).subscribe(
         () => {
-          // Refresh the article list after deletion
-          this.ngOnInit();
+          this.ArticlesList();
+          this.articleIdToDelete = null;
+
+          // Show success modal
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected article was deleted successfully. The list has been updated accordingly.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         },
         error => {
-          console.error('Error deleting article:', error);
+          this.typeAlert = 'danger';
+          this.alertMessage = "The system encountered an issue while deleting the article. Please review your data or try again later.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         }
       );
     }
@@ -89,6 +115,15 @@ export class ArticlesListComponent implements OnInit{
   resetFilters() {
     this.filterText = '';
     this.filteredArticles = [...this.articles];
+  }
+
+  ngAfterViewInit() {
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
   }
 
 }

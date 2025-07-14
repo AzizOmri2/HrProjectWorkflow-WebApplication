@@ -6,12 +6,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 
+declare var $: any;
+
+
 @Component({
   selector: 'app-add-interview',
   imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './add-interview.component.html',
   styleUrl: './add-interview.component.css'
 })
+
+
 export class AddInterviewComponent implements OnInit{
   userRole: string | null = null;
   interview: any = {
@@ -24,7 +29,6 @@ export class AddInterviewComponent implements OnInit{
     duration: '',
     notes: ''
   };
-  showAlert = false;
   typeAlert = '';
   error='';
   
@@ -57,33 +61,30 @@ export class AddInterviewComponent implements OnInit{
     });
     this.interview.status = 'Scheduled';
     this.interview.result = 'Pending';
-    //this.application.applied_at = new Date().toISOString();
   }
 
-  onSubmit() {
-    this.showAlert = false;
-    // Ensure interview is valid before submission
-    if (this.interview.application_id && this.interview.interview_date && this.interview.interviewer_id && 
-        this.interview.link && this.interview.status && this.interview.result && this.interview.duration) {
-      
-      this.interviewService.createInterview(this.interview).subscribe(
-        response => {
-          console.log('Interview planned successfully:', response);
-          this.typeAlert = 'success';
-          this.showAlert = true;
-          this.error = "The Interview was successfully planned."
-        },
-        error => {
-          console.error('Error planning interview:', error);
-          this.typeAlert = 'danger';
-          this.showAlert = true;
-          this.error = error.error?.error || "There was an error with your interview's planification. Please try again.";
-        }
-      );
-    } else {
-      this.typeAlert = 'danger';
-      this.showAlert = true;
-      this.error = "Please fill all required fields."
-    }
+  onSubmit() {      
+    this.interviewService.createInterview(this.interview).subscribe(
+      response => {
+        console.log('Interview planned successfully:', response);
+        this.typeAlert = 'success';
+        this.error = "Your Interview has been submitted and recorded successfully."
+        $('#alertModal').modal('show');
+      },
+      error => {
+        console.error('Error planning interview:', error);
+        this.typeAlert = 'danger';
+        this.error = "The system encountered an issue while submitting your interview. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    );
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 }

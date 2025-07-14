@@ -1,20 +1,25 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
-            <!-- Show alert when form is submitted successfully -->
-            <div class="box-body" *ngIf="showAlert && typeAlert=='success'">
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-check"></i> Interview Planned Successfully!</h4>
-                    {{ error }}
-                </div>
-            </div>
-            <!-- Show alert when there is an error -->
-            <div class="box-body" *ngIf="showAlert && typeAlert=='danger'">
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-ban"></i> Interview Planification Failed!</h4>
-                    {{ error }}
+            <!-- Modal Alert Popup -->
+            <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content custom-modal-content text-center">
+                        <div class="modal-body px-4 py-5">
+                            <!-- Success -->
+                            <div *ngIf="typeAlert === 'success'" class="animated-icon">
+                                <i class="fa fa-check-circle text-success" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-success font-weight-bold">Success!</h4>
+                            </div>
+                            <!-- Error -->
+                            <div *ngIf="typeAlert === 'danger'" class="animated-icon">
+                                <i class="fa fa-times-circle text-danger" style="font-size: 80px;"></i>
+                                <h4 class="mt-3 text-danger font-weight-bold">Oops! Something Went Wrong!</h4>
+                            </div>
+                            <p class="text-muted mt-3 mb-0" style="font-size: 15px;">{{ error }}</p>
+                            <button id="closeModalBtn" type="button" class="btn-close-custom mt-4" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <form style="margin-top:30px;margin-left:100px;width:1050px;" (ngSubmit)="onSubmit()" #addForm="ngForm">
@@ -33,7 +38,7 @@
                         <select class="form-control" id="application_id" name="application_id"
                             [(ngModel)]="interview.application_id" #applicationIdCtrl="ngModel" required>
                             <option [ngValue]="null" disabled selected>Select an Application</option>
-                            <option *ngFor="let app of applications" [value]="app.id">{{ app.job_offer.title }} | {{ app.job_offer.company | uppercase }} | {{ app.candidate.name }}</option>
+                            <option *ngFor="let app of applications" [value]="app.id">{{ app.job_offer.title }} | {{ app.job_offer.location }} | {{ app.candidate.name }}</option>
                         </select>
 
                         <span class="glyphicon glyphicon-file form-control-feedback"></span>

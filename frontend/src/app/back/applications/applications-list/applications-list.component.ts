@@ -5,12 +5,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApplicationShowComponent } from '../application-show/application-show.component';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-applications-list',
   imports: [RouterModule,CommonModule,FormsModule, ApplicationShowComponent],
   templateUrl: './applications-list.component.html',
   styleUrl: './applications-list.component.css'
 })
+
+
 export class ApplicationsListComponent implements OnInit{
   userRole: string | null = null;
   applications: any[] = [];
@@ -21,6 +27,12 @@ export class ApplicationsListComponent implements OnInit{
   selectedApplicationId: number | null = null;
 
   showModal = false;
+
+  applicationIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this application?';
+  typeAlert = '';
+  alertMessage='';
+
 
   constructor(private applicationService: ApplicationService, private router: Router) {}
 
@@ -60,12 +72,33 @@ export class ApplicationsListComponent implements OnInit{
     document.body.style.overflow = 'auto';
   }
 
-  // Delete application
+  // Called from UI (when user clicks Delete button)
   deleteApplication(id: number) {
-    if (confirm('Are you sure you want to delete this application?')) {
-      this.applicationService.deleteApplication(id).subscribe(
-        () => this.getApplicationsList(),
-        error => console.error('Error deleting application:', error)
+    this.applicationIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this application?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  // Called when user confirms deletion
+  confirmDelete() {
+    if (this.applicationIdToDelete !== null) {
+      this.applicationService.deleteApplication(this.applicationIdToDelete).subscribe(
+        () => {
+          this.getApplicationsList();
+          this.applicationIdToDelete = null;
+
+          // Show success modal
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected application was deleted successfully. The list has been updated accordingly.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
+        },
+        error => {
+          this.typeAlert = 'danger';
+          this.alertMessage = "The system encountered an issue while deleting the application. Please review your data or try again later.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
+        }
       );
     }
   }
@@ -100,7 +133,7 @@ export class ApplicationsListComponent implements OnInit{
       const matchesText =
         !this.filterText ||
         application.job_offer?.title?.toLowerCase().includes(filter) ||
-        application.job_offer?.company?.toLowerCase().includes(filter) ||
+        application.job_offer?.location?.toLowerCase().includes(filter) ||
         application.candidate?.name?.toLowerCase().includes(filter) ||
         application.status?.toLowerCase().includes(filter) ||
         appliedDate.includes(filter);
@@ -116,5 +149,14 @@ export class ApplicationsListComponent implements OnInit{
     this.filterText = '';
     this.selectedStatus = '';
     this.filteredApplications = [...this.applications];
+  }
+
+  ngAfterViewInit() {
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
   }
 }

@@ -63,39 +63,43 @@
         </div>
         <br><br>
 
-        <div *ngIf="offers.length === 0" class="alert alert-danger text-center">
-            There is not any job offer yet.
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-lg-4 mb-4" *ngFor="let offer of filteredOffers">
-                <div class="card h-100 shadow-sm offer-card">
-                    <div class="card-body d-flex flex-column">
-                        <!-- <h5 class="card-title">{{ offer.title }}</h5> -->
-                        <h5 class="card-title text-center fw-bold mb-5" style="font-size: 1.5rem;">
-                            {{ offer.title | titlecase }}
-                        </h5>
-                        
-                        <p class="card-text" [ngSwitch]="offer.experience_level">
-                            <strong>Experience : &nbsp;</strong> 
-                            <span *ngSwitchCase="'Entry-level'" class="label label-primary">ENTRY-LEVEL</span>
-                            <span *ngSwitchCase="'Junior'" class="label label-success">JUNIOR</span>
-                            <span *ngSwitchCase="'Mid-level'" class="label label-warning">MID-LEVEL</span>
-                            <span *ngSwitchCase="'Senior'" class="label label-danger">SENIOR</span>
-                            <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
-                        </p>
-                        <p class="card-text"><strong>Comapny : </strong> <span class="label label-default"> {{ offer.company | uppercase }} </span></p>
-                        <p class="card-text"><strong>Location : </strong> <i class="fa fa-map-marker"></i> {{ offer.location }}</p>
-                        <p class="card-text"><strong>Skills : </strong> {{ offer.skills_required }}</p>
-                        <div class="mt-auto">
-                            <a [routerLink]="[candidateId === '' ? '/frontvisiteur/offers/show' : '/front/offers/show', offer.id]" 
-                                class="btn btn-primary btn-block">
-                                Show Details
-                            </a>
+        <div class="row justify-content-center bg-image mx-2 mb-5">
+            <div class="col-lg-12 py-5">
+                <div *ngIf="offers.length === 0" class="alert alert-danger text-center">
+                    There is not any job offer yet.
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let offer of filteredOffers">
+                        <div class="card h-100 shadow-sm offer-card">
+                            <div class="card-body d-flex flex-column">
+                                <!-- <h5 class="card-title">{{ offer.title }}</h5> -->
+                                <h5 class="card-title text-center fw-bold mb-5" style="font-size: 1.5rem;">
+                                    {{ offer.title | titlecase }}
+                                </h5>
+                                
+                                <p class="card-text" [ngSwitch]="offer.experience_level">
+                                    <strong>Experience : &nbsp;</strong> 
+                                    <span *ngSwitchCase="'Entry-level'" class="label label-primary">ENTRY-LEVEL</span>
+                                    <span *ngSwitchCase="'Junior'" class="label label-success">JUNIOR</span>
+                                    <span *ngSwitchCase="'Mid-level'" class="label label-warning">MID-LEVEL</span>
+                                    <span *ngSwitchCase="'Senior'" class="label label-danger">SENIOR</span>
+                                    <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
+                                </p>
+                                <p class="card-text"><strong>Location : </strong> <i class="fa fa-map-marker"></i> {{ offer.location }}</p>
+                                <p class="card-text"><strong>Skills : </strong> {{ offer.skills_required }}</p>
+                                <div class="mt-auto">
+                                    <a [routerLink]="[candidateId === '' ? '/frontvisiteur/offers/show' : '/front/offers/show', offer.id]" 
+                                        class="btn btn-primary btn-block">
+                                        Show Details
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
 
     </div>
 </div>

@@ -5,12 +5,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OfferShowComponent } from '../offer-show/offer-show.component';
 
+
+declare var $: any;
+
+
 @Component({
   selector: 'app-offers-list',
   imports: [CommonModule,RouterModule,FormsModule,OfferShowComponent],
   templateUrl: './offers-list.component.html',
   styleUrl: './offers-list.component.css'
 })
+
+
 export class OffersListComponent implements OnInit{
   userRole: string | null = null;
   selectedOfferId: number | null = null;
@@ -24,11 +30,16 @@ export class OffersListComponent implements OnInit{
   selectedStatus: string = '';
   availableSkills: string[] = [];
   showModal = false;
+
+  offerIdToDelete: number | null = null;
+  deleteMessage: string = 'Are you sure you want to delete this job offer?';
+  typeAlert = '';
+  alertMessage='';
   
 
-  constructor(private offerService: OfferService, private router : Router){
-
-  }
+  constructor(
+    private offerService: OfferService
+  ){}
 
   ngOnInit(){
     // Retrieve the user Role from localStorage
@@ -68,16 +79,32 @@ export class OffersListComponent implements OnInit{
     );
   }
 
-  // Delete offer
+  // Called from UI (when user clicks Delete button)
   deleteOffer(id: number) {
-    if (confirm('Are you sure you want to delete this offer?')) {
-      this.offerService.deleteOffer(id).subscribe(
+    this.offerIdToDelete = id;
+    this.deleteMessage = 'Are you sure you want to delete this job offer?';
+    $('#confirmDeleteModal').modal('show');
+  }
+
+  // Called when user confirms deletion
+  confirmDelete() {
+    if (this.offerIdToDelete !== null) {
+      this.offerService.deleteOffer(this.offerIdToDelete).subscribe(
         () => {
-          // Refresh the offer list after deletion
-          this.ngOnInit();
+          this.OffersList();
+          this.offerIdToDelete = null;
+
+          // Show success modal
+          this.typeAlert = 'success';
+          this.alertMessage = "The selected job offer was deleted successfully. The list has been updated accordingly.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         },
         error => {
-          console.error('Error deleting offer:', error);
+          this.typeAlert = 'danger';
+          this.alertMessage = "The system encountered an issue while deleting the job offer. Please review your data or try again later.";
+          $('#confirmDeleteModal').modal('hide');
+          $('#alertModal').modal('show');
         }
       );
     }
@@ -100,7 +127,6 @@ export class OffersListComponent implements OnInit{
       (this.filterText === '' ||
         offer.title.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.skills_required.toLowerCase().includes(this.filterText.toLowerCase()) ||
-        offer.company.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.experience_level.toLowerCase().includes(this.filterText.toLowerCase()) ||
         offer.department.toLowerCase().includes(this.filterText.toLowerCase())
       ) &&
@@ -116,6 +142,15 @@ export class OffersListComponent implements OnInit{
     this.selectedSkill = '';
     this.selectedStatus = '';
     this.filteredOffers = [...this.offers];
+  }
+
+  ngAfterViewInit() {
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
   }
   
 }

@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+
+declare var $: any;
+
 @Component({
   selector: 'app-add-offer',
   imports: [FormsModule, CommonModule, RouterModule],
@@ -21,10 +24,8 @@ export class AddOfferComponent implements OnInit{
     status: 0,
     created_by_id: '' ,
     description: '',
-    company: '',
     location: ''
   };
-  showAlert = false;
   typeAlert = '';
   error='';
 
@@ -48,31 +49,30 @@ export class AddOfferComponent implements OnInit{
   }
 
   onSubmit() {
-    this.showAlert = false;
-    // Ensure offer is valid before submission
-    if (this.offer.title && this.offer.department && this.offer.skills_required && 
-        this.offer.experience_level && this.offer.deadline && this.offer.description &&
-        this.offer.company && this.offer.location) {
+    
       
-      this.offerService.createOffer(this.offer).subscribe(
-        response => {
-          console.log('Offer added successfully:', response);
-          this.typeAlert = 'success';
-          this.showAlert = true;
-          this.error = "The Job Offer was successfully added."
-        },
-        error => {
-          console.error('Error adding offer:', error);
-          this.typeAlert = 'danger';
-          this.showAlert = true;
-          this.error = "The Job Offer's creation was failed."
-        }
-      );
-    } else {
-      this.typeAlert = 'danger';
-      this.showAlert = true;
-      this.error = "Please fill all required fields."
-    }
+    this.offerService.createOffer(this.offer).subscribe(
+      response => {
+        console.log('Offer added successfully:', response);
+        this.typeAlert = 'success';
+        this.error = "Your job offer has been successfully published. Candidates can now apply."
+        $('#alertModal').modal('show');
+      },
+      error => {
+        console.error('Error adding offer:', error);
+        this.typeAlert = 'danger';
+        this.error = "The system encountered an issue while submitting the job offer. Please review your data or try again later."
+        $('#alertModal').modal('show');
+      }
+    );
+  }
+
+  ngAfterViewInit() {
+    $('#alertModal').on('hidden.bs.modal', () => {
+      if (this.typeAlert === 'success') {
+        window.location.reload();
+      }
+    });
   }
 
 }

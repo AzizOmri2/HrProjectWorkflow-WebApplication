@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { NotificationService } from '../services/notification.service';
 
-declare var window: any;
+declare var $: any;
 
 @Component({
   selector: 'app-front',
@@ -17,6 +17,8 @@ export class FrontComponent implements OnInit{
 
   pageTitle = 'Home';
   breadcrumb = 'Home';
+
+  showAlert = true;
 
   userId: number = 0;
   isLoggedIn: boolean = true;
@@ -77,6 +79,9 @@ export class FrontComponent implements OnInit{
     
   
     ngOnInit(): void {
+      const alertShown = localStorage.getItem('alert_shown');
+      this.showAlert = !alertShown;
+
       const storedName = localStorage.getItem('user_name');
       const storedDate = localStorage.getItem('created_at');
       const storedRole = localStorage.getItem('user_role');
@@ -163,18 +168,18 @@ export class FrontComponent implements OnInit{
     );
   }
   
-    logout() {
-      this.authService.logout().subscribe(
-        (response) => {
-          console.log('Logged out successfully', response);
-          localStorage.clear();
-          this.isLoggedIn = false;
-          window.location.href = '/frontvisiteur'; // Redirect to login page after logout
-        },
-        (error) => {
-          console.error('Error during logout', error);
-        }
-      );
-    }
+  logout() {
+    this.authService.logout().subscribe(
+      (response) => {
+        console.log('Logged out successfully', response);
+        localStorage.clear();
+        this.isLoggedIn = false;
+        window.location.href = '/frontvisiteur'; // Redirect to login page after logout
+      },
+      (error) => {
+        console.error('Error during logout', error);
+      }
+    );
+  }
 
 }
