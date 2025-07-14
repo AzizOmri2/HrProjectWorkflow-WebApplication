@@ -9,6 +9,23 @@
 <div class="row justify-content-center bg-image mx-0 mb-5">
     <div class="col-lg-8 py-5">
         <div class="bg-white p-5 my-5">
+            <h1 class="text-center mb-4"><b>YOUR PROFILE :</b></h1>
+            <div class="profile-note">
+                <span class="profile-note-icon" aria-hidden="true">
+                    <!-- Font Awesome info-circle icon -->
+                    <i class="fa fa-info-circle" aria-hidden="true" style="font-size: 18px; color: #3498db;"></i>
+                </span>
+                <span class="profile-note-text">
+                    Your profile is currently incomplete. To get the most out of your experience and ensure your information is accurate and up to date, please click the button below to complete your profile.
+                </span>
+            </div>
+            <div class="form-actions text-center mt-3">
+                <button type="button" [routerLink]="['/front/profile-managment']" title="View Profile">
+                    View Profile
+                </button>
+            </div>
+        </div>
+        <div class="bg-white p-5 my-5">
             <h1 class="text-center mb-4"><b>EDIT YOUR ACCOUNT :</b></h1>
             <br>
             <!-- Show alert when form is submitted successfully -->
@@ -88,10 +105,15 @@
         <div class="bg-white p-5 my-5">
             <h1 class="text-center mb-4"><b>DELETE YOUR ACCOUNT :</b></h1>
             <br>
-            <label class="warning-label">
-                <i class="fa fa-exclamation-triangle fa-warning-icon" aria-hidden="true"></i>
-                This action is irreversible. Please make sure you really want to delete your account before proceeding.
-            </label>
+            <div class="danger-note">
+                <span class="danger-note-icon" aria-hidden="true">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                </span>
+                <span class="danger-note-text">
+                    Deleting your account is a permanent action and cannot be undone. All of your data, preferences, and saved information will be permanently removed from our system.
+                    <br>Please ensure that you truly wish to proceed, as this action is irreversible.
+                </span>
+            </div>
             <div class="form-actions">
                 <button type="submit" (click)="deleteAccount()" title="Delete Account">Delete Account</button>
             </div>

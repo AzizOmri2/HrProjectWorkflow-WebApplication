@@ -45,6 +45,7 @@ import { AccessDeniedComponent } from './back/other/access-denied/access-denied.
 import { LockScreenComponent } from './auth/lock-screen/lock-screen.component';
 import { CalendarInterviewsComponent } from './back/interviews/calendar-interviews/calendar-interviews.component';
 import { AccountManagementComponent } from './back/users/account-managment/account-managment.component';
+import { CvProfileManagementComponent } from './front/users/cv-profile-management/cv-profile-management.component';
 
 
 export const routes: Routes = [
@@ -122,6 +123,7 @@ export const routes: Routes = [
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],
         children: [
             { path: 'account-managment', component: UpdateProfileFrontComponent, data: { title: 'Account Managment', breadcrumb: 'Profile' } },
+            { path: 'profile-managment', component: CvProfileManagementComponent, data: { title: 'Profile Managment', breadcrumb: 'Profile' } },
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
 

@@ -1,8 +1,10 @@
 class User < ApplicationRecord
+  # JWT Revocation Strategy
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   devise :database_authenticatable, :registerable,
          :recoverable, # <-- Added for password reset
-         :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::JTIMatcher
-
+         :jwt_authenticatable, jwt_revocation_strategy: self
   
   # Associations
   has_many :applications, foreign_key: :candidate_id, dependent: :destroy
@@ -12,6 +14,7 @@ class User < ApplicationRecord
   has_many :articles, foreign_key: 'author_id', dependent: :destroy
   has_many :article_reactions, dependent: :destroy
   has_many :comments, foreign_key: 'commenter_id', dependent: :destroy
+  has_one :profile, dependent: :destroy
   
   # Callbacks
   before_create :set_jti

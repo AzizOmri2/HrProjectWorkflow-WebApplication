@@ -83,7 +83,11 @@ Rails.application.routes.draw do
   get '/reports/diversity', to: 'reports#diversity'
 
 
-
+  # Upload CV For Profile Generating
+  post 'cv_parser/upload', to: 'cv_parser#upload'
+  # Show the profile details
+  get 'cv_parser/profile', to: 'cv_parser#show'
+  
   root 'user#index'
   
 end

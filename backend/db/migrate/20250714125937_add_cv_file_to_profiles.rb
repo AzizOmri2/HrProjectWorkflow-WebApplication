@@ -1,0 +1,5 @@
+class AddCvFileToProfiles < ActiveRecord::Migration[8.0]
+  def change
+    add_column :profiles, :cv_file, :string
+  end
+end
