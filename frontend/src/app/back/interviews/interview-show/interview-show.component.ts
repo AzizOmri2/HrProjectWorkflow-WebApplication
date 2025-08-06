@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { InterviewService } from '../../../services/interview.service';
 import { CommonModule } from '@angular/common';
@@ -7,11 +7,11 @@ import { InterviewFeedbacksService } from '../../../services/interview-feedbacks
 
 @Component({
   selector: 'app-interview-show',
-  imports: [RouterModule,CommonModule,FormsModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './interview-show.component.html',
   styleUrl: './interview-show.component.css'
 })
-export class InterviewShowComponent{
+export class InterviewShowComponent implements OnChanges {
   userId!: number;
   interview: any = {
     application_id: '',
@@ -24,19 +24,23 @@ export class InterviewShowComponent{
     notes: ''
   };
 
-  feedback: string = '';  // Variable to hold the feedback text
-  rating: number = 0;  // Variable to hold the rating
+  feedback: string = '';
+  rating: number = 0;
 
   interviewfeedbacks: any[] = [];
+
+  isEditing: boolean = false;                     // For toggling edit mode
+  editingFeedbackId: number | null = null;        // Track the feedback being edited
 
   constructor(
     private interviewService: InterviewService,
     private interviewFeedbackService: InterviewFeedbacksService
   ) {}
 
+
   @Input() interviewId!: number;
   @Output() feedbackUpdated = new EventEmitter<void>();
-
+  @Output() interviewChanged = new EventEmitter<boolean>(); // Used to notify parent of changes for full list reload
 
   ngOnChanges() {
     this.loadInterviewFeedbacksData();
@@ -62,7 +66,7 @@ export class InterviewShowComponent{
 
       this.interviewFeedbackService.getInterviewFeedbacksByIdInterview(this.interviewId).subscribe({
         next: data => {
-          this.interviewfeedbacks = data; // create a new array reference
+          this.interviewfeedbacks = data;
         },
         error: err => {
           console.error('Error fetching feedbacks for this interview', err);
@@ -71,25 +75,23 @@ export class InterviewShowComponent{
     }
   }
 
-
   onValidateInterviewAccept(interviewId: number): void {
     this.interviewService.validateInterviewAccept(interviewId).subscribe({
       next: (response) => {
-        console.log('Interview validated:', response);
-        this.feedbackUpdated.emit();
+        this.feedbackUpdated.emit();                     // Reload modal content
+        this.interviewChanged.emit(true);                // ✅ Notify parent to refresh interview list
       },
       error: (error) => {
         console.error('Validation failed:', error);
       }
     });
   }
-
 
   onValidateInterviewReject(interviewId: number): void {
     this.interviewService.validateInterviewReject(interviewId).subscribe({
       next: (response) => {
-        console.log('Interview validated:', response);
-        this.feedbackUpdated.emit();
+        this.feedbackUpdated.emit();                     // Reload modal content
+        this.interviewChanged.emit(true);                // ✅ Notify parent to refresh interview list
       },
       error: (error) => {
         console.error('Validation failed:', error);
@@ -97,37 +99,67 @@ export class InterviewShowComponent{
     });
   }
 
+  // ADDED: Begin editing selected feedback
+  editFeedback(feedback: any): void {
+    this.feedback = feedback.feedback;
+    this.rating = feedback.rating;
+    this.isEditing = true;
+    this.editingFeedbackId = feedback.id;
+  }
 
-  // Method to submit the feedback
+  // ADDED: Reset form
+  cancelEdit(): void {
+    this.feedback = '';
+    this.rating = 0;
+    this.isEditing = false;
+    this.editingFeedbackId = null;
+  }
+
+  // Modified: Create or update feedback
   submitFeedback(): void {
+    if (!this.feedback || !this.rating) {
+      alert('Please fill all required fields!');
+      return;
+    }
+
+    if (this.rating < 1 || this.rating > 5) {
+      alert('Rating must be between 1 and 5.');
+      return;
+    }
+
     const feedbackData = {
       interview_id: this.interview.id,
-      user_id: this.userId, 
+      user_id: this.userId,
       feedback: this.feedback,
       rating: this.rating
     };
 
-    if (feedbackData.feedback && feedbackData.rating) {
-      if (feedbackData.rating < 1 || feedbackData.rating > 5) {
-        alert('Rating must be between 1 and 5.');
-        return;
-      }else{
-        this.interviewFeedbackService.createInterviewFeedbacks(feedbackData).subscribe(
-          (response) => {
-            console.log('Feedback submitted successfully', response);          
-          },
-          (error) => {
-            console.error('Error submitting feedback', error);
-          }
-        );
-        this.feedback = '';
-        this.rating = 0;
-
-        // Notify parent to reload modal
-        this.feedbackUpdated.emit();
-      }
+    if (this.isEditing && this.editingFeedbackId !== null) {
+      // Update feedback
+      this.interviewFeedbackService.updateInterviewFeedback(this.editingFeedbackId, feedbackData).subscribe(
+        () => {
+          this.feedbackUpdated.emit();                     // Reload modal content
+          this.interviewChanged.emit(true);                // ✅ Notify parent to refresh interview list
+          this.loadInterviewFeedbacksData();               // refresh list
+          this.cancelEdit();
+        },
+        error => {
+          console.error('Error updating feedback:', error);
+        }
+      );
     } else {
-      alert('Please fill all required fields!');
+      // Create feedback
+      this.interviewFeedbackService.createInterviewFeedbacks(feedbackData).subscribe(
+        () => {
+          this.feedbackUpdated.emit();                     // Reload modal content
+          this.interviewChanged.emit(true);                // ✅ Notify parent to refresh interview list
+          this.loadInterviewFeedbacksData();               // refresh list
+          this.cancelEdit();
+        },
+        error => {
+          console.error('Error submitting feedback', error);
+        }
+      );
     }
   }
 
@@ -135,8 +167,9 @@ export class InterviewShowComponent{
     if (confirm('Are you sure you want to delete your feedback?')) {
       this.interviewFeedbackService.deleteInterviewFeedback(id).subscribe(
         () => {
-          // Notify parent to reload modal
-          this.feedbackUpdated.emit();
+          this.feedbackUpdated.emit();                     // Reload modal content
+          this.interviewChanged.emit(true);                // ✅ Notify parent to refresh interview list
+          this.loadInterviewFeedbacksData();               // refresh list
         },
         error => {
           console.error('Error deleting feedback:', error);
@@ -144,5 +177,4 @@ export class InterviewShowComponent{
       );
     }
   }
-
 }

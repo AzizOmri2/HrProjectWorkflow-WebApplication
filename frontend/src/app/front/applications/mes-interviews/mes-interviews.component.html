@@ -21,20 +21,15 @@
                                 <h5 class="card-title text-primary mb-5">
                                     <i class="fas fa-briefcase me-2"></i> {{ interview.application.job_offer.title }}
                                 </h5>
-
-                                <p class="mb-2">
-                                    <i class="fas fa-building me-2 text-secondary"></i>
-                                    <strong> Company : </strong> <span class="label label-default">{{ interview.application.job_offer.company | uppercase }}</span>
-                                </p>
                                 
                                 <p class="mb-2">
                                     <i class="fas fa-calendar-alt me-2 text-secondary"></i>
-                                    <strong> Date : </strong> {{ interview.interview_date | date:'fullDate' }}
+                                    <strong> Date : </strong> {{ interview.interview_date | date:'fullDate':'UTC' }}
                                 </p>
 
                                 <p class="mb-2">
                                     <i class="fas fa-clock me-2 text-secondary"></i>
-                                    <strong> Time : </strong> {{ interview.interview_date | date:'shortTime' }}
+                                    <strong> Time : </strong> {{ interview.interview_date | date:'shortTime':'UTC' }}
                                 </p>
 
                                 <p class="mb-2">

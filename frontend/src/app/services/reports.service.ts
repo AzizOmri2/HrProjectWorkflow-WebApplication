@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,15 +11,26 @@ export class ReportsService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+
   getFunnel(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/reports/funnel`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/reports/funnel`, { headers });
   }
 
   getTimeToHire(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/reports/time_to_hire`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/reports/time_to_hire`, { headers });
   }
 
   getDiversity(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/reports/diversity`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/reports/diversity`, { headers });
   }
 }

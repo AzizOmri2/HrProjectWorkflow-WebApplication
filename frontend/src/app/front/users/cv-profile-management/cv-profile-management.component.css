@@ -1,0 +1,397 @@
+.cv-profile-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 25px 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+.cv-profile-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: #000000;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  font-family: 'Tahoma', sans-serif;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 8px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* AI Note */
+.cv-note {
+  display: flex;
+  align-items: center;
+  background-color: #f0f8ff;
+  border-left: 4px solid #3498db;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 0 auto 25px auto;
+  max-width: 1000px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.cv-note-icon {
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.cv-note-text {
+  font-size: 1rem;
+  color: #2c3e50;
+  font-weight: 500;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.file-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.upload-btn {
+  background-color: #3498db;
+  border: none;
+  padding: 12px 30px;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+  margin-bottom: 25px;
+}
+
+.upload-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.upload-btn:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.upload-result {
+  background: #ecf0f1;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-family: monospace;
+  margin-bottom: 30px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+}
+
+/* Form styling */
+.profile-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+/* Personal Information section inherits the same styles as others */
+.section-block {
+  margin-bottom: 30px;
+}
+
+/* New flex container for section title + add button */
+.section-title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space between title and button */
+  margin-bottom: 20px;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-left: 6px solid #3498db;
+  padding-left: 12px;
+  margin: 0; /* Remove bottom margin for flex alignment */
+  font-family: 'Segoe UI Semibold', 'Segoe UI Bold', sans-serif;
+  flex-grow: 1; /* Takes remaining horizontal space */
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.8px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 6px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.profile-form input[type="text"]:focus,
+.profile-form input[type="email"]:focus,
+.profile-form textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* Skills Section */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Add "+" button next to section title */
+.btn-add {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(39, 174, 96, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background 0.4s ease, box-shadow 0.3s ease;
+  margin: 0; /* reset margin */
+}
+
+.btn-add:hover,
+.btn-add:focus {
+  background: linear-gradient(135deg, #1e8449, #27ae60);
+  box-shadow: 0 8px 20px rgba(30, 132, 73, 0.6);
+  outline: none;
+}
+
+.skill-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.skill-btn:hover {
+  background-color: #2980b9;
+}
+
+.skill-btn:focus {
+  outline: 2px solid #2980b9;
+  outline-offset: 2px;
+}
+
+.trash-icon svg {
+  pointer-events: none; /* so clicking the icon triggers the button's click */
+  width: 16px;
+  height: 16px;
+  fill: white;
+}
+
+/* Experience and Education Remove Buttons */
+.experience-entry button,
+.education-entry button {
+  margin-top: 8px;
+  background-color: #e74c3c;
+  border: none;
+  padding: 8px 20px;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.experience-entry button:hover,
+.education-entry button:hover {
+  background-color: #c0392b;
+}
+
+/* Save Profile Button - modern styling */
+.save-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 0;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 30px;
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.4);
+  transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  box-shadow: 0 12px 20px rgba(30, 64, 175, 0.6);
+  transform: translateY(-2px);
+}
+
+.save-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 6px 10px rgba(30, 64, 175, 0.4);
+}
+
+.save-btn:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+  box-shadow: none;
+  color: #e0e7ff;
+}
+
+/* CV Link */
+.cv-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #2980b9;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.cv-link:hover {
+  text-decoration: underline;
+}
+
+/* Misc */
+hr {
+  border: 0;
+  border-top: 1px solid #bdc3c7;
+  margin: 15px 0;
+}
+
+
+
+/* Loading Upload Resume and Generating Profile */
+.loading-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.7); /* dark translucent backdrop */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px); /* glass effect */
+}
+
+.loading-modal {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+.spinner {
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #3b82f6; /* modern blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1.5rem;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading-modal p {
+  font-size: 1.1rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Alerts Success and Failed when importing CV */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.alert-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

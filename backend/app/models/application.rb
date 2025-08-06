@@ -3,6 +3,7 @@ class Application < ApplicationRecord
   belongs_to :candidate, class_name: 'User'
   has_one :interview, dependent: :destroy
 
+  validates :cover_letter, length: { maximum: 5000 }, allow_blank: true
   validate :cv_file_must_be_pdf
 
   private

@@ -1,7 +1,12 @@
 class InterviewsController < ApplicationController
-  before_action :set_interview, only: [:show, :update, :destroy]
+  # 🔐 Authenticate all actions in this controller to require a logged-in user
+  before_action :authenticate_user!
+
+  # 🔐 This filter sets the interview for show, update, destroy, and custom actions
+  before_action :set_interview, only: [:show, :update, :destroy, :validate_interview_accept, :validate_interview_reject]
 
   # GET /interviews
+  # 🔐 Requires authentication due to global before_action
   def index
     @interviews = Interview.includes(application: [:candidate, :job_offer], interviewer: {}).all
 
@@ -21,6 +26,7 @@ class InterviewsController < ApplicationController
   end
 
   # GET /interviews/:id
+  # 🔐 Requires authentication
   def show
     render json: @interview.as_json(
       include: {
@@ -38,6 +44,7 @@ class InterviewsController < ApplicationController
   end
 
   # GET /interviews/by_user/:user_id
+  # 🔐 Requires authentication
   def by_user
     user_id = params[:user_id]
 
@@ -61,13 +68,13 @@ class InterviewsController < ApplicationController
   end
 
   # POST /interviews
+  # 🔐 Requires authentication
   def create
     @interview = Interview.new(interview_params)
     if @interview.save
-      # Update the application's status to "Interviewed"
       @interview.application.update(status: "Interviewed")
 
-      # Send notification to candidate
+      # 🔔 Send notification to candidate
       Notification.create!(
         user: @interview.application.candidate,
         title: "New Interview Scheduled",
@@ -82,12 +89,12 @@ class InterviewsController < ApplicationController
   end
 
   # PATCH/PUT /interviews/:id
+  # 🔐 Requires authentication
   def update
-    # Store the old date before the update
     old_date = @interview.interview_date
-    
+
     if @interview.update(interview_params)
-      # Notify only if interview date changed
+      # 🔔 Notify only if interview date was changed
       if @interview.interview_date != old_date
         Notification.create!(
           user: @interview.application.candidate,
@@ -104,16 +111,16 @@ class InterviewsController < ApplicationController
   end
 
   # DELETE /interviews/:id
+  # 🔐 Requires authentication
   def destroy
     candidate = @interview.application.candidate
     job_title = @interview.application.job_offer.title
     application = @interview.application
 
-    # Update application status to "Pending"
     application.update(status: "Pending")
-
     @interview.destroy
 
+    # 🔔 Notify candidate of cancellation
     Notification.create!(
       user: candidate,
       title: "Interview Cancelled",
@@ -124,10 +131,9 @@ class InterviewsController < ApplicationController
     head :no_content
   end
 
-
   # PUT /interviews/:id/accept
+  # 🔐 Requires authentication
   def validate_interview_accept
-    @interview = Interview.find(params[:id])
     application = @interview.application
     candidate = application.candidate
 
@@ -145,8 +151,6 @@ class InterviewsController < ApplicationController
       InterviewMailer.interview_accepted(candidate, @interview, application).deliver_later
     end
 
-    
-
     render json: {
       message: "Interview validated successfully",
       interview: @interview,
@@ -158,10 +162,9 @@ class InterviewsController < ApplicationController
     render json: { error: "Failed to validate interview: #{e.message}" }, status: :unprocessable_entity
   end
 
-
   # PUT /interviews/:id/reject
+  # 🔐 Requires authentication
   def validate_interview_reject
-    @interview = Interview.find(params[:id])
     application = @interview.application
     candidate = application.candidate
 
@@ -179,28 +182,27 @@ class InterviewsController < ApplicationController
       InterviewMailer.interview_rejected(candidate, @interview, application).deliver_later
     end
 
-    
-
     render json: {
-      message: "Interview validated successfully",
+      message: "Interview rejected successfully",
       interview: @interview,
       application: application
     }, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Interview not found" }, status: :not_found
   rescue => e
-    render json: { error: "Failed to validate interview: #{e.message}" }, status: :unprocessable_entity
+    render json: { error: "Failed to reject interview: #{e.message}" }, status: :unprocessable_entity
   end
-
 
   private
 
+  # 🔐 Set interview before certain actions
   def set_interview
     @interview = Interview.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Interview not found' }, status: :not_found
   end
 
+  # 🔐 Strong params
   def interview_params
     params.require(:interview).permit(
       :application_id,

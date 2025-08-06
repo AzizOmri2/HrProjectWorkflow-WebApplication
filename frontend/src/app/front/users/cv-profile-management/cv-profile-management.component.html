@@ -1,0 +1,170 @@
+<!-- Wait Modal -->
+<div *ngIf="isLoadingUploadCV" class="loading-backdrop">
+    <div class="loading-modal">
+        <div class="spinner"></div>
+        <p>🔍 Generating your Profile with the Imported Resume...<br>Please hold on.</p>
+    </div>
+</div>
+
+<div class="cv-profile-container">
+    <h2>Your Profile</h2>
+
+    <div class="cv-note">
+        <span class="cv-note-icon" aria-hidden="true">
+            <!-- info-circle icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#3498db" viewBox="0 0 24 24">
+              <path d="M12 2C6.477 2 2 6.476 2 12c0 5.523 
+                      4.477 10 10 10s10-4.477 10-10c0-5.524-4.477-10-10-10zm0 
+                      3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm2 
+                      13h-4v-2h1v-4h-1v-2h3v6h1v2z"/>
+            </svg>
+        </span>
+        <span class="cv-note-text">
+            When you import your CV, a profile is automatically generated using AI.
+        </span>
+    </div>
+
+    <input type="file" (change)="onFileSelected($event)" class="file-input" />
+    <button (click)="uploadCv()" [disabled]="!selectedFile" class="upload-btn">Upload CV</button>
+
+    <!-- <div *ngIf="uploadResult && result!=='success'" class="upload-result">
+        <h3>Upload Result:</h3>
+        <pre>{{ uploadResult | json }}</pre>
+    </div> -->
+
+    <!-- Success Alert -->
+    <div *ngIf="result === 'success'" class="alert alert-success">
+      ✅ Profile generated successfully from your CV.
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="result === 'failed'" class="alert alert-danger">
+      ❌ Failed to generate profile. Please try again later or check your CV format.
+    </div>
+
+    <div *ngIf="profile.cv_file">
+        <a [href]="'/uploads/cv/' + profile.cv_file" target="_blank" class="cv-link">View Uploaded CV</a>
+    </div>
+
+    <hr>
+
+    <form *ngIf="profile" (ngSubmit)="saveProfile()" #profileForm="ngForm" class="profile-form">
+        <div *ngIf="profileForm">
+            <!-- Personal Information Section -->
+            <section class="section-block">
+                <div class="section-title-container">
+                    <h3 class="section-title">Personal Information</h3>
+                </div>
+
+                <label>
+                    Name:
+                    <input type="text" [(ngModel)]="profile.name" name="name" required />
+                </label>
+
+                <label>
+                    Email:
+                    <input type="email" [(ngModel)]="profile.email" name="email" required />
+                </label>
+
+                <label>
+                    Phone:
+                    <input type="text" [(ngModel)]="profile.phone" name="phone" />
+                </label>
+            </section>
+
+            <hr />
+
+            <!-- Skills Section -->
+            <section class="section-block">
+                <div class="section-title-container">
+                    <h3 class="section-title">Skills</h3>
+                    <button type="button" class="btn-add" title="Add Skill" (click)="addSkill()" aria-label="Add Skill">+</button>
+                </div>
+                <div class="skills-container">
+                    <button 
+                        *ngFor="let skill of profile.skills; let i = index" 
+                        type="button" 
+                        class="skill-btn"
+                        (click)="removeSkill(i)"
+                        title="Remove skill {{skill}}">{{ skill }}
+                        <span class="trash-icon" aria-hidden="true">
+                            <!-- Trash icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                            <path d="M3 6h18v2H3V6zm2 3h14l-1.5 12.5a1 1 0 01-1 1H7.5a1 1 0 01-1-1L5 9zM10 11v7h2v-7h-2zM14 11v7h2v-7h-2z"/>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <hr />
+
+            <!-- Experience Section -->
+            <section class="section-block">
+                <div class="section-title-container">
+                    <h3 class="section-title">Experience</h3>
+                    <button type="button" class="btn-add" title="Add Experience" (click)="addExperience()" aria-label="Add Experience">+</button>
+                </div>
+
+                <div *ngFor="let exp of profile.experience; let i = index" class="experience-entry">
+                    <label>
+                        Title:
+                        <input type="text" [(ngModel)]="profile.experience[i].title" [name]="'expTitle' + i" required/>
+                    </label>
+                    <label>
+                        Company:
+                        <input type="text" [(ngModel)]="profile.experience[i].company" [name]="'expCompany' + i" required/>
+                    </label>
+                    <label>
+                        Dates (From - To) :
+                        <input type="text" [(ngModel)]="profile.experience[i].dates" [name]="'expDates' + i"/>
+                    </label>
+                    <label>
+                        Location:
+                        <input type="text" [(ngModel)]="profile.experience[i].location" [name]="'expLocation' + i"/>
+                    </label>
+                    <label>
+                        Description:
+                        <textarea [(ngModel)]="profile.experience[i].descriptionText" [name]="'expDesc' + i" rows="5"></textarea>
+                    </label>
+                    <label>
+                        Keywords (comma separated):
+                        <input type="text" [value]="profile.experience[i].keywords.join(', ')" (input)="updateKeywords($event, i)" [name]="'expKeywords' + i"/>
+                    </label>
+                    <button type="button" (click)="removeExperience(i)">Remove Experience</button>
+                    <hr />
+                </div>
+            </section>
+
+            <hr />
+
+            <!-- Education Section -->
+            <section class="section-block">
+                <div class="section-title-container">
+                    <h3 class="section-title">Education</h3>
+                    <button type="button" class="btn-add" title="Add Education" (click)="addEducation()" aria-label="Add Education">+</button>
+                </div>
+
+                <div *ngFor="let edu of profile.education; let i = index" class="education-entry">
+                    <label>
+                        Degree:
+                        <input type="text" [(ngModel)]="profile.education[i].degree" [name]="'eduDegree' + i" required/>
+                    </label>
+                    <label>
+                        Institution:
+                        <input type="text" [(ngModel)]="profile.education[i].institution" [name]="'eduInstitution' + i" required/>
+                    </label>
+                    <label>
+                        Dates (From - To) :
+                        <input type="text" [(ngModel)]="profile.education[i].dates" [name]="'eduDates' + i"/>
+                    </label>
+                    <button type="button" (click)="removeEducation(i)">Remove Education</button>
+                    <hr />
+                </div>
+            </section>
+
+            <button type="submit" [disabled]="!profileForm.form.valid" class="save-btn">Save Profile</button>
+        </div>
+        
+    </form>
+</div>

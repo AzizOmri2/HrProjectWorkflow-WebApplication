@@ -66,7 +66,7 @@ export class AccountManagementComponent {
     const formData = new FormData();
     formData.append('user[name]', this.user.name);
     formData.append('user[email]', this.user.email);
-  
+
     // Only append the password if it has been modified
     if (this.user.password) {
       formData.append('user[password]', this.user.password);
@@ -81,35 +81,31 @@ export class AccountManagementComponent {
     formData.append('user[gender]', this.user.gender);
     formData.append('user[birth_date]', this.user.birth_date);
     formData.append('user[nationality]', this.user.nationality);
-  
+
     this.userService.updateUser(this.userId, formData).subscribe({
       next: (res) => {
-        console.log('User updated:', res);
-  
-        // After successful user update, update the user data in localStorage
-        const updatedUser = JSON.parse(localStorage.getItem('user') || '{}');
-        updatedUser.name = this.user.name;
-  
-        // If no new image was selected, retain the old image value
-        if (this.selectedFile) {
-          updatedUser.image = `uploads/${this.selectedFile.name}`; // Update image path
-        } else {
-          // Keep the existing image in localStorage
-          updatedUser.image = updatedUser.image || this.user.image;
-        }
-  
+        console.log('User updated:', res);          
+
+        // After successful update, reload the image from DB (res.image)
+        const updatedImage = res.image
+          ? `${res.image}?t=${Date.now()}` // Add timestamp to bypass browser cache
+          : this.user.image;
+
         // Update the user data in localStorage with the new or existing values
-        localStorage.setItem('user_image', updatedUser.image);
-        localStorage.setItem('user_name', updatedUser.name);
+        localStorage.setItem('user_image', updatedImage);
+        localStorage.setItem('user_name', res.name);
+
+        // Update current image shown
+        this.user.image = updatedImage;
 
         this.typeAlert = 'success';
-        this.error = "Your changes to your profile have been saved."
+        this.error = "Your changes to your profile have been saved.";
         $('#alertModal').modal('show');
       },
       error: (err) => {
         console.error('Error updating user:', err);
         this.typeAlert = 'danger';
-        this.error = "The system encountered an issue while updating your profile. Please review your data or try again later."
+        this.error = "The system encountered an issue while updating your profile. Please review your data or try again later.";
         $('#alertModal').modal('show');
       }
     });

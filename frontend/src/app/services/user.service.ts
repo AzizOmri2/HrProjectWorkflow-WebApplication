@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,33 +11,45 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  // 🔐 Helper method to get auth headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return token ? new HttpHeaders({ 'Authorization': `Bearer ${token}` }) : new HttpHeaders();
+  }
+
   // Get all Users
   getAllUsers(){
-    return this.http.get(`${this.apiUrl}/users/list`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/users/list`, { headers });
   }
 
   // Ban or Unban User (Changing the active field)
   toggleUserActive(id: number) {
-    return this.http.patch(`${this.apiUrl}/users/${id}/toggle_active`, {});
+    const headers = this.getAuthHeaders();
+    return this.http.patch(`${this.apiUrl}/users/${id}/toggle_active`, {}, { headers });
   }
 
   // Get a single user by ID
   getUserById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/users/${id}/show`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/users/${id}/show`, { headers });
   }
 
   // Update an existing user
   updateUser(id: number, userData: FormData): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/users/${id}/update`, userData);
+    const headers = this.getAuthHeaders();
+    return this.http.patch(`${this.apiUrl}/users/${id}/update`, userData, { headers });
   }
 
   // Delete a User by ID
   deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/users/${id}/delete`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/users/${id}/delete`, { headers });
   }
 
   // Get all HR
   getAllHR(){
-    return this.http.get(`${this.apiUrl}/users/list/hr`);
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/users/list/hr`, { headers });
   }
 }

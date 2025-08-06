@@ -61,7 +61,7 @@ export class AddUserComponent implements OnInit{
   }
 
   onSubmit(): void {
-    this.authService.register(this.name, this.email, this.password, this.role, this.image, this.active).subscribe({
+    this.authService.createUserByAdmin(this.name, this.email, this.password, this.role, this.image, this.active, this.gender, this.birth_date, this.nationality).subscribe({
       next: (response) => {
         this.typeAlert = 'success';
         this.error = "The user account data has been submitted and recorded successfully.";

@@ -40,7 +40,9 @@ export class ReportsComponent implements OnInit{
         },
         {
           label: 'Interviews → Offers',
-          rate: interviews ? ((offers / interviews) * 100).toFixed(1) + '%' : 'N/A'
+          rate: interviews 
+            ? (Math.min((offers / interviews) * 100, 100)).toFixed(1) + '%' 
+            : 'N/A'
         },
         {
           label: 'Offers → Selected',

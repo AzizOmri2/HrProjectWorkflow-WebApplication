@@ -84,6 +84,8 @@ export class InterviewsListComponent implements OnInit{
     this.selectedInterviewId = null;
     this.showModal = false;
     document.body.style.overflow = 'auto';
+
+    this.InterviewsList(); // ✅ Refresh the list when modal is closed
   }
 
   // Called from UI (when user clicks Delete button)

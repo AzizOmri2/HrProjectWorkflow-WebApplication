@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
   before_action :set_article, only: [:show, :update, :destroy]
 
   # GET /articles
@@ -12,7 +13,7 @@ class ArticlesController < ApplicationController
     render json: article_json(@article)
   end
 
-  # POST /articles
+  # POST /articles (secured)
   def create
     @article = Article.new(article_params)
 
@@ -20,13 +21,15 @@ class ArticlesController < ApplicationController
       uploaded_image = params[:article][:image]
       timestamp = Time.now.strftime('%Y%m%d%H%M%S')
       safe_title = @article.title.parameterize.underscore
-      new_filename = "Image_#{safe_title}_#{@article.author.id}_#{timestamp}#{File.extname(uploaded_image.original_filename)}"
+      new_filename = "Image_#{safe_title}_#{current_user.id}_#{timestamp}#{File.extname(uploaded_image.original_filename)}"
 
-      image_path = Rails.root.join('..', 'frontend', 'public', 'article_images', new_filename)
+      image_path = Rails.root.join('public', 'uploads', 'article_images', new_filename)
       File.open(image_path, 'wb') { |file| file.write(uploaded_image.read) }
 
-      @article.image = "article_images/#{new_filename}"
+      @article.image = "uploads/article_images/#{new_filename}"
     end
+
+    @article.author = current_user
 
     if @article.save
       render json: @article, status: :created
@@ -35,7 +38,7 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /articles/:id
+  # PATCH/PUT /articles/:id (secured)
   def update
     if @article.update(article_params.except(:image))
       if params[:article][:image].present?
@@ -44,10 +47,10 @@ class ArticlesController < ApplicationController
         safe_title = @article.title.parameterize.underscore
         new_filename = "Image_#{safe_title}_#{@article.author.id}_#{timestamp}#{File.extname(uploaded_image.original_filename)}"
 
-        image_path = Rails.root.join('..', 'frontend', 'public', 'article_images', new_filename)
+        image_path = Rails.root.join('public', 'uploads', 'article_images', new_filename)
         File.open(image_path, 'wb') { |file| file.write(uploaded_image.read) }
 
-        @article.update(image: "article_images/#{new_filename}")
+        @article.update(image: "uploads/article_images/#{new_filename}")
       end
 
       render json: @article
@@ -56,15 +59,13 @@ class ArticlesController < ApplicationController
     end
   end
 
-  # DELETE /articles/:id
+  # DELETE /articles/:id (secured)
   def destroy
-    image_path = Rails.root.join('..', 'frontend', 'public', @article.image) if @article.image.present?
+    image_path = Rails.root.join('public', @article.image) if @article.image.present?
     @article.destroy
     File.delete(image_path) if image_path && File.exist?(image_path)
     head :no_content
   end
-
-  
 
   private
 
@@ -74,12 +75,12 @@ class ArticlesController < ApplicationController
 
   def article_json(article)
     article.as_json(only: [:id, :title, :content, :image, :nb_likes, :nb_dislikes, :created_at]).merge(
-        author: {
+      author: {
         id: article.author.id,
         name: article.author.name
-        }
+      }
     )
-    end
+  end
 
   def article_params
     params.require(:article).permit(:title, :content, :author_id, :image, :nb_likes, :nb_dislikes)

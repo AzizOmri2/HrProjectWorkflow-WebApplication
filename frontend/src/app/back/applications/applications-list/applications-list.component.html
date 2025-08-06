@@ -109,7 +109,7 @@
                                 {{ application.status || 'UNKNOWN' }}
                             </span>
                         </td>
-                        <td>{{ application.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td>{{ application.applied_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}</td>
                         <td>
                             <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
                                 <button (click)="openApplicationInfo(application.id)" class="btn btn-info" title="Show Details">

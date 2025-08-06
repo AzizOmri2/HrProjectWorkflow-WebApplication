@@ -8,6 +8,9 @@ Rails.application.routes.draw do
 
   resources :protected, only: [:index]
 
+  # Add User by Admin
+  post 'users/admin', to: 'user#create'
+
   # Get All Users
   get 'users/list', to: 'user#index'
 
@@ -29,6 +32,9 @@ Rails.application.routes.draw do
 
   # Password Change
   put '/users/update_password', to: 'user#update_password'
+
+  # Verify Password
+  post 'users/verify_password', to: 'user#verify_password'
 
   # Offers Full CRUD
   resources :offers
@@ -75,6 +81,9 @@ Rails.application.routes.draw do
   # Comments Full CRUD
   resources :comments
   get 'comments/:article_id/by_id_article', to: 'comments#comments_by_article'
+
+  # Profiles Full CRUD
+  resources :profiles
   
 
   # Reports
@@ -83,7 +92,15 @@ Rails.application.routes.draw do
   get '/reports/diversity', to: 'reports#diversity'
 
 
-
+  # Upload CV For Profile Generating
+  post 'cv_parser/upload', to: 'cv_parser#upload'
+  # Show the profile details
+  get 'cv_parser/profile', to: 'cv_parser#show'
+  # Update Profile Details
+  put  'cv_parser/profile', to: 'cv_parser#update'
+  # Show Recommended Job Offers for Candidate
+  get '/recommendations/:id', to: 'recommendations#index'
+  
   root 'user#index'
   
 end

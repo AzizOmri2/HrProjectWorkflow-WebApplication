@@ -1,4 +1,6 @@
 class ApplicationsController < ApplicationController
+  # 🔐 Authenticate all actions in this controller to require a logged-in user
+  before_action :authenticate_user!
   before_action :set_application, only: [:show, :update, :destroy, :withdraw]
 
   # GET /applications
@@ -42,13 +44,13 @@ class ApplicationsController < ApplicationController
         new_filename = "Cv_#{application.candidate.name}_#{application.candidate_id}_#{timestamp}.pdf"
 
         # Save the file to the frontend/public/cv_resources directory
-        cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)
+        cv_upload_path = Rails.root.join('public', 'uploads', 'applications_cv', new_filename)
         File.open(cv_upload_path, 'wb') do |file|
           file.write(uploaded_cv.read)
         end
 
         # Save relative path in DB
-        application.cv_file = "cv_resources/#{new_filename}"
+        application.cv_file = "uploads/applications_cv/#{new_filename}"
       end
 
       if application.save
@@ -81,14 +83,14 @@ class ApplicationsController < ApplicationController
         timestamp = Time.now.strftime('%Y%m%d%H%M%S')
         new_filename = "Cv_#{candidate.name}_#{candidate.id}_#{timestamp}.pdf"
   
-        # Save the file to the frontend/public/cv_resources directory
-        cv_upload_path = Rails.root.join('..', 'frontend', 'public', 'cv_resources', new_filename)
+        # Save the file to public/uploads/applications_cv directory
+        cv_upload_path = Rails.root.join('public', 'uploads', 'applications_cv', new_filename)
         File.open(cv_upload_path, 'wb') do |file|
           file.write(uploaded_cv.read)
         end
   
         # Update the cv_file path in DB
-        @application.update(cv_file: "cv_resources/#{new_filename}")
+        @application.update(cv_file: "uploads/applications_cv/#{new_filename}")
       end
   
       render json: @application.as_json(include: {
@@ -103,7 +105,7 @@ class ApplicationsController < ApplicationController
   # DELETE /applications/:id
   def destroy
     # Store CV file path before destroying
-    cv_file_path = Rails.root.join('..', 'frontend', 'public', @application.cv_file) if @application.cv_file.present?
+    cv_file_path = Rails.root.join('public', @application.cv_file) if @application.cv_file.present?
 
     if @application.destroy
       # Delete the CV file if it exists
@@ -136,7 +138,12 @@ class ApplicationsController < ApplicationController
         end
         
       else
-        notify_hr(@application, "Application Withdrawn", "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'.")
+        notify_hr(
+          @application, 
+          "Application Withdrawn", 
+          "Candidate #{@application.candidate.name} has withdrawn their application for '#{@application.job_offer.title}'."
+        )
+    
       end
       render json: @application, status: :ok
     else
@@ -168,7 +175,7 @@ class ApplicationsController < ApplicationController
     application = Application.find(params[:id])
 
     if application && application.cv_file.present?
-      cv_file_path = Rails.root.join('..', 'frontend', 'public', application.cv_file)
+      cv_file_path = Rails.root.join('public', application.cv_file)
 
       if File.exist?(cv_file_path)
         send_file cv_file_path, filename: File.basename(cv_file_path), type: 'application/pdf', disposition: 'attachment'
@@ -198,20 +205,22 @@ class ApplicationsController < ApplicationController
   end
 
   def notify_hr(application, title, message)
-    # Fetch all users with HR role
-    hr_users = User.where(role: 1)
-    
-    hr_users.each do |hr|
+    # 🔄 Notify ONLY the HR who created the job offer instead of all HR users
+    hr_user = application.job_offer.created_by rescue nil
+
+    if hr_user&.role == "rh"  # Ensure the user is an HR
       Notification.create!(
-        user: hr,
+        user: hr_user,
         title: title,
         message: message,
         read: false
       )
+    else
+      Rails.logger.warn "⚠️ No valid HR associated with job offer #{application.job_offer_id}"
     end
   end
 
   def application_params
-    params.require(:application).permit(:job_offer_id, :candidate_id, :cv_file, :status, :applied_at)
+    params.require(:application).permit(:job_offer_id, :candidate_id, :cv_file, :status, :applied_at, :cover_letter)
   end
 end

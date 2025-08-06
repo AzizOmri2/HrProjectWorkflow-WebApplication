@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+    before_action :authenticate_user!
+    
     def funnel
         offers = Offer.count
         applications = Application.count

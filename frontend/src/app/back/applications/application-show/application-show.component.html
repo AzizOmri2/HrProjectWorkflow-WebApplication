@@ -42,7 +42,7 @@
                         <tr>
                             <th>Applied At</th>
                             <td>
-                                {{ application.applied_at | date: 'yyyy-MM-dd HH:mm' }}
+                                {{ application.applied_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}
                             </td>
                         </tr>
                     </tbody>

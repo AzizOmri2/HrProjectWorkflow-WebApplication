@@ -82,7 +82,7 @@
                                     <span *ngSwitchCase="'Withdrawn'" class="label label-default">Withdrawn</span>
                                     <span *ngSwitchDefault class="label label-default">UNKNOWN</span>
                                 </td>
-                                <td>{{ app.applied_at | date: 'yyyy-MM-dd HH:mm' }}</td>
+                                <td>{{ app.applied_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -24,6 +24,10 @@ export class ArticlesListFrontComponent implements OnInit{
   userImage:any;
   userName:any;
 
+  recommendedOffers: any[] = [];
+  isLoadingRecommendations: boolean = false;
+  recommendationErrorMessage: string | null = null;
+
   constructor(
     private articleService: ArticleService,
     private applicationService: ApplicationService,
@@ -68,6 +72,19 @@ export class ArticlesListFrontComponent implements OnInit{
             console.error('Error fetching applications:', error);
           }
         );
+
+        // 🧠 NEW: Fetch recommended job offers for the candidate with caching
+        const cacheKey = `recommended_offers_user_${userId}`;
+        const cached = localStorage.getItem(cacheKey);
+
+        if (cached) {
+          this.recommendedOffers = JSON.parse(cached);
+          this.isLoadingRecommendations = false;
+          console.log('Using cached recommendations from localStorage');
+        } else {
+          this.loadRecommendations(userId, cacheKey);
+        }
+
       } else {
         console.error("User ID not found in localStorage");
       }
@@ -87,13 +104,11 @@ export class ArticlesListFrontComponent implements OnInit{
 
       this.apps_count = 3;
       this.interviews_count = 2;
-      this.userImage = "https://randomuser.me/api/portraits/men/81.jpg";
+      this.userImage = "uploads/profile_pictures/default.jpg";
       this.userName = "John Doe";
 
       this.isCandidateConnected = false;
     }
-
-    
 
     // Display Articles
     this.articles = this.articleService.getAllArticles().subscribe(
@@ -109,6 +124,31 @@ export class ArticlesListFrontComponent implements OnInit{
       this.offers_count = this.offers.length;
       console.log(this.offers);
       console.log('Offers count:', this.offers_count);
+    });
+  }
+
+  private loadRecommendations(userId: string, cacheKey: string): void {
+    this.isLoadingRecommendations = true;
+    this.offerService.getRecommendedOffersForCandidate(+userId).subscribe({
+      next: (offers) => {
+        this.recommendedOffers = offers;
+        this.isLoadingRecommendations = false;
+        localStorage.setItem(cacheKey, JSON.stringify(offers));
+      },
+      error: (err) => {
+        this.isLoadingRecommendations = false;
+
+        if (err.status === 404 && err.error?.error === 'Profile not found') {
+          this.recommendationErrorMessage = 'Your profile appears to be incomplete. To receive personalized job recommendations tailored to your skills and experience, please take a moment to complete your profile information. This will help us match you with the most relevant opportunities.';
+        } else if (err.status === 429) {
+          this.recommendationErrorMessage = 'Our system has received too many requests in a short period. Please wait a few moments before trying again. This helps ensure fair access for all users.';
+        } else {
+          this.recommendationErrorMessage = 'Failed to load recommended offers. Please try again later.';
+        }
+
+        // Clear recommendedOffers to trigger the no-recommendation UI
+        this.recommendedOffers = [];
+      }
     });
   }
 }

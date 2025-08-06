@@ -83,7 +83,7 @@
                         <td>
                             <small><i class="fa fa-user text-primary"></i>&nbsp; <b>{{ comment.commenter.name }}</b></small>
                         </td>
-                        <td><small>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm' }}</small></td>
+                        <td><small>{{ comment.created_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}</small></td>
                         <td>
                             <div class="btn-group btn-group-sm" style="display: flex; gap: 7px;">
                                 <button (click)="openCommentInfo(comment.id)" class="btn btn-info" title="Show Details">

@@ -42,7 +42,13 @@ export class UpdatePasswordLoginComponent {
         this.successMessage = '✅ Password updated successfully!';
         setTimeout(() => {
           const role = localStorage.getItem('user_role');
-          this.router.navigate([role === 'admin' || role === 'rh' ? '/back' : '/front']);
+          if (role === 'admin') {
+            this.router.navigate(['/back']);
+          } else if (role === 'rh') {
+            this.router.navigate(['/back-hr']);
+          } else {
+            this.router.navigate(['/front']);
+          }
         }, 1500);
       },
       (error) => {

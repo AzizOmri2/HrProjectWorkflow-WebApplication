@@ -11,47 +11,68 @@ export class InterviewService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all interviews
+  // 🔐 Helper to get auth headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
+  }
+
+  // 🔐 Get all interviews
   getAllInterviews(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/interviews`);
+    return this.http.get<any[]>(`${this.apiUrl}/interviews`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // Get a single interview by ID
+  // 🔐 Get a single interview by ID
   getInterviewById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/interviews/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/interviews/${id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // Get a single interview by user_id
+  // 🔐 Get interviews by user ID
   getInterviewByIdUser(user_id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/interviews/by_user/${user_id}`);
+    return this.http.get<any>(`${this.apiUrl}/interviews/by_user/${user_id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // Create a new interview
+  // 🔐 Create a new interview
   createInterview(interview: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/interviews`, interview );
+    return this.http.post<any>(`${this.apiUrl}/interviews`, interview, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // Update an existing interview
+  // 🔐 Update an interview
   updateInterview(id: number, interview: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/interviews/${id}`, interview );
+    return this.http.patch<any>(`${this.apiUrl}/interviews/${id}`, interview, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // Delete an interview by ID
+  // 🔐 Delete an interview
   deleteInterview(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/interviews/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/interviews/${id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-
-  // ✅ Method to validate an interview (Accept)
+  // 🔐 Accept an interview
   validateInterviewAccept(interviewId: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Accept': 'application/json' });
-    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/accept`, {}, { headers });
+    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/accept`, {}, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-
-  // ✅ Method to validate an interview (Reject)
+  // 🔐 Reject an interview
   validateInterviewReject(interviewId: number): Observable<any> {
-    const headers = new HttpHeaders({ 'Accept': 'application/json' });
-    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/reject`, {}, { headers });
+    return this.http.put(`${this.apiUrl}/interviews/${interviewId}/reject`, {}, {
+      headers: this.getAuthHeaders()
+    });
   }
 }

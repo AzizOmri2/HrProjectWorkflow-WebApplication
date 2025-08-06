@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="col-xs-6">
                                     <strong>Created At:</strong>
-                                    <p class="text-muted">{{ user.created_at | date: 'yyyy-MM-dd HH:mm' }}</p>
+                                    <p class="text-muted">{{ user.created_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}</p>
                                 </div>
                                 <div class="col-xs-6">
                                     <strong>Date Of Birth</strong>
@@ -73,7 +73,7 @@
 
                         <!-- Right Side: Image -->
                         <div class="col-md-4 text-right">
-                            <img *ngIf="user.image" [src]="user.image" alt="User Image" class="img-thumbnail" style="min-width: 200px;"/>
+                            <img *ngIf="user.image" [src]="'http://localhost:3000/' + user.image" alt="User Image" class="img-thumbnail" style="min-width: 200px;"/>
                         </div>
                     </div>
 

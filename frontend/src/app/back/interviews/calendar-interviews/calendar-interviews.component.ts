@@ -68,6 +68,7 @@ export class CalendarInterviewsComponent implements AfterViewInit{
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       initialView: 'dayGridMonth',
       initialDate: new Date(),
+      timeZone: 'UTC',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',

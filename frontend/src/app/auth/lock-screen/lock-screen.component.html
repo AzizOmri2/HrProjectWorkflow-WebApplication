@@ -8,7 +8,7 @@
 
         <div class="lockscreen-item">
             <div class="lockscreen-image">
-                <img [src]="image" alt="user image"/>
+                <img [src]="'http://localhost:3000/' + image" alt="user image"/>
             </div>
 
             <!-- lockscreen credentials (contains the form) -->
@@ -20,7 +20,13 @@
                     </div>
                 </div>
             </form>
+
         </div>
+        <!-- Show error message here -->
+        <div *ngIf="errorMessage" class="text-danger text-center mt-2">
+            {{ errorMessage }}
+        </div>
+        
         <div class="help-block text-center">
             Enter your password to retrieve your session
         </div>

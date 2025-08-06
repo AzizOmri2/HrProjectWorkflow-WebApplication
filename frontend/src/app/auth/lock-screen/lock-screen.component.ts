@@ -35,13 +35,22 @@ export class LockScreenComponent implements OnInit{
     }  
   }
 
-  verifyPassword(): void{
-    /*this.authService.verifyPassword(this.password).subscribe(
+  verifyPassword(): void {
+    this.authService.verifyPassword(this.password).subscribe(
       (response) => {
         if (response.success) {
-          // Unlock session or redirect
           this.errorMessage = '';
-          window.location.href = '/dashboard'; // or any desired route
+          // Redirect to the appropriate page
+          const role = localStorage.getItem('user_role');
+          if (role === 'admin') {
+            window.location.href = '/back';
+          } else if (role === 'rh') {
+            window.location.href = '/back-hr';
+          } else if (role === 'candidate') {
+            window.location.href = '/front';
+          } else {
+            window.location.href = '/lock';
+          }
         } else {
           this.errorMessage = 'Incorrect password. Please try again.';
         }
@@ -50,7 +59,7 @@ export class LockScreenComponent implements OnInit{
         this.errorMessage = 'Error verifying password.';
         console.error(error);
       }
-    );*/
+    );
   }
 
 

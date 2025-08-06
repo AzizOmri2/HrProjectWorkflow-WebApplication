@@ -33,6 +33,11 @@
                     <input type="file" id="cv_file" name="cv_file" (change)="onFileChange($event)" required placeholder="CV File">
                 </div>
 
+                <div class="form-field">
+                    <label for="cover_letter">Cover Letter</label>
+                    <textarea type="file" id="cover_letter" name="cover_letter" placeholder="Cover Letter" rows="15" [(ngModel)]="application.cover_letter"></textarea>
+                </div>
+
                 <div class="form-actions">
                     <button type="submit" [disabled]="addForm.invalid || !selectedFile" title="Add Application">Add Application</button>
                 </div>

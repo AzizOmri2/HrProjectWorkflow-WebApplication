@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-body">
+
+                <!-- Profile Info Table -->
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <td>
+                                <i class="fa fa-user text-primary"></i>&nbsp;
+                                <strong>{{ profile?.name || 'Not Defined' | uppercase }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>
+                                <i class="fa fa-envelope text-primary"></i>&nbsp;
+                                {{ profile?.email || 'Not Defined' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>
+                                <i class="fa fa-phone text-primary"></i>&nbsp;
+                                <b>{{ profile?.phone || 'Not Defined' }}</b>    
+                            </td>
+                        </tr>
+
+                        <!-- Skills -->
+                        <tr>
+                            <th>Skills</th>
+                            <td>
+                              <span *ngIf="profile?.skills?.length > 0; else noSkills">
+                                  <span class="label label-info" *ngFor="let skill of profile.skills" style="margin-right: 5px;">
+                                      {{ skill || 'Not Defined' }}
+                                  </span>
+                              </span>
+                                <ng-template #noSkills>
+                                    <span class="text-muted">No skills listed.</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+
+                        <!-- Experience -->
+                        <tr>
+                            <th>Experience</th>
+                            <td>
+                                <div *ngIf="profile?.experience?.length > 0; else noExperience">
+                                    <ul class="list-unstyled">
+                                        <li *ngFor="let exp of profile.experience" class="mb-2">
+                                            <i class="fa fa-briefcase text-primary"></i>
+                                            <strong> {{ exp.role || exp.title || 'Not Defined' }}</strong> at <strong>{{ exp.company || 'Not Defined' | uppercase  }}</strong>
+                                            &nbsp;<span class="label label-danger">{{ exp.dates || exp.duration || 'Not Defined' }}</span>&nbsp;<span class="label label-success">{{ exp.location || 'Not Defined' }}</span>
+                                            <ul class="mt-1">
+                                                <li *ngFor="let detail of (exp.details || exp.description || [])">
+                                                    {{ detail || 'Not Defined' }}
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <ng-template #noExperience>
+                                    <span class="text-muted">No experience added.</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+
+                        <!-- Education -->
+                        <tr>
+                            <th>Education</th>
+                            <td>
+                                <div *ngIf="profile?.education?.length > 0; else noEducation">
+                                    <ul class="list-unstyled">
+                                        <li *ngFor="let edu of profile.education">
+                                            <i class="fa fa-graduation-cap text-success"></i>
+                                            {{ edu.degree || 'Not Defined' }} - <strong>{{ edu.institution || 'Not Defined' }}</strong>
+                                            ({{ edu.dates || edu.duration || 'Not Defined' }})
+                                        </li>
+                                    </ul>
+                                </div>
+                                <ng-template #noEducation>
+                                    <span class="text-muted">No education listed.</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+
+                        <!-- CV File -->
+                        <tr *ngIf="profile?.cv_file">
+                            <th>CV File</th>
+                            <td>
+                                <a [href]="'http://localhost:3000/uploads/profile_cv/' + profile.cv_file" class="btn btn-sm btn-default" target="_blank" title="Open CV File">
+                                    <i class="fa fa-file-pdf-o"></i> View CV
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

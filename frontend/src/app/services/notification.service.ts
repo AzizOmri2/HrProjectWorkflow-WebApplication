@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,26 +11,37 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   // Get all notifications for userId
   getAllNotificationsForUserId(id: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users/${id}/notifications`);
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/users/${id}/notifications`, { headers });
   }
 
 
   // Get unread notifications for userId(new ones)
   getUnreadNotificationsForUserId(id: any): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users/${id}/notifications/unread`);
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/users/${id}/notifications/unread`, { headers });
   }
 
   // Mark all read for userId
   markAllAsReadForUser(userId: number): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/users/${userId}/notifications/mark-all-read`, {});
+    const headers = this.getAuthHeaders();
+    return this.http.patch(`${this.apiUrl}/users/${userId}/notifications/mark-all-read`, {}, { headers });
   }
 
 
   // Delete Notification
   deleteNotification(id: number, userId:number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/users/${userId}/notifications/${id}`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.apiUrl}/users/${userId}/notifications/${id}`, { headers });
   }
 
 

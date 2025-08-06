@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,33 +11,44 @@ export class CommentService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all comments
+  // 🔐 Helper method to get auth headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  // 🔓 Get all comments
   getAllComments(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/comments`);
   }
 
-  // Get a single comment by ID
+  // 🔓 Get a single comment by ID
   getCommentById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/comments/${id}`);
   }
 
-  // Get comments by ID Article
+  // 🔓 Get comments by article ID
   getCommentsByIdArticle(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/comments/${id}/by_id_article`);
   }
 
-  // Create a new comment
+  // 🔒 Create a new comment
   createComment(comment: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/comments`, comment );
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/comments`, comment, { headers });
   }
 
-  // Update an existing comment
+  // 🔒 Update an existing comment
   updateComment(id: number, comment: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/comments/${id}`, comment );
+    const headers = this.getAuthHeaders();
+    return this.http.patch<any>(`${this.apiUrl}/comments/${id}`, comment, { headers });
   }
 
-  // Delete a comment by ID
+  // 🔒 Delete a comment by ID
   deleteComment(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/comments/${id}`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/comments/${id}`, { headers });
   }
 }

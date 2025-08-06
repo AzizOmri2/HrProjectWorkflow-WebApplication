@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-update-profile-front',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './update-profile-front.component.html',
   styleUrl: './update-profile-front.component.css'
 })

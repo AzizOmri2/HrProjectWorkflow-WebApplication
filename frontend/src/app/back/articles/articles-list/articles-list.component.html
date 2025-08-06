@@ -62,7 +62,7 @@
             <div class="row g-4" *ngIf="filteredArticles.length > 0; else noArticles">
                 <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let article of filteredArticles">
                     <div class="card h-100 shadow-sm article-card d-flex flex-column">
-                        <img [src]="article.image" class="card-img-top article-image" alt="{{ article.title }}" loading="lazy"/>
+                        <img [src]="'http://localhost:3000/' + article.image" class="card-img-top article-image" alt="{{ article.title }}" loading="lazy"/>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title mb-1">{{ article.title }}</h5>
                             <p class="card-subtitle text-muted mb-2">{{ article.content | slice:0:180 }}</p>
@@ -75,7 +75,7 @@
                             </div>
 
                             <p class="card-text text-muted mb-3 small">
-                                <strong>Created At : </strong>{{ article.created_at | date: 'yyyy-MM-dd HH:mm' }}
+                                <strong>Created At : </strong>{{ article.created_at | date: 'yyyy-MM-dd HH:mm':'UTC' }}
                             </p>
 
                             <div class="mt-auto d-flex justify-content-center align-items-center gap-2 action-buttons">

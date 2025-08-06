@@ -98,7 +98,7 @@
 
                     <!-- User Profile -->
                     <div class="d-flex align-items-center nav-item nav-link">
-                        <img [src]="image" class="rounded-circle mr-2" width="33" height="33" alt="User" />
+                        <img [src]="'http://localhost:3000/' + image" class="rounded-circle mr-2" width="33" height="33" alt="User" />
                         <h2><strong style="font-size: 1.5rem;">{{ userName }}</strong></h2>
                     </div>
                 </div>
@@ -207,6 +207,10 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+
+    <script>
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="aSuFydlJz0IJJw2wrw7u0";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
 
     <!-- FrontOffice Dependencies -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

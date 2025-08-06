@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/ro
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { NotificationService } from '../services/notification.service';
+import { OfferService } from '../services/offer.service';
 
 declare var $: any;
 

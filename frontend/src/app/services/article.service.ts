@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,69 +11,82 @@ export class ArticleService {
 
   constructor(private http: HttpClient) {}
 
-  // Get all articles
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  // 🔓 Public: Get all articles
   getAllArticles(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/articles`);
   }
 
-  // Get a single article by ID
+  // 🔓 Public: Get single article
   getArticleById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/articles/${id}`);
   }
 
-  // Create a new article
+  // 🔒 Secured: Create a new article
   createArticle(article: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/articles`, article);
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/articles`, article, { headers });
   }
 
-  // Update an existing article
+  // 🔒 Secured: Update an existing article
   updateArticle(id: number, article: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/articles/${id}`, article);
+    const headers = this.getAuthHeaders();
+    return this.http.patch<any>(`${this.apiUrl}/articles/${id}`, article, { headers });
   }
 
-  // Delete an article by ID
+  // 🔒 Secured: Delete article
   deleteArticle(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/articles/${id}`);
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/articles/${id}`, { headers });
   }
 
-  // Get Article's Reactions
+  // 🔒 Secured: Get user's reaction
   getUserReaction(articleId: number, userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/articles/${articleId}/article_reaction/user_reaction?user_id=${userId}`);
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/articles/${articleId}/article_reaction/user_reaction?user_id=${userId}`, { headers });
   }
 
-  // Like an article - pass userId in body
+  // 🎭 Optional: If you want to secure reactions, also include auth headers in the following
+
   likeArticle(articleId: number, userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/articles/${articleId}/article_reaction/like`,
       { user_id: userId },
-      { withCredentials: true }
+      { headers }
     );
   }
 
-  // Unlike an article - pass userId in body
   unlikeArticle(articleId: number, userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/articles/${articleId}/article_reaction/unlike`,
       { user_id: userId },
-      { withCredentials: true }
+      { headers }
     );
   }
 
-  // Dislike an article - pass userId in body
   dislikeArticle(articleId: number, userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/articles/${articleId}/article_reaction/dislike`,
       { user_id: userId },
-      { withCredentials: true }
+      { headers }
     );
   }
 
-  // Undislike an article - pass userId in body
   undislikeArticle(articleId: number, userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
     return this.http.post<any>(
       `${this.apiUrl}/articles/${articleId}/article_reaction/undislike`,
       { user_id: userId },
-      { withCredentials: true }
+      { headers }
     );
   }
 }

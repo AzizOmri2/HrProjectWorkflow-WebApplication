@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApplicationService } from '../../../services/application.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-application-front',
@@ -16,7 +17,8 @@ export class AddApplicationFrontComponent implements OnInit{
     candidate_id: '',
     cv_file: '',
     status: '',
-    applied_at: ''
+    applied_at: '',
+    cover_letter: ''
   };
   selectedFile: File | null = null;
   showAlert = false;
@@ -26,7 +28,7 @@ export class AddApplicationFrontComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private applicationService: ApplicationService, 
-    private router:Router
+    private location: Location
   ) {}
 
 
@@ -76,6 +78,8 @@ export class AddApplicationFrontComponent implements OnInit{
       if (this.selectedFile) {
         formData.append('application[cv_file]', this.selectedFile, this.selectedFile.name);
       }
+
+      formData.append('application[cover_letter]', this.application.cover_letter);
       
       this.applicationService.createApplication(formData).subscribe(
         response => {
@@ -83,6 +87,12 @@ export class AddApplicationFrontComponent implements OnInit{
           this.typeAlert = 'success';
           this.showAlert = true;
           this.error = "The Application was successfully added created."
+          
+          // Redirect back and reload the page
+          setTimeout(() => {
+            this.location.back(); // Go back to previous page
+            setTimeout(() => window.location.reload(), 100); // Reload after going back
+          }, 500); // Delay to show alert before redirect
         },
         error => {
           console.error('Error adding application:', error);

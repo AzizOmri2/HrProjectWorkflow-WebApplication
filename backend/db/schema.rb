@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_08_154859) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_131106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_154859) do
     t.datetime "applied_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "cover_letter"
     t.index ["candidate_id"], name: "index_applications_on_candidate_id"
     t.index ["job_offer_id"], name: "index_applications_on_job_offer_id"
   end
@@ -110,6 +111,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_154859) do
     t.index ["created_by_id"], name: "index_offers_on_created_by_id"
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.string "email"
+    t.string "phone"
+    t.json "skills"
+    t.json "experience"
+    t.json "education"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "cv_file"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email", null: false
@@ -146,4 +161,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_154859) do
   add_foreign_key "interviews", "users", column: "interviewer_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "offers", "users", column: "created_by_id"
+  add_foreign_key "profiles", "users"
 end

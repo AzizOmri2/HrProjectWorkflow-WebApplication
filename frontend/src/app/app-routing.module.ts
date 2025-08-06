@@ -45,12 +45,17 @@ import { AccessDeniedComponent } from './back/other/access-denied/access-denied.
 import { LockScreenComponent } from './auth/lock-screen/lock-screen.component';
 import { CalendarInterviewsComponent } from './back/interviews/calendar-interviews/calendar-interviews.component';
 import { AccountManagementComponent } from './back/users/account-managment/account-managment.component';
+import { CvProfileManagementComponent } from './front/users/cv-profile-management/cv-profile-management.component';
+import { ProfileCandidateListComponent } from './back/profile/profile-candidate-list/profile-candidate-list.component';
+import { ProfileCandidateShowComponent } from './back/profile/profile-candidate-show/profile-candidate-show.component';
+import { RedirectGuard } from './redirect.guard';
 
 
 export const routes: Routes = [
-    {  path: '', redirectTo: '/frontvisiteur', pathMatch: 'full'  },
-    {  path: 'login', component: LoginComponent, data: { title: 'Login', breadcrumb: 'Users' } },
-    {  path: 'register', component: RegisterComponent, data: { title: 'Regiter', breadcrumb: 'Users' } },
+    { path: '', component: FrontvisiteurComponent, canActivate: [RedirectGuard] },
+    {  path: 'login', component: LoginComponent, canActivate: [RedirectGuard], data: { title: 'Login', breadcrumb: 'Users' } },
+    {  path: 'register', component: RegisterComponent, canActivate: [RedirectGuard], data: { title: 'Regiter', breadcrumb: 'Users' } },
+    
     {  path: 'lock', component: LockScreenComponent, data: { title: 'Lock Screen', breadcrumb: 'Users' } },
     {  path: 'update-password', component: UpdatePasswordLoginComponent, data: { title: 'Update Password', breadcrumb: 'Users' } },
     {  path: 'find-email', component: FindEmailComponent, data: { title: 'Find Account To Reset', breadcrumb: 'Users' } },
@@ -65,6 +70,9 @@ export const routes: Routes = [
             { path: 'users', component: UsersListComponent, data: { title: 'Users List', breadcrumb: 'Users' } },
             { path: 'users/add-user', component: AddUserComponent, data: { title: 'Add User', breadcrumb: 'Users' } },
             { path: 'account-managment', component: AccountManagementComponent, data: { title: 'Account Managment', breadcrumb: 'Profile' } },
+
+            { path: 'candidates-profile', component: ProfileCandidateListComponent, data: { title: 'Candidates Profile List', breadcrumb: 'Profile' } },
+            { path: 'candidates-profile/show/:id', component: ProfileCandidateShowComponent, data: { title: 'Candidate Profile Details', breadcrumb: 'Profile' } },
             
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
@@ -98,6 +106,9 @@ export const routes: Routes = [
             { path: '', component: ReportsComponent, data: { title: 'Dashboard', breadcrumb: 'Profile' } },
 
             { path: 'account-managment', component: AccountManagementComponent, data: { title: 'Account Managment', breadcrumb: 'Profile' } },
+
+            { path: 'candidates-profile', component: ProfileCandidateListComponent, data: { title: 'Candidates Profile List', breadcrumb: 'Profile' } },
+            { path: 'candidates-profile/show/:id', component: ProfileCandidateShowComponent, data: { title: 'Candidate Profile Details', breadcrumb: 'Profile' } },
             
             { path: 'offers', component: OffersListComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/add-offer', component: AddOfferComponent, data: { title: 'Add Job Offer', breadcrumb: 'Profile' } },
@@ -122,6 +133,7 @@ export const routes: Routes = [
     {  path: 'front', component: FrontComponent, canActivate: [AuthGuard],
         children: [
             { path: 'account-managment', component: UpdateProfileFrontComponent, data: { title: 'Account Managment', breadcrumb: 'Profile' } },
+            { path: 'profile-managment', component: CvProfileManagementComponent, data: { title: 'Profile Managment', breadcrumb: 'Profile' } },
             { path: 'offers', component: OffersListFrontComponent, data: { title: 'Job Offers List', breadcrumb: 'Profile' } },
             { path: 'offers/show/:id', component: OfferDetailsFrontComponent, data: { title: 'Job Offer Details', breadcrumb: 'Profile' } },
 
@@ -140,7 +152,7 @@ export const routes: Routes = [
         ]
     },
     
-    {  path: 'frontvisiteur', component: FrontvisiteurComponent,
+    {  path: 'frontvisiteur', component: FrontvisiteurComponent, canActivate: [RedirectGuard],
         children: [
             { path: '', component: ArticlesListFrontComponent, data: { title: 'Home', breadcrumb: 'Profile' } },
             { path: 'articles/show/:id', component: ArticleShowFrontComponent, data: { title: 'Article Details', breadcrumb: 'Profile' } },

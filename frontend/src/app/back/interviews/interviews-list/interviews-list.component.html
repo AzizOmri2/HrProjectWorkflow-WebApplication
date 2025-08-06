@@ -104,7 +104,7 @@
                                 <i class="fa fa-user text-primary"></i> {{ interview.application.candidate.name }}
                             </small>
                         </td>
-                        <td>{{ interview.interview_date | date: 'yyyy-MM-dd HH:mm' }}</td>
+                        <td>{{ interview.interview_date | date: 'yyyy-MM-dd HH:mm':'UTC' }}</td>
                         <td>
                             <i class="fa fa-user text-primary"></i>&nbsp; <strong>{{ interview.interviewer.name }}</strong>
                         </td>

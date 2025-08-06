@@ -1,4 +1,68 @@
 <div class="container">
+
+    <!-- Wait Modal -->
+    <div *ngIf="isLoadingRecommendations" class="loading-backdrop">
+        <div class="loading-modal">
+            <div class="spinner"></div>
+            <p>🔍 Generating personalized job recommendations...<br>Please hold on.</p>
+        </div>
+    </div>
+
+    <div class="container" *ngIf="isCandidateConnected">
+        <section *ngIf="recommendedOffers.length > 0" class="recommended-section">
+            <h4 class="section-title">🎯 Recommended Job Offers For You</h4>
+            <div class="card-grid">
+                <div *ngFor="let offer of recommendedOffers" class="offer-card">
+                    <div class="card-header">
+                        <h5 class="offer-title">
+                            <b>{{ offer.title }}</b>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="offer-reason">{{ offer.match_reason }}</p>
+                        <a [routerLink]="['/front/offers/show', offer.id]"
+                            class="btn btn-primary btn-block show-details-btn">
+                            Show Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Optional fallback -->
+        <section *ngIf="recommendedOffers.length === 0 && isCandidateConnected" class="no-recommendation-container">
+            <div class="no-recommendation-card">
+                <!-- Show appropriate icon -->
+                <i *ngIf="!recommendationErrorMessage" class="fas fa-search fa-3x icon"></i>
+                <i *ngIf="recommendationErrorMessage" class="fas fa-exclamation-triangle fa-3x icon danger-icon"></i>
+
+                <!-- Message block for errors -->
+                <div *ngIf="recommendationErrorMessage; else noRecommendationsTitle">
+                    <!-- Profile Incomplete Case -->
+                    <h3 *ngIf="recommendationErrorMessage.includes('incomplete')">
+                        Complete Your Profile
+                    </h3>
+                    <!-- Too Many Requests Case -->
+                    <h3 *ngIf="recommendationErrorMessage.includes('too many requests')">
+                        Too Many Requests
+                    </h3>
+                    <!-- Display actual message -->
+                    <p>{{ recommendationErrorMessage }}</p>
+                </div>
+
+                <!-- Default fallback when no error -->
+                <ng-template #noRecommendationsTitle>
+                    <h3>No Recommendations Yet!</h3>
+                    <p>
+                        We’re still learning about your skills and preferences. Complete your profile to help us recommend the best job opportunities for you.
+                    </p>
+                </ng-template>
+            </div>
+        </section>
+    </div>
+    
+
+
     <div class="right-section">
         <h1>Gain in Efficiency</h1>
         <p>
@@ -39,7 +103,7 @@
         <div class="job-card">
             <div class="company-preview">
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <img [src]="userImage" alt="Candidate" style="width: 40px; height: 40px; border-radius: 50%;">
+                    <img [src]="'http://localhost:3000/' + userImage" alt="Candidate" style="width: 40px; height: 40px; border-radius: 50%;">
                     <div>
                         <div style="font-weight: 600;">Candidate</div>
                         <div style="font-size: 14px;">{{ userName }}</div>
@@ -72,10 +136,17 @@
             <!-- Gray horizontal line -->
             <hr style="border: none; border-top: 1px solid #ccc; margin: 0px 0;" />
             
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3>{{ offers[0].title }}</h3>
-                <button class="btn more-details-btn" [routerLink]="['/front/offers/show', offers[0]?.id]">Apply Now</button>
+            <div *ngIf="recommendedOffers.length > 0; else noRecommendations" style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>{{ recommendedOffers[0]?.title || 'Default Job' }}</h3>
+                <button class="btn more-details-btn" [routerLink]="['/front/offers/show', recommendedOffers[0]?.id]">Apply Now</button>
             </div>
+
+            <ng-template #noRecommendations>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>{{ mes_apps[0]?.offer?.title || 'Default Job' }}</h3>
+                    <button class="btn more-details-btn" [routerLink]="['/front/offers/show', mes_apps[0]?.offer?.id]">Apply Now</button>
+                </div>
+            </ng-template>
             <p style="color: green;">
                 <strong>🔥 This opportunity matches your profile!</strong>
             </p>
@@ -113,7 +184,7 @@
         <h2>
             <strong>{{ article.title }}</strong>
         </h2>
-        <img [src]="article.image" alt="Article image" />
+        <img [src]="'http://localhost:3000/' + article.image" alt="Article image" />
         <br><br>
         <p>{{ article.content | slice:0:324 }}...</p>
         <div class="btn-container">

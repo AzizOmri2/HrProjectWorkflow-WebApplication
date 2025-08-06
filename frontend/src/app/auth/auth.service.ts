@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -26,12 +26,27 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // 🔐 Helper method to get auth headers
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token');
+    return token ? new HttpHeaders({ 'Authorization': `Bearer ${token}` }) : new HttpHeaders();
+  }
+
   register(name: string, email: string, password: string, role: string, image:string, active:boolean): Observable<HttpResponse<AuthResponse>> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/users`, {
       user: { name, email, password, password_confirmation: password, role, image, active }
     }, { observe: 'response' }).pipe(
       tap(response => this.setToken(response))
     );
+  }
+
+
+  // ✅ Admin adds any type of user with full control
+  createUserByAdmin(name: string, email: string, password: string, role: string, image: string, active: boolean, gender: string, birth_date: string, nationality: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/users/admin`, {
+      user: { name, email, password, password_confirmation: password, role, image, active, gender, birth_date, nationality }
+    }, { headers });
   }
 
   login(email: string, password: string): Observable<any> {
@@ -45,9 +60,10 @@ export class AuthService {
   }
 
   updatePassword(id: number, password: string) {
+    const headers = this.getAuthHeaders();
     return this.http.put<any>(`${this.apiUrl}/users/update_password`, {
       id,password
-    });
+    }, { headers });
   }
 
   isLoggedIn(): boolean {
@@ -71,6 +87,14 @@ export class AuthService {
 
   private removeToken(): void {
     localStorage.removeItem(this.tokenKey);
+  }
+
+  verifyPassword(password: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/users/verify_password`, 
+      { password }, 
+      { headers }
+    );
   }
 
 

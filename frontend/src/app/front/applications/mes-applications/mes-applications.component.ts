@@ -14,10 +14,8 @@ export class MesApplicationsComponent implements OnInit{
   applications:any;
 
   constructor(
-    private applicationService: ApplicationService, 
-    private router : Router){
-
-  }
+    private applicationService: ApplicationService
+  ){}
 
   ngOnInit(){
     // Retrieve the user ID from localStorage

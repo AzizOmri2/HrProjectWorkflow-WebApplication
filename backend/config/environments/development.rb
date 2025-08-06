@@ -82,6 +82,13 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+
+
+  # To make uploaded CVs accessible
+  config.public_file_server.enabled = true
+
+
+  
   # 🔒 Enable SameSite=None for cross-origin cookies
   Rails.application.config.action_dispatch.cookies_same_site_protection = :none
 
