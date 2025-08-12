@@ -17,12 +17,3 @@ test:
 production:
   <<: *default
   database: <%= ENV["DATABASE_NAME"] || "backend_production" %>
-
-cable:
-  <<: *default
-  # For simplicity, using the same database as production
-  database: <%= ENV["DATABASE_NAME"] || "backend_production" %>
-
-queue:
-  <<: *default
-  database: <%= ENV["DATABASE_NAME"] || "backend_production" %>
