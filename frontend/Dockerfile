@@ -10,7 +10,7 @@ RUN npm run build --prod
 FROM nginx:alpine
 
 # Copy the Angular build output (replace 'frontend-app-angular' with your actual folder name)
-COPY --from=build /app/dist/frontend-app-angular /usr/share/nginx/html
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
 
 # Copy custom Nginx config to enable Angular routing (optional but recommended)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
