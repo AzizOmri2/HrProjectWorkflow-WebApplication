@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  postgres:
+  db:
     image: postgres:15
-    container_name: hr_postgres
+    container_name: postgres_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: hr_project_flow
+      POSTGRES_DB: backend_production
     ports:
       - "5432:5432"
     volumes:
@@ -15,15 +15,15 @@ services:
 
   backend:
     image: azizomri/backend-app-ruby:latest
-    container_name: hr_backend
+    container_name: backend_app
+    depends_on:
+      - db
     environment:
-      DATABASE_HOST: postgres
+      DATABASE_HOST: db
       DATABASE_USER: postgres
       DATABASE_PASSWORD: root
-      DATABASE_NAME: hr_project_flow
-      RAILS_ENV: development
-    depends_on:
-      - postgres
+      DATABASE_NAME: backend_production
+      RAILS_ENV: production
     ports:
       - "3000:3000"
 
