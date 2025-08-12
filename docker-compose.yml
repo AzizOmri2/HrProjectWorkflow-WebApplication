@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  postgres_db:
     image: postgres:15
     container_name: postgres_db
     environment:
@@ -17,9 +17,9 @@ services:
     image: azizomri/backend-app-ruby:latest
     container_name: backend_app
     depends_on:
-      - db
+      - postgres_db
     environment:
-      DATABASE_HOST: db
+      DATABASE_HOST: postgres_db
       DATABASE_USER: postgres
       DATABASE_PASSWORD: root
       DATABASE_NAME: backend_production
