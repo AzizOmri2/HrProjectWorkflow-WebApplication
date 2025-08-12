@@ -1,11 +1,13 @@
 version: '3.8'
+
 services:
   postgres:
     image: postgres:15
+    container_name: hr_postgres
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypass
-      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: hr_project_flow
     ports:
       - "5432:5432"
     volumes:
@@ -13,18 +15,21 @@ services:
 
   backend:
     image: azizomri/backend-app-ruby:latest
+    container_name: hr_backend
     environment:
       DATABASE_HOST: postgres
-      DATABASE_USER: myuser
-      DATABASE_PASSWORD: mypass
-      DATABASE_NAME: mydb
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: hr_project_flow
+      RAILS_ENV: development
     depends_on:
       - postgres
     ports:
-      - "8080:8080"
+      - "3000:3000"
 
   frontend:
     image: azizomri/frontend-app-angular:latest
+    container_name: hr_frontend
     ports:
       - "4200:80"
 
