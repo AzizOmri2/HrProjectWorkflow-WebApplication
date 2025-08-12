@@ -13,7 +13,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist/frontend-app-angular /usr/share/nginx/html
 
 # Copy custom Nginx config to enable Angular routing (optional but recommended)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
