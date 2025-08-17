@@ -25,6 +25,9 @@ services:
       DATABASE_NAME: backend_production
       RAILS_ENV: production
       SECRET_KEY_BASE: 69ecb84c96c9b7fa1af9e61cd83e1fa5a854c2acc3268ccd20acddd41fd5a99785d0a0e7118b522a6809e1b9c50dcd1e3da1d8fb418b884b20a06551c581a788
+      MISTRAL_API_URL: https://openrouter.ai/api/v1/chat/completions
+      MISTRAL_API_KEY: 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
+      MISTRAL_API_KEY_CV_PARSING: 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
     ports:
       - "3000:3000"
 
