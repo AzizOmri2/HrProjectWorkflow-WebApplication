@@ -18,14 +18,20 @@ Devise.setup do |config|
 
   config.router_name = :main
 
-  config.jwt do |jwt|    
+  # JWT configuration
+  config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.secret_key_base
+
+    # JWT will be issued only when signing in
     jwt.dispatch_requests = [
       ['POST', %r{^/users/sign_in$}]
     ]
+
+    # JWT will be revoked only when signing out
     jwt.revocation_requests = [
-      ['DELETE', %r{^/users$}]
+      ['DELETE', %r{^/users/sign_out$}]
     ]
+
     jwt.expiration_time = 1.day.to_i
   end
 end
