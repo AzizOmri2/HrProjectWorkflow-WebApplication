@@ -49,18 +49,18 @@ export class AuthService {
     }, { headers });
   }
 
-  /*login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<any> {
     const body = { user: { email, password } };
     return this.http.post<any>(`${this.apiUrl}/users/sign_in`, body);
-  }*/
+  }
 
-  login(email: string, password: string): Observable<any> {
+  /*login(email: string, password: string): Observable<any> {
     const body = { user: { email, password } };
     return this.http.post<any>(`${this.apiUrl}/users/sign_in`, body, { observe: 'response' })
       .pipe(
         tap(response => this.setToken(response))   // <-- store JWT
       );
-  }
+  }*/
 
   logout(): Observable<any> {
     // Your API endpoint for logging out if needed (optional)
