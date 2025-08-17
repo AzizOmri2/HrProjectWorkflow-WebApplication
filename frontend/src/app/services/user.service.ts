@@ -23,7 +23,7 @@ export class UserService {
   // Get all Users
   getAllUsers(){
     const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/users/list`, { withCredentials: true });
+    return this.http.get(`${this.apiUrl}/users/list`, { headers });
   }
 
   // Ban or Unban User (Changing the active field)

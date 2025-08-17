@@ -49,9 +49,17 @@ export class AuthService {
     }, { headers });
   }
 
-  login(email: string, password: string): Observable<any> {
+  /*login(email: string, password: string): Observable<any> {
     const body = { user: { email, password } };
     return this.http.post<any>(`${this.apiUrl}/users/sign_in`, body);
+  }*/
+
+  login(email: string, password: string): Observable<any> {
+    const body = { user: { email, password } };
+    return this.http.post<any>(`${this.apiUrl}/users/sign_in`, body, { observe: 'response' })
+      .pipe(
+        tap(response => this.setToken(response))   // <-- store JWT
+      );
   }
 
   logout(): Observable<any> {
@@ -79,7 +87,7 @@ export class AuthService {
   }
 
   private setToken(response: any): void {
-    const token = response.body?.token;
+    const token = response.headers?.get('Authorization')?.split('Bearer ')[1];
     if (token) {
       localStorage.setItem(this.tokenKey, token);
     }
