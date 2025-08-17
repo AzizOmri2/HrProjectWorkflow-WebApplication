@@ -30,8 +30,6 @@ services:
       MISTRAL_API_KEY_CV_PARSING: ${MISTRAL_API_KEY_CV_PARSING}
     ports:
       - "3000:3000"
-    env_file:
-      - .env
 
   frontend:
     image: azizomri/frontend-app-angular:latest
