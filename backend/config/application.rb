@@ -31,7 +31,7 @@ module Backend
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:4200'
+        origins 'http://203.0.113.53:4200'
         resource '*',
           headers: :any,
           methods: [:get, :post, :put, :patch, :delete, :options, :head],
