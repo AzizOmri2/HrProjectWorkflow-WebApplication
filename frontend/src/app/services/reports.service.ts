@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ReportsService {
 
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://203.0.113.53:3000';
 
   constructor(private http: HttpClient) {}
 

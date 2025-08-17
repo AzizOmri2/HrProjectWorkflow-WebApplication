@@ -21,7 +21,7 @@ interface AuthResponse {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://203.0.113.53:3000';
   private tokenKey = 'auth_token';
 
   constructor(private http: HttpClient) {}
