@@ -53,11 +53,11 @@ export class LoginComponent {
             // Redirect based on user role
             if (user.role === 'admin') {
               if(user.nbCnx === 1){
-                //this.router.navigate(['/update-password']);
-                window.location.href = '/update-password';
+                this.router.navigate(['/update-password']);
+                //window.location.href = '/update-password';
               }else{
-                //this.router.navigate(['/back']); // Admin
-                window.location.href = '/back';
+                this.router.navigate(['/back']); // Admin
+                //window.location.href = '/back';
               }
             } else if(user.role === 'rh'){
               if(user.nbCnx === 1){
@@ -68,8 +68,8 @@ export class LoginComponent {
                 window.location.href = '/back-hr';
               }
             }else {
-              //this.router.navigate(['/front']); // RH or Candidate
-              window.location.href = '/front';
+              this.router.navigate(['/front']); // Candidate
+              //window.location.href = '/front';
             }
           }
         },
