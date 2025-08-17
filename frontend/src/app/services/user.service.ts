@@ -11,10 +11,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // 🔐 Helper method to get auth headers
+  // 🔐 Helper to get Authorization headers
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('auth_token');
-    return token ? new HttpHeaders({ 'Authorization': `Bearer ${token}` }) : new HttpHeaders();
+    return new HttpHeaders({
+      'Authorization': token ? `Bearer ${token}` : '',
+      'Accept': 'application/json'   // important for Devise
+    });
   }
 
   // Get all Users
