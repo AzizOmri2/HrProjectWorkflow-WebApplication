@@ -78,8 +78,8 @@ export class AuthService {
     return localStorage.getItem("user_role");
   }
 
-  private setToken(response: HttpResponse<AuthResponse>): void {
-    const token = response.headers.get('Authorization')?.replace('Bearer ', '');
+  private setToken(response: any): void {
+    const token = response.body?.token;
     if (token) {
       localStorage.setItem(this.tokenKey, token);
     }
