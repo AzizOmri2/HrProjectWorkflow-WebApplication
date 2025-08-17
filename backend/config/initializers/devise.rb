@@ -1,4 +1,5 @@
 Devise.setup do |config|
+  # Basic Devise settings
   config.secret_key = Rails.application.credentials.secret_key_base
   config.mailer_sender = 'azizomriomri@gmail.com'
   require 'devise/orm/active_record'
@@ -15,17 +16,22 @@ Devise.setup do |config|
   config.sign_out_via = :delete
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
-
   config.router_name = :main
 
-  config.jwt do |jwt|    
+  # JWT configuration
+  config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.secret_key_base
+
+    # Issue JWT when user logs in
     jwt.dispatch_requests = [
-      ['POST', %r{^/users$}]
+      ['POST', %r{^/users/sign_in$}]
     ]
+
+    # Revoke JWT when user logs out
     jwt.revocation_requests = [
-      ['DELETE', %r{^/users$}]
+      ['DELETE', %r{^/users/sign_out$}]
     ]
+
     jwt.expiration_time = 1.day.to_i
   end
 end
