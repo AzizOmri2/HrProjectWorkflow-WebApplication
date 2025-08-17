@@ -20,7 +20,7 @@ Devise.setup do |config|
 
   # JWT configuration
   config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.secret_key_base
+    jwt.secret = Rails.application.credentials.secret_key_base || ENV['SECRET_KEY_BASE']
 
     # JWT will be issued only when signing in
     jwt.dispatch_requests = [
