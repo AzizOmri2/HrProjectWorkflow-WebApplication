@@ -8,8 +8,8 @@ RUN npx ng build --configuration production
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
 
-# Copy the Angular build output
-COPY --from=build /app/dist/frontend /usr/share/nginx/html
+# Copy the Angular build output directly (contents of browser folder)
+COPY --from=build /app/dist/frontend/browser/ /usr/share/nginx/html/
 
 # Copy your custom nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
