@@ -24,7 +24,7 @@ cable:
 
 queue:
     <<: *default
-    database: <%= ENV["QUEUE_DATABASE_NAME"] || "backend_queue_production" %>
+    database: <%= ENV["DATABASE_NAME"] || "backend_production" %>
 
 cache:
     <<: *default
