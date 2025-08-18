@@ -30,8 +30,6 @@ services:
       - "3000:3000"
     volumes:
       - article_images:/app/public/uploads/article_images
-    user: "1000:1000"  # ensure Rails has permission to write
-    command: sh -c "mkdir -p /app/public/uploads/article_images && chown -R 1000:1000 /app/public/uploads/article_images && bundle exec rails s -b 0.0.0.0"
 
   frontend:
     image: azizomri/frontend-app-angular:latest

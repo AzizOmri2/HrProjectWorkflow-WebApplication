@@ -64,6 +64,11 @@ COPY --from=build /rails /rails
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
+
+# Create uploads folder and give permissions
+RUN mkdir -p /rails/public/uploads/article_images \
+    && chown -R 1000:1000 /rails/public/uploads/article_images
+    
 USER 1000:1000
 
 # Entrypoint prepares the database.
