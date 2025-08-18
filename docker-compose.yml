@@ -30,6 +30,9 @@ services:
       - "3000:3000"
     volumes:
       - article_images:/app/public/uploads/article_images
+      - applications_cv:/app/public/uploads/applications_cv
+      - profile_cv:/app/public/uploads/profile_cv
+      - profile_pictures:/app/public/uploads/profile_pictures
 
   frontend:
     image: azizomri/frontend-app-angular:latest
@@ -40,3 +43,6 @@ services:
 volumes:
   postgres_data:
   article_images:
+  applications_cv:
+  profile_cv:
+  profile_pictures:
