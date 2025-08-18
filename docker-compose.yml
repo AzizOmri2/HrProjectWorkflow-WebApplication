@@ -25,11 +25,10 @@ services:
       DATABASE_NAME: backend_production
       RAILS_ENV: production
       SECRET_KEY_BASE: 69ecb84c96c9b7fa1af9e61cd83e1fa5a854c2acc3268ccd20acddd41fd5a99785d0a0e7118b522a6809e1b9c50dcd1e3da1d8fb418b884b20a06551c581a788
-      MISTRAL_API_URL: ${MISTRAL_API_URL}
-      MISTRAL_API_KEY: ${MISTRAL_API_KEY}
-      MISTRAL_API_KEY_CV_PARSING: ${MISTRAL_API_KEY_CV_PARSING}
     ports:
       - "3000:3000"
+    volumes:
+      - article_images:/app/public/uploads/article_images
 
   frontend:
     image: azizomri/frontend-app-angular:latest
@@ -39,3 +38,4 @@ services:
 
 volumes:
   postgres_data:
+  article_images:
