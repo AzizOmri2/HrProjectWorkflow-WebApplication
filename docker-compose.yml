@@ -29,6 +29,7 @@ services:
       - "3000:3000"
     volumes:
       - article_images:/app/public/uploads/article_images
+    user: "1000:1000"  # ensure Rails has permission to write
 
   frontend:
     image: azizomri/frontend-app-angular:latest
