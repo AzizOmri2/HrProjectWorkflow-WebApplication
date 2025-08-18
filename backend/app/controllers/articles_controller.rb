@@ -23,7 +23,11 @@ class ArticlesController < ApplicationController
       safe_title = @article.title.parameterize.underscore
       new_filename = "Image_#{safe_title}_#{current_user.id}_#{timestamp}#{File.extname(uploaded_image.original_filename)}"
 
-      image_path = Rails.root.join('public', 'uploads', 'article_images', new_filename)
+      # Ensure directory exists
+      image_dir = Rails.root.join('public', 'uploads', 'article_images')
+      FileUtils.mkdir_p(image_dir) unless Dir.exist?(image_dir)
+
+      image_path = image_dir.join(new_filename)
       File.open(image_path, 'wb') { |file| file.write(uploaded_image.read) }
 
       @article.image = "uploads/article_images/#{new_filename}"
