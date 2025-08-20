@@ -48,7 +48,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "203.0.113.53", port: 3000 }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -87,6 +87,8 @@ Rails.application.configure do
   # To make uploaded CVs accessible
   config.public_file_server.enabled = true
 
+  # To send emails immediately in development
+  config.active_job.queue_adapter = :inline
   
   # 🔒 Enable SameSite=None for cross-origin cookies
   Rails.application.config.action_dispatch.cookies_same_site_protection = :none
