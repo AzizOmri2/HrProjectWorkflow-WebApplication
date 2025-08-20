@@ -65,12 +65,22 @@ RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 
-# Create uploads folders and give permissions
-RUN mkdir -p /app/public/uploads/article_images \
-    /app/public/uploads/profile_pictures \
-    /app/public/uploads/applications_cv \
-    /app/public/uploads/profile_cv \
-    && chown -R 1000:1000 /app/public/uploads
+# Create uploads article images folder and give permissions
+RUN mkdir -p /rails/public/uploads/article_images \
+    && chown -R 1000:1000 /rails/public/uploads/article_images
+
+
+# Create uploads profile images folder and give permissions
+RUN mkdir -p /rails/public/uploads/profile_pictures \
+    && chown -R 1000:1000 /rails/public/uploads/profile_pictures
+
+# Create uploads applications cv folder and give permissions
+RUN mkdir -p /rails/public/uploads/applications_cv \
+    && chown -R 1000:1000 /rails/public/uploads/applications_cv
+
+# Create uploads cv profile folder and give permissions
+RUN mkdir -p /rails/public/uploads/profile_cv \
+    && chown -R 1000:1000 /rails/public/uploads/profile_cv
     
     
 USER 1000:1000
