@@ -143,8 +143,8 @@
 
             <ng-template #noRecommendations>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3>{{ mes_apps[0]?.job_offer?.title || 'Default Job' }}</h3>
-                    <button class="btn more-details-btn" [routerLink]="['/front/offers/show', mes_apps[0]?.job_offer?.id || 0]">Apply Now</button>
+                    <h3>{{ mes_apps[0].job_offer.title || 'Default Job' }}</h3>
+                    <button class="btn more-details-btn" [routerLink]="['/front/offers/show', mes_apps[0].job_offer.id || 0]">Apply Now</button>
                 </div>
             </ng-template>
             <p style="color: green;">
