@@ -28,4 +28,4 @@ queue:
 
 cache:
   <<: *default
-  database: <%= ENV["CACHE_DATABASE_NAME"] || "backend_cache_production" %>
+  database: <%= ENV["CACHE_DATABASE_NAME"] || "backend_production" %>
