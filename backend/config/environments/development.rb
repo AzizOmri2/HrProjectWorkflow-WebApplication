@@ -87,7 +87,8 @@ Rails.application.configure do
   # To make uploaded CVs accessible
   config.public_file_server.enabled = true
 
-
+  # To send emails immediately in development
+  config.active_job.queue_adapter = :inline
   
   # 🔒 Enable SameSite=None for cross-origin cookies
   Rails.application.config.action_dispatch.cookies_same_site_protection = :none
