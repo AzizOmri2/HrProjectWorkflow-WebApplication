@@ -108,16 +108,15 @@ class RecommendationsController < ApplicationController
   # Parses the JSON content inside a markdown-style code block returned by Mistral
   # Expects format: ```json ... ```
   def parse_mistral_response(response)
+    # Extract content from API response
     json_string = JSON.parse(response.body).dig("choices", 0, "message", "content")
-    json_match = json_string.match(/```json(.+?)```/m)
 
-    if json_match
-      raw_json = json_match[1].strip
-      JSON.parse(raw_json)
-    else
-      Rails.logger.warn "⚠️ No valid JSON block found in Mistral response"
-      []
-    end
+    # Try to extract JSON from ```json ... ``` block
+    json_match = json_string.match(/```json(.+?)```/m)
+    raw_json = json_match ? json_match[1].strip : json_string.strip
+
+    # Parse JSON (works for both code block and plain JSON)
+    JSON.parse(raw_json)
   rescue JSON::ParserError => e
     Rails.logger.error "❌ Failed to parse recommendations JSON: #{e.message}"
     []
