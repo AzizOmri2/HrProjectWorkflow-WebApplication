@@ -96,9 +96,9 @@ export class ArticlesListFrontComponent implements OnInit{
       this.mes_apps = [
         {
           job_offer: {
-            title: 'Graphic Design',
+            title: 'Default Job',
           },
-          status: 'Pending'
+          status: 'APPLY NOW'
         }
       ];
 
