@@ -31,10 +31,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - article_images:/app/public/uploads/article_images
-      - applications_cv:/app/public/uploads/applications_cv
-      - profile_cv:/app/public/uploads/profile_cv
-      - profile_pictures:/app/public/uploads/profile_pictures
+      - article_images:/rails/public/uploads/article_images
+      - applications_cv:/rails/public/uploads/applications_cv
+      - profile_cv:/rails/public/uploads/profile_cv
+      - profile_pictures:/rails/public/uploads/profile_pictures
 
   frontend:
     image: azizomri/frontend-app-angular:latest
