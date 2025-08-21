@@ -47,7 +47,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = :async
 
   # Set host to be used by links generated in mailer templates
-  config.action_mailer.default_url_options = { host: "203.0.113.53", protocol: "https" }
+  config.action_mailer.default_url_options = { host: "hrproject.local", protocol: "https" }
 
   # SMTP settings for sending emails
   config.action_mailer.delivery_method = :smtp

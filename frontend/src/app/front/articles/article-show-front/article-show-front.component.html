@@ -19,7 +19,7 @@
                         <p class="mb-0"><b>Author : </b><span class="label label-default"> {{ article.author.name }}</span></p>
                         <p class="mb-0 ml-4"><b>Published on : </b><span class="label label-success"> {{ article.created_at | date: "MMM d, y 'at' HH:mm":'UTC' }}</span></p>
                     </div>
-                    <img [src]="'http://203.0.113.53:3000/' + article.image" alt="Article Image" class="img-fluid rounded mb-4">
+                    <img [src]="'http://hrproject.local/api/' + article.image" alt="Article Image" class="img-fluid rounded mb-4">
                     <p class="mt-4 article-content formatted-text" [innerHTML]="article.content"></p>
                   
                     <!-- Like / Dislike Buttons -->
@@ -40,7 +40,7 @@
                 <div class="mt-5">
                     <h4 class="mb-4">Comments ({{ comments.length }})</h4>
                     <div *ngFor="let comment of comments" class="mb-4 border-bottom pb-2 d-flex align-items-start">
-                        <img [src]="'http://203.0.113.53:3000/' + comment.commenter.image" alt="Commenter Picture" class="rounded-circle mr-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        <img [src]="'http://hrproject.local/api/' + comment.commenter.image" alt="Commenter Picture" class="rounded-circle mr-3" style="width: 50px; height: 50px; object-fit: cover;">
                         <div class="flex-grow-1">
                             <p class="mb-1">
                                 <strong>{{ comment.commenter.name }}</strong>
@@ -99,7 +99,7 @@
                             : '/frontvisiteur/articles/show',
                             item.id
                         ]">
-                        <img [src]="'http://203.0.113.53:3000/' + item.image" alt="thumb" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
+                        <img [src]="'http://hrproject.local/api/' + item.image" alt="thumb" class="img-fluid" style="width: 80px; height: 80px; object-fit: cover;">
                         <div class="pl-3">
                             <h6>{{ item.title }}</h6>
                             <p>{{ item.content | slice:0:150 }}...</p>
