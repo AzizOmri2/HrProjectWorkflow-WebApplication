@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://hrproject.local/' # your Angular frontend origin
+    origins 'http://hrproject.local' # your Angular frontend origin
 
     resource '*',
       headers: :any,
