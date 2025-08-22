@@ -31,7 +31,7 @@ module Backend
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://hrproject.local'
+        origins 'http://192.168.49.2:30080'
         resource '*',
           headers: :any,
           methods: [:get, :post, :put, :patch, :delete, :options, :head],
