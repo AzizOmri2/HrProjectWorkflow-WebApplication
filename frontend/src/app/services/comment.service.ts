@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CommentService {
 
-  private apiUrl = 'http://hrproject.local/api';
+  private apiUrl = 'http://192.168.49.2:30030';
 
   constructor(private http: HttpClient) {}
 

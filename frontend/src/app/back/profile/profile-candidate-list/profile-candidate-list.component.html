@@ -23,7 +23,7 @@
             <div class="row g-4" *ngIf="filteredProfiles.length > 0; else noProfiles">
                 <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let profile of filteredProfiles">
                     <div class="card h-100 shadow-sm d-flex flex-column">
-                        <img [src]="'http://hrproject.local/api/' + profile.user.image"
+                        <img [src]="'http://192.168.49.2:30030/' + profile.user.image"
                             class="card-img-top user-image"
                             alt="{{ profile.user.name }}"
                             loading="lazy"/>
@@ -47,7 +47,7 @@
                                 <button (click)="openProfileInfo(profile.id)" class="btn btn-sm btn-info" title="Show User Details">
                                     <b>View Profile </b>&nbsp;&nbsp;<i class="fa fa-info-circle"></i>
                                 </button>
-                                <a [href]="'http://hrproject.local/api/uploads/profile_cv/' + profile.cv_file" class="btn btn-sm btn-default" title="See Resume/CV">
+                                <a [href]="'http://192.168.49.2:30030/uploads/profile_cv/' + profile.cv_file" class="btn btn-sm btn-default" title="See Resume/CV">
                                     <i class="fa fa-file-pdf-o"></i>
                                 </a>
                             </div>

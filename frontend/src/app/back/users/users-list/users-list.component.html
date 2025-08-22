@@ -85,7 +85,7 @@
                 <div class="row g-4" *ngIf="filteredUsers.length > 0; else noUsers">
                     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let user of filteredUsers">
                         <div class="card h-100 shadow-sm user-card d-flex flex-column">
-                            <img [src]="'http://hrproject.local/api/' + user.image" class="card-img-top user-image" alt="{{ user.name }}" loading="lazy"/>
+                            <img [src]="'http://192.168.49.2:30030/' + user.image" class="card-img-top user-image" alt="{{ user.name }}" loading="lazy"/>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title mb-1">{{ user.name }}</h5>
                                 <p class="card-subtitle text-muted mb-2">

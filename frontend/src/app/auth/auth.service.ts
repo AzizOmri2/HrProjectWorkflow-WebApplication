@@ -21,7 +21,7 @@ interface AuthResponse {
 })
 export class AuthService {
 
-  private apiUrl = 'http://hrproject.local/api';
+  private apiUrl = 'http://192.168.49.2:30030';
   private tokenKey = 'auth_token';
 
   constructor(private http: HttpClient) {}
