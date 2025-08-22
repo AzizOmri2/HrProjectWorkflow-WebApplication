@@ -14,4 +14,13 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       methods: [:get, :post, :patch, :put, :delete, :options, :head],
       credentials: true
   end
+
+  # Add this specifically for uploaded files if needed
+  allow do
+    origins 'http://192.168.49.2:30080'
+    resource '/uploads/*',
+      headers: :any,
+      methods: [:get],
+      credentials: false
+  end
 end
